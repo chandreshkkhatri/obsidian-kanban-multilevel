@@ -406,23 +406,20 @@ function itemToMd(item: Item) {
 
 function laneToMd(lane: Lane) {
   const lines: string[] = [];
-
-  lines.push(`## ${replaceNewLines(laneTitleWithMaxItems(lane.data.title, lane.data.maxItems))}`);
-
+  // Serialize row if present
+  lines.push(
+    `## ${replaceNewLines(laneTitleWithMaxItems(lane.data.title, lane.data.maxItems, lane.data.row))}`
+  );
   lines.push('');
-
   if (lane.data.shouldMarkItemsComplete) {
     lines.push(completeString);
   }
-
   lane.children.forEach((item) => {
     lines.push(itemToMd(item));
   });
-
   lines.push('');
   lines.push('');
   lines.push('');
-
   return lines.join('\n');
 }
 

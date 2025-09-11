@@ -17,6 +17,7 @@ import { frontmatterKey } from '../parsers/common';
 import { Icon } from './Icon/Icon';
 import { Lanes } from './Lane/Lane';
 import { LaneForm } from './Lane/LaneForm';
+import { MultiRowBoard } from './MultiRowBoard/MultiRowBoard';
 import { TableView } from './Table/Table';
 import { KanbanContext, SearchContext } from './context';
 import { baseClassName, c, useSearchValue } from './helpers';
@@ -263,6 +264,11 @@ export const Kanban = ({ view, stateManager }: KanbanProps) => {
             )}
             {boardView === 'table' ? (
               <TableView boardData={boardData} stateManager={stateManager} />
+            ) : // Decide if we need multi-row layout: if any lane has data.row defined
+            boardData.children.some((l) => l.data.row) ? (
+              <div className={c('multirow-container')}>
+                <MultiRowBoard lanes={boardData.children} />
+              </div>
             ) : (
               <ScrollContainer
                 id={view.id}

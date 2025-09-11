@@ -62,7 +62,12 @@ export function hasFrontmatterKey(file: TFile) {
   return !!cache?.frontmatter?.[frontmatterKey];
 }
 
-export function laneTitleWithMaxItems(title: string, maxItems?: number) {
-  if (!maxItems) return title;
-  return `${title} (${maxItems})`;
+/**
+ * Compose lane title for markdown, including maxItems and row if present.
+ */
+export function laneTitleWithMaxItems(title: string, maxItems?: number, row?: string) {
+  let result = title;
+  if (maxItems) result += ` (${maxItems})`;
+  if (row) result += ` {row:${row}}`;
+  return result;
 }
