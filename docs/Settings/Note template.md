@@ -1,11 +1,9 @@
-
 When [[Create notes from cards]], new notes will be pre-populated with the specified note template.
 
 Supported template formats:
 
 - [Obsidian Templates](https://help.obsidian.md/Plugins/Templates)
 - [Templater](https://silentvoid13.github.io/Templater/)
-
 
 ### Example
 
@@ -16,7 +14,6 @@ With the Obsidian core template plugin active (`Settings > Core plugins > Templa
 
 This file was created on {{date}} {{time}}.
 ```
-
 
 Then select the template in your Kanban Multilevel board's settings:
 

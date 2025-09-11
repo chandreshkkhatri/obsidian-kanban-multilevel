@@ -1,4 +1,3 @@
-
 To create a new Kanban Multilevel board, you can:
 
 Right-click on a folder and select `New Kanban Multilevel board`.

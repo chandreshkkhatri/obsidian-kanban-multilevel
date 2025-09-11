@@ -1,4 +1,3 @@
-
 This setting enables or disables displaying checkboxes on cards. `Command` or `CTRL` clicking on the checkbox will [[View a Kanban Multilevel's archive|archive]] the card.
 
 No checkbox (default):
