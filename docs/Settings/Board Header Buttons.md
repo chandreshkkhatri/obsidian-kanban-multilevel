@@ -1,5 +1,5 @@
 
-These settings allow hiding buttons from a Kanban board's header.
+These settings allow hiding buttons from a Kanban Multilevel board's header.
 
 Default:
 

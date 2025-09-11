@@ -18,7 +18,7 @@ This file was created on {{date}} {{time}}.
 ```
 
 
-Then select the template in your Kanban board's settings:
+Then select the template in your Kanban Multilevel board's settings:
 
 ![[Screen Shot 2021-09-13 at 3.32.18 PM.png]]
 

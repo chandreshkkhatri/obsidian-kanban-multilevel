@@ -1,11 +1,11 @@
 
-To create a new Kanban board, you can:
+To create a new Kanban Multilevel board, you can:
 
-Right-click on a folder and select `New Kanban board`.
+Right-click on a folder and select `New Kanban Multilevel board`.
 
 ![[Screen Shot 2021-09-15 at 9.14.52 PM.png]]
 
-Execute the command palette command, `Kanban: Create new board`, which will create a board at the root of your vault.
+Execute the command palette command, `Kanban Multilevel: Create new board`, which will create a board at the root of your vault.
 
 ![[Screen Shot 2021-09-15 at 9.15.11 PM.png]]
 
