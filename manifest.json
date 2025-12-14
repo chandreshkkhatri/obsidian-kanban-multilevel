@@ -1,9 +1,10 @@
 {
 	"id": "kanban-multilevel",
 	"name": "Kanban Multilevel",
+	"author": "Chandresh Kumar",
 	"version": "2.0.52",
 	"minAppVersion": "1.0.0",
-	"description": "Create markdown-backed Kanban Multilevel boards in Obsidian.",
+	"description": "Create markdown-backed Kanban Multilevel boards.",
 	"authorUrl": "https://github.com/chandreshkkhatri/obsidian-kanban-multilevel",
 	"isDesktopOnly": false
 }
