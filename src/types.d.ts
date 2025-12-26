@@ -8,15 +8,15 @@ declare function h(
   props:
     | (import('preact/src/jsx').JSXInternal.HTMLAttributes &
         import('preact/src/jsx').JSXInternal.SVGAttributes &
-        Record<string, any>)
+        Record<string, unknown>)
     | null,
   ...children: import('preact').ComponentChildren[]
-): import('preact').VNode<any>;
+): import('preact').VNode<unknown>;
 declare function h<P>(
   type: import('preact').ComponentType<P>,
   props: (import('preact').Attributes & P) | null,
   ...children: import('preact').ComponentChildren[]
-): import('preact').VNode<any>;
+): import('preact').VNode<unknown>;
 
 type Booleanish = boolean | 'true' | 'false';
 
