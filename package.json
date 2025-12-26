@@ -44,6 +44,9 @@
     "tslib": "^2.6.2",
     "typescript": "^5.3.3"
   },
+  "overrides": {
+    "whatwg-url": "^7.1.0"
+  },
   "dependencies": {
     "@tanstack/match-sorter-utils": "^8.15.1",
     "@tanstack/react-table": "^8.11.2",
