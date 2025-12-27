@@ -40,7 +40,7 @@ export class StateManager {
     this.getGlobalSettings = getGlobalSettings;
     this.parser = new ListFormat(this);
 
-    this.registerView(initialView, initialData, true);
+    void this.registerView(initialView, initialData, true);
   }
 
   getAView(): KanbanView {
@@ -353,7 +353,7 @@ export class StateManager {
     this.reparseBoardFromMd();
   }
 
-  async reparseBoardFromMd() {
+  reparseBoardFromMd() {
     try {
       this.setState(this.getParsedBoard(this.getAView().data), false);
     } catch (e) {
