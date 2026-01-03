@@ -40,7 +40,7 @@ export class StateManager {
     this.getGlobalSettings = getGlobalSettings;
     this.parser = new ListFormat(this);
 
-    this.registerView(initialView, initialData, true);
+    void this.registerView(initialView, initialData, true);
   }
 
   getAView(): KanbanView {
@@ -353,7 +353,7 @@ export class StateManager {
     this.reparseBoardFromMd();
   }
 
-  async reparseBoardFromMd() {
+  reparseBoardFromMd() {
     try {
       this.setState(this.getParsedBoard(this.getAView().data), false);
     } catch (e) {
@@ -362,7 +362,7 @@ export class StateManager {
     }
   }
 
-  async archiveCompletedCards() {
+  archiveCompletedCards() {
     const board = this.state;
 
     const archived: Item[] = [];
@@ -389,7 +389,8 @@ export class StateManager {
       return update(lane, {
         children: {
           $set: lane.children.filter((item) => {
-            const isComplete = item.data.checked && item.data.checkChar === getTaskStatusDone();
+            const isComplete =
+              item.data.checked && item.data.checkChar === getTaskStatusDone(this.app);
             if (lane.data.shouldMarkItemsComplete || isComplete) {
               archived.push(item);
             }
@@ -409,7 +410,7 @@ export class StateManager {
           data: {
             archive: {
               $push: shouldAppendArchiveDate
-                ? await Promise.all(archived.map((item) => appendArchiveDate(item)))
+                ? archived.map((item) => appendArchiveDate(item))
                 : archived,
             },
           },

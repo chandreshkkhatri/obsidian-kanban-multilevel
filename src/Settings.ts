@@ -339,7 +339,7 @@ export class SettingsManager {
         const [value, globalValue] = this.getSetting('lane-width', local);
 
         text.inputEl.setAttr('type', 'number');
-        text.inputEl.placeholder = `${globalValue ? globalValue : '272'} (default)`;
+        text.inputEl.placeholder = `${globalValue ? (globalValue as number) : '272'} (default)`;
         text.inputEl.value = value ? value.toString() : '';
 
         text.onChange((val) => {
@@ -413,7 +413,7 @@ export class SettingsManager {
         const [value, globalValue] = this.getSetting('max-archive-size', local);
 
         text.inputEl.setAttr('type', 'number');
-        text.inputEl.placeholder = `${globalValue ? globalValue : '-1'} (default)`;
+        text.inputEl.placeholder = `${globalValue ? (globalValue as number) : '-1'} (default)`;
         text.inputEl.value = value ? value.toString() : '';
 
         text.onChange((val) => {

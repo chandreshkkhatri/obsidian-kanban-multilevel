@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Generic DND types with many any usages */
 import { ComponentChildren } from 'preact';
 
 export type Axis = 'horizontal' | 'vertical';

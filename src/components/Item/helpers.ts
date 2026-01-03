@@ -1,5 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Internal Obsidian API access and complex data structures */
 import { FileWithPath, fromEvent } from 'file-selector';
-import { Platform, TFile, TFolder, htmlToMarkdown, moment, parseLinktext, setIcon } from 'obsidian';
+import {
+  App,
+  Platform,
+  TFile,
+  TFolder,
+  htmlToMarkdown,
+  moment,
+  parseLinktext,
+  setIcon,
+} from 'obsidian';
 import { StateManager } from 'src/StateManager';
 import { Path } from 'src/dnd/types';
 import { buildLinkToDailyNote } from 'src/helpers';
@@ -22,8 +32,7 @@ export function constructDatePicker(
   return win.document.body.createDiv(
     { cls: `${c('date-picker')} ${c('ignore-click-outside')}` },
     (div) => {
-      div.style.left = `${coordinates.x || 0}px`;
-      div.style.top = `${coordinates.y || 0}px`;
+      div.setCssProps({ left: `${coordinates.x || 0}px`, top: `${coordinates.y || 0}px` });
 
       div.createEl('input', { type: 'text' }, (input) => {
         div.win.setTimeout(() => {
@@ -67,11 +76,11 @@ export function constructDatePicker(
             const width = div.clientWidth;
 
             if (coordinates.y + height > win.innerHeight) {
-              div.style.top = `${(coordinates.y || 0) - height}px`;
+              div.setCssProps({ top: `${(coordinates.y || 0) - height}px` });
             }
 
             if (coordinates.x + width > win.innerWidth) {
-              div.style.left = `${(coordinates.x || 0) - width}px`;
+              div.setCssProps({ left: `${(coordinates.x || 0) - width}px` });
             }
           });
 
@@ -186,8 +195,7 @@ export function constructTimePicker(
       win.document.removeEventListener('keydown', escHandler);
     };
 
-    div.style.left = `${coordinates.x || 0}px`;
-    div.style.top = `${coordinates.y || 0}px`;
+    div.setCssProps({ left: `${coordinates.x || 0}px`, top: `${coordinates.y || 0}px` });
 
     let selectedItem: HTMLDivElement = null;
     let middleItem: HTMLDivElement = null;
@@ -223,11 +231,11 @@ export function constructTimePicker(
       const width = div.clientWidth;
 
       if (coordinates.y + height > win.innerHeight) {
-        div.style.top = `${(coordinates.y || 0) - height}px`;
+        div.setCssProps({ top: `${(coordinates.y || 0) - height}px` });
       }
 
       if (coordinates.x + width > win.innerWidth) {
-        div.style.left = `${(coordinates.x || 0) - width}px`;
+        div.setCssProps({ left: `${(coordinates.x || 0) - width}px` });
       }
 
       (selectedItem || middleItem)?.scrollIntoView({
@@ -273,7 +281,7 @@ export function constructMenuTimePickerOnChange({
   };
 }
 
-export function getItemClassModifiers(item: Item) {
+export function getItemClassModifiers(item: Item, app?: App) {
   const date = item.data.metadata.date;
   const classModifiers: string[] = [];
 
@@ -291,7 +299,7 @@ export function getItemClassModifiers(item: Item) {
     }
   }
 
-  if (item.data.checked && item.data.checkChar === getTaskStatusDone()) {
+  if (item.data.checked && item.data.checkChar === getTaskStatusDone(app)) {
     classModifiers.push('is-complete');
   }
 
@@ -376,7 +384,7 @@ export function getFileListFromClipboard(win: Window & typeof globalThis) {
         return formatFilePathStr
           .split(drivePrefix[0])
           .filter((item) => item)
-          .map((item) => drivePrefix + item);
+          .map((item) => drivePrefix[0] + item);
       }
     } else {
       const clipboardImage = clipboard.readImage('clipboard');
@@ -454,9 +462,10 @@ async function handleElectronPaste(stateManager: StateManager, win: Window & typ
           // Wait for Obsidian to update
           await new Promise((resolve) => win.setTimeout(resolve, 50));
 
-          const newFile = stateManager.app.vault.getAbstractFileByPath(path) as TFile;
+          const abstractFile = stateManager.app.vault.getAbstractFileByPath(path);
+          if (!(abstractFile instanceof TFile)) return '';
 
-          return linkTo(stateManager, newFile, stateManager.file.path);
+          return linkTo(stateManager, abstractFile, stateManager.file.path);
         } else {
           const splitFile = file.originalName.split('.');
           const ext = splitFile.pop();

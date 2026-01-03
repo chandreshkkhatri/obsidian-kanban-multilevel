@@ -5,6 +5,7 @@ export function getDropAction(stateManager: StateManager, transfer: DataTransfer
   if (transfer.types.includes('text/uri-list')) return 'link';
   if (
     ['file', 'files', 'link', 'folder'].includes(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Private Obsidian API
       (stateManager.app as any).dragManager.draggable?.type
     )
   )

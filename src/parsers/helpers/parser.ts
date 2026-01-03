@@ -32,7 +32,8 @@ export function replaceBrs(str: string) {
 }
 
 export function indentNewLines(str: string) {
-  const useTab = (app.vault as any).getConfig('useTab');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian config API
+  const useTab = ((window as any).app.vault as any).getConfig('useTab');
   return str.trim().replace(/(?:\r\n|\n)/g, useTab ? '\n\t' : '\n    ');
 }
 
@@ -57,11 +58,29 @@ export function dedentNewLines(str: string) {
   return str.trim().replace(/(?:\r\n|\n)(?: {4}|\t)/g, '\n');
 }
 
+/**
+ * Parse lane title for maxItems and row grouping.
+ * Syntax: "Title (5) {row:Name}" or "Title {row:Name}" or just "Title"
+ */
 export function parseLaneTitle(str: string) {
   str = replaceBrs(str);
+  let title = str;
+  let maxItems = 0;
+  let row: string | undefined = undefined;
 
-  const match = str.match(/^(.*?)\s*\((\d+)\)$/);
-  if (match == null) return { title: str, maxItems: 0 };
+  // Extract {row:Name} at end
+  const rowMatch = str.match(/\{\s*row\s*:\s*([^}]+)\}/i);
+  if (rowMatch) {
+    row = rowMatch[1].trim();
+    title = title.replace(rowMatch[0], '').trim();
+  }
 
-  return { title: match[1], maxItems: Number(match[2]) };
+  // Extract (maxItems) at end
+  const maxMatch = title.match(/^(.*?)\s*\((\d+)\)$/);
+  if (maxMatch) {
+    title = maxMatch[1].trim();
+    maxItems = Number(maxMatch[2]);
+  }
+
+  return { title, maxItems, row };
 }

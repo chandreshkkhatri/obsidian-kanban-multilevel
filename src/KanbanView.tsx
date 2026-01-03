@@ -37,6 +37,7 @@ export class KanbanView extends TextFileView implements HoverParent {
   previewCache: Map<string, BasicMarkdownRenderer>;
   previewQueue: PromiseQueue;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- MarkdownEditor class is not exposed in type definitions
   activeEditor: any;
   viewSettings: KanbanViewSettings = {};
 
@@ -45,6 +46,7 @@ export class KanbanView extends TextFileView implements HoverParent {
   }
 
   get id(): string {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- WorkspaceLeaf.id is not exposed in type definitions
     return `${(this.leaf as any).id}:::${this.file?.path}`;
   }
 
@@ -117,7 +119,7 @@ export class KanbanView extends TextFileView implements HoverParent {
 
   setView(view: KanbanFormat) {
     this.setViewState(frontmatterKey, view);
-    this.app.fileManager.processFrontMatter(this.file, (frontmatter) => {
+    void this.app.fileManager.processFrontMatter(this.file, (frontmatter) => {
       frontmatter[frontmatterKey] = view;
     });
   }
@@ -150,9 +152,8 @@ export class KanbanView extends TextFileView implements HoverParent {
 
   async loadFile(file: TFile) {
     this.plugin.removeView(this);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return super.loadFile(file);
+    // @ts-expect-error: loadFile exists on TextFileView but not typed in base class
+    return await super.loadFile(file);
   }
 
   async onLoadFile(file: TFile) {
@@ -169,6 +170,7 @@ export class KanbanView extends TextFileView implements HoverParent {
     super.onload();
     if (Platform.isMobile) {
       this.containerEl.setCssProps({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian mobile navbar API
         '--mobile-navbar-height': (this.app as any).mobileNavbar.containerEl.clientHeight + 'px',
       });
     }
@@ -220,9 +222,10 @@ export class KanbanView extends TextFileView implements HoverParent {
 
   setViewData(data: string, clear?: boolean) {
     if (!hasFrontmatterKeyRaw(data)) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- WorkspaceLeaf.id is not exposed in type definitions
       this.plugin.kanbanFileModes[(this.leaf as any).id || this.file.path] = 'markdown';
       this.plugin.removeView(this);
-      this.plugin.setMarkdownView(this.leaf, false);
+      void this.plugin.setMarkdownView(this.leaf, false);
 
       return;
     }
@@ -239,6 +242,7 @@ export class KanbanView extends TextFileView implements HoverParent {
     this.plugin.addView(this, data, !clear && this.isPrimary);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- ViewState object contains internal Obsidian properties
   async setState(state: any, result: ViewStateResult): Promise<void> {
     this.viewSettings = { ...state.kanbanViewState };
     await super.setState(state, result);
@@ -326,8 +330,9 @@ export class KanbanView extends TextFileView implements HoverParent {
           .setIcon('lucide-file-text')
           .setSection('pane')
           .onClick(() => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- WorkspaceLeaf.id is not exposed in type definitions
             this.plugin.kanbanFileModes[(this.leaf as any).id || this.file.path] = 'markdown';
-            this.plugin.setMarkdownView(this.leaf);
+            void this.plugin.setMarkdownView(this.leaf);
           });
       })
       .addItem((item) => {
@@ -346,7 +351,7 @@ export class KanbanView extends TextFileView implements HoverParent {
           .setSection('pane')
           .onClick(() => {
             const stateManager = this.plugin.stateManagers.get(this.file);
-            stateManager.archiveCompletedCards();
+            void stateManager.archiveCompletedCards();
           });
       });
 
@@ -357,7 +362,7 @@ export class KanbanView extends TextFileView implements HoverParent {
 
   initHeaderButtons = debounce(() => this._initHeaderButtons(), 10, true);
 
-  _initHeaderButtons = async () => {
+  _initHeaderButtons = () => {
     if (Platform.isPhone) return;
     const stateManager = this.plugin.getStateManager(this.file);
 
@@ -435,8 +440,9 @@ export class KanbanView extends TextFileView implements HoverParent {
         'lucide-file-text',
         t('Open as markdown'),
         () => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- WorkspaceLeaf.id is not exposed in type definitions
           this.plugin.kanbanFileModes[(this.leaf as any).id || this.file.path] = 'markdown';
-          this.plugin.setMarkdownView(this.leaf);
+          void this.plugin.setMarkdownView(this.leaf);
         }
       );
     } else if (
@@ -453,7 +459,7 @@ export class KanbanView extends TextFileView implements HoverParent {
         t('Archive completed cards'),
         () => {
           const stateManager = this.plugin.stateManagers.get(this.file);
-          stateManager.archiveCompletedCards();
+          void stateManager.archiveCompletedCards();
         }
       );
     } else if (

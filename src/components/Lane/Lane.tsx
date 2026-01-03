@@ -1,4 +1,5 @@
 import animateScrollTo from 'animated-scroll-to';
+/* eslint-disable @typescript-eslint/no-explicit-any -- Complex Preact component props and state */
 import classcat from 'classcat';
 import update from 'immutability-helper';
 import { Fragment, memo, useCallback, useContext, useMemo, useRef, useState } from 'preact/compat';
@@ -91,7 +92,7 @@ function DraggableLaneRaw({
                 $set: shouldMarkItemsComplete,
               },
               checkChar: {
-                $set: shouldMarkItemsComplete ? getTaskStatusDone() : ' ',
+                $set: shouldMarkItemsComplete ? getTaskStatusDone(stateManager.app) : ' ',
               },
             },
           })
@@ -103,7 +104,7 @@ function DraggableLaneRaw({
         const laneItems = elementRef.current?.getElementsByClassName(c('lane-items'));
 
         if (laneItems.length) {
-          animateScrollTo([0, shouldPrepend ? 0 : laneItems[0].scrollHeight], {
+          void animateScrollTo([0, shouldPrepend ? 0 : laneItems[0].scrollHeight], {
             elementToScroll: laneItems[0],
             speed: 200,
             minDuration: 150,

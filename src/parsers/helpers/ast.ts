@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Generic AST helper with many legacy any usages */
 import { Content, Parent } from 'mdast';
 
 export interface ContentBoundary {

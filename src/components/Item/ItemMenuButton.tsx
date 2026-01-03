@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Preact component props */
 import Preact from 'preact/compat';
 import { Dispatch, StateUpdater } from 'preact/hooks';
 import { t } from 'src/lang/helpers';

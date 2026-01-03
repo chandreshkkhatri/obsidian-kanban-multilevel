@@ -1,6 +1,6 @@
 import classcat from 'classcat';
 import { getLinkpath, moment } from 'obsidian';
-import { JSX, useMemo } from 'preact/compat';
+import { MouseEventHandler, useMemo } from 'preact/compat';
 import { StateManager } from 'src/StateManager';
 import { t } from 'src/lang/helpers';
 
@@ -49,8 +49,8 @@ export function RelativeDate({ item, stateManager }: DateProps) {
 }
 
 interface DateAndTimeProps {
-  onEditDate?: JSX.MouseEventHandler<HTMLSpanElement>;
-  onEditTime?: JSX.MouseEventHandler<HTMLSpanElement>;
+  onEditDate?: MouseEventHandler<HTMLSpanElement>;
+  onEditTime?: MouseEventHandler<HTMLSpanElement>;
   filePath: string;
   getDateColor: (date: moment.Moment) => DateColor;
 }

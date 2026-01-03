@@ -9,7 +9,9 @@ export const emptyDomRect: DOMRectReadOnly = {
   width: 0,
   x: 0,
   y: 0,
-  toJSON() {},
+  toJSON() {
+    return this;
+  },
 };
 
 export const emptyHitbox: Hitbox = [0, 0, 0, 0];

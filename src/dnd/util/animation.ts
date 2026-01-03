@@ -1,7 +1,7 @@
 import { Coordinates } from '../types';
 import { distanceBetween } from './hitbox';
 
-type ThrottledFn<T extends any[]> = {
+type ThrottledFn<T extends unknown[]> = {
   (...args: T): void;
   cancel: () => void;
 };
@@ -12,7 +12,7 @@ type ThrottledFn<T extends any[]> = {
  * @param fn The function to throttle
  * @returns a wrapped function trottled by requestAnimationFrame
  */
-export function rafThrottle<T extends any[]>(
+export function rafThrottle<T extends unknown[]>(
   win: Window,
   fn: (...args: T) => void
 ): ThrottledFn<T> {
@@ -130,12 +130,12 @@ export function getDropDuration({
 
 export function setStyle(el: HTMLElement, property: string, value: string) {
   if (el.style.getPropertyValue(property) !== value) {
-    el.style.setProperty(property, value);
+    el.setCssProps({ [property]: value });
   }
 }
 
 export function removeStyle(el: HTMLElement, property: string) {
   if (el.style.getPropertyValue(property)) {
-    el.style.removeProperty(property);
+    el.setCssProps({ [property]: '' });
   }
 }

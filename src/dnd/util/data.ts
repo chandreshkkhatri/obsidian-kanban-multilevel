@@ -44,6 +44,7 @@ export function buildUpdateParentMutation(path: Path, mutation: Spec<Nestable>) 
 }
 
 export function buildRemoveMutation(path: Path, replacement?: Nestable) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Spec type from immutability-helper
   const val: Spec<any, any> = replacement ? [path.last(), 1, replacement] : [path.last(), 1];
   return buildUpdateParentMutation(path, {
     children: {

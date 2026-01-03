@@ -1,0 +1,604 @@
+
+> obsidian-kanban-multilevel@2.0.52 lint
+> eslint ./src/**/*.{ts,tsx}
+
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/KanbanView.tsx
+   40:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   48:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  172:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  223:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  242:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  329:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  438:53  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/MarkdownEditor.tsx
+   42:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   63:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   63:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   87:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   92:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   92:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  184:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  222:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  259:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/index.ts
+     4:1   warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-non-null-assertion')
+     8:1   warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/ban-types')
+   114:60  warning  Avoid using the navigator API to detect the operating system. Use the Platform API instead                                                                                     obsidianmd/platform
+   138:3   warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/ban-types')
+   151:11  warning  Avoid setting styles directly via `element.style.visibility`. Use CSS classes for better theming and maintainability. Use the `setCssProps` function to change CSS properties  obsidianmd/no-static-styles-assignment
+   152:11  warning  Avoid setting styles directly via `element.style.display`. Use CSS classes for better theming and maintainability. Use the `setCssProps` function to change CSS properties     obsidianmd/no-static-styles-assignment
+   356:19  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+   394:57  warning  Avoid using the navigator API to detect the operating system. Use the Platform API instead                                                                                     obsidianmd/platform
+   473:17  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+   658:7   warning  Do not write to DOM using insertAdjacentHTML method                                                                                                                            @microsoft/sdl/no-inner-html
+   976:5   warning  Do not write to DOM directly using innerHTML/outerHTML property                                                                                                                @microsoft/sdl/no-inner-html
+   979:5   warning  Do not write to DOM directly using innerHTML/outerHTML property                                                                                                                @microsoft/sdl/no-inner-html
+  1266:40  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  1306:16  warning  '_' is defined but never used                                                                                                                                                  @typescript-eslint/no-unused-vars
+  1326:16  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  1327:17  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  1328:19  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  1328:59  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  1867:54  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  1890:23  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  1904:77  warning  Avoid using the navigator API to detect the operating system. Use the Platform API instead                                                                                     obsidianmd/platform
+  1910:27  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  1914:27  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  1914:75  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  1968:67  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  1979:76  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  2032:7   warning  Avoid setting styles directly via `element.style.right`. Use CSS classes for better theming and maintainability. Use the `setCssProps` function to change CSS properties       obsidianmd/no-static-styles-assignment
+  2034:7   warning  Avoid setting styles directly via `element.style.left`. Use CSS classes for better theming and maintainability. Use the `setCssProps` function to change CSS properties        obsidianmd/no-static-styles-assignment
+  2050:7   warning  Avoid setting styles directly via `element.style.right`. Use CSS classes for better theming and maintainability. Use the `setCssProps` function to change CSS properties       obsidianmd/no-static-styles-assignment
+  2061:16  warning  'err' is defined but never used                                                                                                                                                @typescript-eslint/no-unused-vars
+  2089:21  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  2201:88  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  2213:25  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  2364:20  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  2364:48  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  2365:20  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  2453:48  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  2630:17  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  2703:17  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+  2717:14  warning  Unexpected any. Specify a different type                                                                                                                                       @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/ar-dz.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/ar.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/at.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/az.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/be.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/bg.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/bn.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/bs.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/cat.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/ckb.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/cs.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/cy.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/da.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/de.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/eo.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/es.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/et.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/fa.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/fi.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/fo.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/fr.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/ga.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/gr.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/he.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/hi.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/hr.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/hu.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/hy.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/id.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/is.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/it.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/ja.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/ka.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/km.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/ko.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/kz.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/lt.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/lv.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/mk.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/mn.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/ms.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/my.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/nl.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/nn.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/no.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/pa.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/pl.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/pt.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/ro.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/ru.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/si.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/sk.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/sl.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/sq.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/sr-cyr.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/sr.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/sv.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/th.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/tr.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/uk.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/uz.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/uz_latn.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/vn.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/zh-tw.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/l10n/zh.ts
+  7:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/plugins/confirmDate/confirmDate.ts
+  50:9  warning  Do not write to DOM directly using innerHTML/outerHTML property  @microsoft/sdl/no-inner-html
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/plugins/momentPlugin.ts
+  1:1  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/ban-types')
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/plugins/monthSelect/index.ts
+  237:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  237:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  237:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/plugins/rangePlugin.ts
+  44:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/plugins/scrollPlugin.ts
+   6:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  14:10  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/types/instance.ts
+   97:82  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  118:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/types/options.ts
+    8:86  warning  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+   39:24  warning  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  346:42  warning  Avoid using the navigator API to detect the operating system. Use the Platform API instead  obsidianmd/platform
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/utils/dom.ts
+  37:25  warning  Unexpected any. Specify a different type                                                    @typescript-eslint/no-explicit-any
+  44:7   warning  Avoid using the navigator API to detect the operating system. Use the Platform API instead  obsidianmd/platform
+  67:12  warning  'error' is defined but never used                                                           @typescript-eslint/no-unused-vars
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/flatpickr/utils/index.ts
+  2:1   warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/ban-types')
+  9:26  warning  Unexpected any. Specify a different type                                                         @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/helpers.ts
+  8:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Editor/suggest.ts
+  44:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Icon/GripIcon.tsx
+  1:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Item/Item.tsx
+  112:7  warning  Unused eslint-disable directive (no problems were reported from 'react/no-unknown-property')
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Item/ItemContent.tsx
+  159:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Item/ItemMenu.ts
+   72:93  warning  Avoid casting to 'TFolder'. Use an 'instanceof TFolder' check to safely narrow the type  obsidianmd/no-tfile-tfolder-cast
+   75:71  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+   78:21  warning  Avoid casting to 'TFile'. Use an 'instanceof TFile' check to safely narrow the type      obsidianmd/no-tfile-tfolder-cast
+  291:36  warning  Unexpected any. Specify a different type                                                 @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Item/ItemMenuButton.tsx
+  46:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Item/MetadataTable.tsx
+   83:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  105:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  117:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  131:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  154:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Item/helpers.ts
+  424:50  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  453:58  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  459:63  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  466:81  warning  Avoid casting to 'TFile'. Use an 'instanceof TFile' check to safely narrow the type  obsidianmd/no-tfile-tfolder-cast
+  509:60  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+  588:42  warning  Unexpected any. Specify a different type                                             @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Kanban.tsx
+  34:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Lane/Lane.tsx
+  124:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Lane/LaneHeader.tsx
+  133:9  warning  Unused eslint-disable directive (no problems were reported from 'react/no-unknown-property')
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Lane/LaneMenu.tsx
+  335:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/MarkdownRenderer/MarkdownRenderer.tsx
+    1:1   warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/ban-ts-comment')
+   87:3   warning  Unused eslint-disable directive (no problems were reported from 'react/require-render-return')
+  100:24  warning  Unexpected any. Specify a different type                                                              @typescript-eslint/no-explicit-any
+  100:51  warning  Unexpected any. Specify a different type                                                              @typescript-eslint/no-explicit-any
+  194:18  warning  Unexpected any. Specify a different type                                                              @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Table/Cells.tsx
+  89:11  warning  Unused eslint-disable directive (no problems were reported from 'react/no-unknown-property')
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Table/Table.tsx
+  207:71  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/Table/helpers.tsx
+   29:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   42:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   48:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   49:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  116:83  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  180:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  330:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  331:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  379:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  380:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/helpers.ts
+  174:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  177:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  190:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  191:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  206:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  208:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  209:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  212:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/components/types.ts
+  128:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  144:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  150:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  157:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  164:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/dnd/types.ts
+  13:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  13:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  39:16  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/dnd/util/animation.ts
+   4:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/dnd/util/data.ts
+  47:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:24  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/helpers.ts
+   7:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  13:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:50  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/helpers/patch.ts
+    6:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+    6:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   16:11  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   25:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   26:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   28:26  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  139:8   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  176:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  176:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  180:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  180:72  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  225:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  231:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/helpers/renderMarkdown.ts
+   73:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   74:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   98:14  warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+  111:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  122:23  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  129:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/helpers/util.ts
+  13:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/main.ts
+  805:13  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+  825:84  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/parsers/List.ts
+  60:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/parsers/common.ts
+   76:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   77:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   79:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   83:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  191:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/parsers/extensions/blockid.ts
+  20:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  28:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  55:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  56:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  57:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  93:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/parsers/extensions/genericWrapped.ts
+   22:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   23:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   30:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   49:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   50:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   57:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   58:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   59:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   78:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   79:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  103:48  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  119:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/parsers/extensions/internalMarkdownLink.ts
+  4:34  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/parsers/extensions/tag.ts
+   26:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   27:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   34:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   49:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   50:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   63:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   64:39  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   65:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  101:17  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/parsers/extensions/taskList.ts
+    1:1   warning  'micromark-factory-space' should be listed in the project's dependencies. Run 'npm i -S micromark-factory-space' to add it  import/no-extraneous-dependencies
+    3:1   warning  'micromark-util-symbol' should be listed in the project's dependencies. Run 'npm i -S micromark-util-symbol' to add it      import/no-extraneous-dependencies
+    4:1   warning  'micromark-util-symbol' should be listed in the project's dependencies. Run 'npm i -S micromark-util-symbol' to add it      import/no-extraneous-dependencies
+   29:38  warning  Unexpected any. Specify a different type                                                                                    @typescript-eslint/no-explicit-any
+   30:44  warning  Unexpected any. Specify a different type                                                                                    @typescript-eslint/no-explicit-any
+   32:43  warning  Unexpected any. Specify a different type                                                                                    @typescript-eslint/no-explicit-any
+   39:54  warning  Unexpected any. Specify a different type                                                                                    @typescript-eslint/no-explicit-any
+   41:53  warning  Unexpected any. Specify a different type                                                                                    @typescript-eslint/no-explicit-any
+   46:52  warning  Unexpected any. Specify a different type                                                                                    @typescript-eslint/no-explicit-any
+   48:51  warning  Unexpected any. Specify a different type                                                                                    @typescript-eslint/no-explicit-any
+   58:46  warning  Unexpected any. Specify a different type                                                                                    @typescript-eslint/no-explicit-any
+   60:45  warning  Unexpected any. Specify a different type                                                                                    @typescript-eslint/no-explicit-any
+   61:39  warning  Unexpected any. Specify a different type                                                                                    @typescript-eslint/no-explicit-any
+  101:65  warning  Unexpected any. Specify a different type                                                                                    @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/parsers/formats/list.ts
+   81:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  128:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  243:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/parsers/helpers/ast.ts
+  12:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/parsers/helpers/inlineMetadata.ts
+   85:51  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  172:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  173:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  177:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  181:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  182:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  183:9   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  192:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  193:55  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  206:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  207:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  463:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  464:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  468:21  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/ubuntu/code/obsidian-kanban-multilevel/src/parsers/parseMarkdown.ts
+    3:1   warning  'micromark-extension-frontmatter' should be listed in the project's dependencies. Run 'npm i -S micromark-extension-frontmatter' to add it  import/no-extraneous-dependencies
+  171:41  warning  Unexpected any. Specify a different type                                                                                                    @typescript-eslint/no-explicit-any
+
+✖ 366 problems (0 errors, 366 warnings)
+  0 errors and 12 warnings potentially fixable with the `--fix` option.
+

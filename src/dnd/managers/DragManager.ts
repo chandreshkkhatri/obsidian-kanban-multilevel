@@ -126,7 +126,7 @@ export class DragManager {
     this.calculateDragIntersect();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Event parameter required for interface contract
   dragEnd(e: PointerEvent) {
     this.emitter.emit('dragEnd', this.getDragEventData());
     this.dragEntityMargin = undefined;

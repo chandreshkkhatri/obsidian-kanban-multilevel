@@ -1,7 +1,9 @@
 export function getParentWindow(el: Element) {
-  return el.win;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Obsidian-specific property
+  return (el as any).win;
 }
 
 export function getParentBodyElement(el: Element) {
-  return el.doc.body;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Obsidian-specific property
+  return (el as any).doc.body;
 }

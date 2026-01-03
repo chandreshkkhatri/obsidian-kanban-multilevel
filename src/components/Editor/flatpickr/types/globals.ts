@@ -18,6 +18,11 @@ export interface FPWindow extends Window {
   flatpickr: FlatpickrFn;
 }
 
+// Window type with optional flatpickr for runtime checks
+export interface FPWindowOptional extends Window {
+  flatpickr?: FlatpickrFn;
+}
+
 export interface FPDate extends Date {
   fp_incr: (n: number) => Date;
 }

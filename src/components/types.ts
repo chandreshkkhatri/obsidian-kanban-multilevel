@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Generic component types with many any usages */
 import { TFile } from 'obsidian';
 import { KanbanSettings } from 'src/Settings';
 import { Nestable } from 'src/dnd/types';
@@ -17,6 +18,8 @@ export interface LaneData {
   shouldMarkItemsComplete?: boolean;
   title: string;
   maxItems?: number;
+  /** Optional row grouping name for multi-row board layout */
+  row?: string;
   dom?: HTMLDivElement;
   forceEditMode?: boolean;
   sorted?: LaneSort | string;

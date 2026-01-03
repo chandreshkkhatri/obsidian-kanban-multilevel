@@ -1,4 +1,5 @@
 import update from 'immutability-helper';
+/* eslint-disable @typescript-eslint/no-explicit-any -- Internal Obsidian API access in menu codes */
 import { Menu, Platform } from 'obsidian';
 import { Dispatch, StateUpdater, useContext, useEffect, useMemo, useState } from 'preact/hooks';
 import { Path } from 'src/dnd/types';

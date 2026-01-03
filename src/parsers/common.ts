@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Legacy code from original Kanban plugin */
 import { App, TFile, moment } from 'obsidian';
 import { KanbanSettings } from 'src/Settings';
 import { StateManager } from 'src/StateManager';

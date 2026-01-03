@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Complex metadata display logic */
 import classcat from 'classcat';
 import { isPlainObject } from 'is-plain-object';
 import { TFile, moment } from 'obsidian';
@@ -102,12 +103,17 @@ export function getDateFromObj(v: any, stateManager: StateManager) {
   return null;
 }
 
-export function getLinkFromObj(v: any, view: KanbanView) {
+export function getLinkFromObj(v: any, view: KanbanView, stateManager: StateManager) {
   if (typeof v !== 'object' || !v.path) return null;
 
-  const file = app.vault.getAbstractFileByPath(v.path);
+  const file = stateManager.app.vault.getAbstractFileByPath(v.path);
   if (file && file instanceof TFile) {
-    const link = app.fileManager.generateMarkdownLink(file, view.file.path, v.subpath, v.display);
+    const link = stateManager.app.fileManager.generateMarkdownLink(
+      file,
+      view.file.path,
+      v.subpath,
+      v.display
+    );
     return `${v.embed && link[0] !== '!' ? '!' : ''}${link}`;
   }
 
@@ -152,7 +158,7 @@ export function MetadataValue({ data, dateLabel, searchQuery }: MetadataValuePro
   const getDateColor = useGetDateColorFn(stateManager);
 
   const renderChild = (v: any, sep?: string) => {
-    const link = getLinkFromObj(v, view);
+    const link = getLinkFromObj(v, view, stateManager);
     const date = getDate(v);
     const str = anyToString(v, stateManager);
     const isMatch = searchQuery && str.toLocaleLowerCase().contains(searchQuery);

@@ -27,6 +27,7 @@ interface WindowRegistry {
   appRoot: HTMLElement;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
 function getEditorClass(app: any) {
   const md = app.embedRegistry.embedByExtension.md(
     { app: app, containerEl: createDiv(), state: {} },
@@ -69,8 +70,9 @@ export default class KanbanPlugin extends Plugin {
 
   unload(): void {
     super.unload();
-    Promise.all(
+    void Promise.all(
       this.app.workspace.getLeavesOfType(kanbanViewType).map((leaf) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
         this.kanbanFileModes[(leaf as any).id] = 'markdown';
         return this.setMarkdownView(leaf);
       })
@@ -90,9 +92,11 @@ export default class KanbanPlugin extends Plugin {
     this.windowRegistry.clear();
     this.kanbanFileModes = {};
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal API
     (this.app.workspace as any).unregisterHoverLinkSource(frontmatterKey);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- MarkdownEditor class is not exposed
   MarkdownEditor: any;
 
   async onload() {
@@ -104,25 +108,27 @@ export default class KanbanPlugin extends Plugin {
     this.registerEditorSuggest(new DateSuggest(this.app, this));
 
     this.registerEvent(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Event includes generic data
       this.app.workspace.on('window-open', (_: any, win: Window) => {
         this.mount(win);
       })
     );
 
     this.registerEvent(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Event includes generic data
       this.app.workspace.on('window-close', (_: any, win: Window) => {
         this.unmount(win);
       })
     );
 
     this.settingsTab = new KanbanSettingsTab(this, {
-      onSettingsChange: async (newSettings) => {
+      onSettingsChange: (newSettings) => {
         this.settings = newSettings;
-        await this.saveSettings();
-
-        // Force a complete re-render when settings change
-        this.stateManagers.forEach((stateManager) => {
-          stateManager.forceRefresh();
+        void this.saveSettings().then(() => {
+          // Force a complete re-render when settings change
+          this.stateManagers.forEach((stateManager) => {
+            stateManager.forceRefresh();
+          });
         });
       },
     });
@@ -137,6 +143,7 @@ export default class KanbanPlugin extends Plugin {
     // Mount an empty component to start; views will be added as we go
     this.mount(window);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal floatingSplit
     (this.app.workspace as any).floatingSplit?.children?.forEach((c: any) => {
       this.mount(c.win);
     });
@@ -145,7 +152,7 @@ export default class KanbanPlugin extends Plugin {
     this.registerDomEvent(window, 'keyup', this.handleShift);
 
     this.addRibbonIcon(kanbanIcon, t('Create new board'), () => {
-      this.newKanban();
+      void this.newKanban();
     });
   }
 
@@ -221,7 +228,7 @@ export default class KanbanPlugin extends Plugin {
     const file = view.file;
 
     if (this.stateManagers.has(file)) {
-      this.stateManagers.get(file).registerView(view, data, shouldParseData);
+      void this.stateManagers.get(file).registerView(view, data, shouldParseData);
     } else {
       this.stateManagers.set(
         file,
@@ -265,6 +272,7 @@ export default class KanbanPlugin extends Plugin {
     }
 
     const reg = this.windowRegistry.get(win);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
     const oldId = `${(view.leaf as any).id}:::${oldPath}`;
 
     if (reg.viewMap.has(oldId)) {
@@ -339,10 +347,11 @@ export default class KanbanPlugin extends Plugin {
   async newKanban(folder?: TFolder) {
     const targetFolder = folder
       ? folder
-      : this.app.fileManager.getNewFileParent(app.workspace.getActiveFile()?.path || '');
+      : this.app.fileManager.getNewFileParent(this.app.workspace.getActiveFile()?.path || '');
 
     try {
-      const kanban: TFile = await (app.fileManager as any).createNewMarkdownFile(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- createNewMarkdownFile is internal
+      const kanban: TFile = await (this.app.fileManager as any).createNewMarkdownFile(
         targetFolder,
         t('Untitled Kanban')
       );
@@ -384,7 +393,7 @@ export default class KanbanPlugin extends Plugin {
           fileIsFile &&
           leaf &&
           source === 'sidebar-context-menu' &&
-          hasFrontmatterKey(file)
+          hasFrontmatterKey(this.app, file)
         ) {
           const views = this.getKanbanViews(getParentWindow(leaf.view.containerEl));
           let haveKanbanView = false;
@@ -404,8 +413,9 @@ export default class KanbanPlugin extends Plugin {
                 .setIcon(kanbanIcon)
                 .setSection('pane')
                 .onClick(() => {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
                   this.kanbanFileModes[(leaf as any).id || file.path] = kanbanViewType;
-                  this.setKanbanView(leaf);
+                  void this.setKanbanView(leaf);
                 });
             });
 
@@ -417,7 +427,7 @@ export default class KanbanPlugin extends Plugin {
           leafIsMarkdown &&
           fileIsFile &&
           ['more-options', 'pane-more-options', 'tab-header'].includes(source) &&
-          hasFrontmatterKey(file)
+          hasFrontmatterKey(this.app, file)
         ) {
           menu.addItem((item) => {
             item
@@ -425,8 +435,9 @@ export default class KanbanPlugin extends Plugin {
               .setIcon(kanbanIcon)
               .setSection('pane')
               .onClick(() => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
                 this.kanbanFileModes[(leaf as any).id || file.path] = kanbanViewType;
-                this.setKanbanView(leaf);
+                void this.setKanbanView(leaf);
               });
           });
         }
@@ -439,8 +450,9 @@ export default class KanbanPlugin extends Plugin {
                 .setIcon(kanbanIcon)
                 .setSection('pane')
                 .onClick(() => {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
                   this.kanbanFileModes[(leaf as any).id || file.path] = 'markdown';
-                  this.setMarkdownView(leaf);
+                  void this.setMarkdownView(leaf);
                 });
             });
           }
@@ -467,7 +479,7 @@ export default class KanbanPlugin extends Plugin {
                   .setIcon('lucide-archive')
                   .setSection('pane')
                   .onClick(() => {
-                    stateManager.archiveCompletedCards();
+                    void stateManager.archiveCompletedCards();
                   });
               })
               .addItem((item) => {
@@ -477,7 +489,7 @@ export default class KanbanPlugin extends Plugin {
                   .setSection('pane')
                   .onClick(() => {
                     const stateManager = this.stateManagers.get(file);
-                    stateManager.archiveCompletedCards();
+                    void stateManager.archiveCompletedCards();
                   });
               })
               .addItem((item) =>
@@ -517,8 +529,8 @@ export default class KanbanPlugin extends Plugin {
     );
 
     this.registerEvent(
-      app.vault.on('rename', (file, oldPath) => {
-        const kanbanLeaves = app.workspace.getLeavesOfType(kanbanViewType);
+      this.app.vault.on('rename', (file, oldPath) => {
+        const kanbanLeaves = this.app.workspace.getLeavesOfType(kanbanViewType);
 
         kanbanLeaves.forEach((leaf) => {
           (leaf.view as KanbanView).handleRename(file.path, oldPath);
@@ -539,7 +551,7 @@ export default class KanbanPlugin extends Plugin {
     );
 
     this.registerEvent(
-      app.vault.on('modify', (file) => {
+      this.app.vault.on('modify', (file) => {
         if (file instanceof TFile) {
           notifyFileChange(file);
         }
@@ -547,26 +559,29 @@ export default class KanbanPlugin extends Plugin {
     );
 
     this.registerEvent(
-      app.metadataCache.on('changed', (file) => {
+      this.app.metadataCache.on('changed', (file) => {
         notifyFileChange(file);
       })
     );
 
     this.registerEvent(
-      (app as any).metadataCache.on('dataview:metadata-change', (_: any, file: TFile) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dataview event args
+      (this.app as any).metadataCache.on('dataview:metadata-change', (_: any, file: TFile) => {
         notifyFileChange(file);
       })
     );
 
     this.registerEvent(
-      (app as any).metadataCache.on('dataview:api-ready', () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dataview event args
+      (this.app as any).metadataCache.on('dataview:api-ready', () => {
         this.stateManagers.forEach((manager) => {
           manager.forceRefresh();
         });
       })
     );
 
-    (app.workspace as any).registerHoverLinkSource(frontmatterKey, {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Internal API registerHoverLinkSource
+    (this.app.workspace as any).registerHoverLinkSource(frontmatterKey, {
       display: 'Kanban',
       defaultMod: true,
     });
@@ -583,12 +598,15 @@ export default class KanbanPlugin extends Plugin {
       id: 'archive-completed-cards',
       name: t('Archive completed cards in active board'),
       checkCallback: (checking) => {
-        const activeView = app.workspace.getActiveViewOfType(KanbanView);
+        const activeView = this.app.workspace.getActiveViewOfType(KanbanView);
 
         if (!activeView) return false;
         if (checking) return true;
 
-        this.stateManagers.get(activeView.file).archiveCompletedCards();
+        const stateManager = this.stateManagers.get(activeView.file);
+        if (stateManager) {
+          void stateManager.archiveCompletedCards();
+        }
       },
     });
 
@@ -596,28 +614,30 @@ export default class KanbanPlugin extends Plugin {
       id: 'toggle-kanban-view',
       name: t('Toggle between Kanban and markdown mode'),
       checkCallback: (checking) => {
-        const activeFile = app.workspace.getActiveFile();
+        const activeFile = this.app.workspace.getActiveFile();
 
         if (!activeFile) return false;
 
-        const fileCache = app.metadataCache.getFileCache(activeFile);
+        const fileCache = this.app.metadataCache.getFileCache(activeFile);
         const fileIsKanban = !!fileCache?.frontmatter && !!fileCache.frontmatter[frontmatterKey];
 
         if (checking) {
           return fileIsKanban;
         }
 
-        const activeView = app.workspace.getActiveViewOfType(KanbanView);
+        const activeView = this.app.workspace.getActiveViewOfType(KanbanView);
 
         if (activeView) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
           this.kanbanFileModes[(activeView.leaf as any).id || activeFile.path] = 'markdown';
-          this.setMarkdownView(activeView.leaf);
+          void this.setMarkdownView(activeView.leaf);
         } else if (fileIsKanban) {
-          const activeView = app.workspace.getActiveViewOfType(MarkdownView);
+          const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
 
           if (activeView) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
             this.kanbanFileModes[(activeView.leaf as any).id || activeFile.path] = kanbanViewType;
-            this.setKanbanView(activeView.leaf);
+            void this.setKanbanView(activeView.leaf);
           }
         }
       },
@@ -627,7 +647,7 @@ export default class KanbanPlugin extends Plugin {
       id: 'convert-to-kanban',
       name: t('Convert empty note to Kanban'),
       checkCallback: (checking) => {
-        const activeView = app.workspace.getActiveViewOfType(MarkdownView);
+        const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
 
         if (!activeView) return false;
 
@@ -635,10 +655,10 @@ export default class KanbanPlugin extends Plugin {
 
         if (checking) return isFileEmpty;
         if (isFileEmpty) {
-          app.vault
+          this.app.vault
             .modify(activeView.file, basicFrontmatter)
             .then(() => {
-              this.setKanbanView(activeView.leaf);
+              void this.setKanbanView(activeView.leaf);
             })
             .catch((e) => console.error(e));
         }
@@ -649,7 +669,7 @@ export default class KanbanPlugin extends Plugin {
       id: 'add-kanban-lane',
       name: t('Add a list'),
       checkCallback: (checking) => {
-        const view = app.workspace.getActiveViewOfType(KanbanView);
+        const view = this.app.workspace.getActiveViewOfType(KanbanView);
 
         if (checking) {
           return view && view instanceof KanbanView;
@@ -665,7 +685,7 @@ export default class KanbanPlugin extends Plugin {
       id: 'view-board',
       name: t('View as board'),
       checkCallback: (checking) => {
-        const view = app.workspace.getActiveViewOfType(KanbanView);
+        const view = this.app.workspace.getActiveViewOfType(KanbanView);
 
         if (checking) {
           return view && view instanceof KanbanView;
@@ -681,7 +701,7 @@ export default class KanbanPlugin extends Plugin {
       id: 'view-table',
       name: t('View as table'),
       checkCallback: (checking) => {
-        const view = app.workspace.getActiveViewOfType(KanbanView);
+        const view = this.app.workspace.getActiveViewOfType(KanbanView);
 
         if (checking) {
           return view && view instanceof KanbanView;
@@ -697,7 +717,7 @@ export default class KanbanPlugin extends Plugin {
       id: 'view-list',
       name: t('View as list'),
       checkCallback: (checking) => {
-        const view = app.workspace.getActiveViewOfType(KanbanView);
+        const view = this.app.workspace.getActiveViewOfType(KanbanView);
 
         if (checking) {
           return view && view instanceof KanbanView;
@@ -713,7 +733,7 @@ export default class KanbanPlugin extends Plugin {
       id: 'open-board-settings',
       name: t('Open board settings'),
       checkCallback: (checking) => {
-        const view = app.workspace.getActiveViewOfType(KanbanView);
+        const view = this.app.workspace.getActiveViewOfType(KanbanView);
 
         if (!view) return false;
         if (checking) return true;
@@ -724,14 +744,14 @@ export default class KanbanPlugin extends Plugin {
   }
 
   registerMonkeyPatches() {
-    const self = this;
-
     this.app.workspace.onLayoutReady(() => {
       this.register(
-        around((app as any).commands, {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Monkey patching commands
+        around((this.app as any).commands, {
           executeCommand(next) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Command type is not exposed
             return function (command: any) {
-              const view = app.workspace.getActiveViewOfType(KanbanView);
+              const view = this.app.workspace.getActiveViewOfType(KanbanView);
 
               if (view && command?.id) {
                 view.emitter.emit('hotkey', { commandId: command.id });
@@ -746,8 +766,7 @@ export default class KanbanPlugin extends Plugin {
 
     this.register(
       around(this.app.workspace, {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error: setActiveLeaf signature changed, using deprecated form
         setActiveLeaf(next) {
           return function (...args) {
             next.apply(this, args);
@@ -778,6 +797,7 @@ export default class KanbanPlugin extends Plugin {
         },
 
         setViewState(next) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Rest parameters contain internal Obsidian event data
           return function (state: ViewState, ...rest: any[]) {
             if (
               // Don't force kanban mode during shutdown
@@ -786,10 +806,10 @@ export default class KanbanPlugin extends Plugin {
               state.type === 'markdown' &&
               state.state?.file &&
               // And the current mode of the file is not set to markdown
-              self.kanbanFileModes[this.id || state.state.file] !== 'markdown'
+              self.kanbanFileModes[this.id || (state.state.file as string)] !== 'markdown'
             ) {
               // Then check for the kanban frontMatterKey
-              const cache = self.app.metadataCache.getCache(state.state.file);
+              const cache = self.app.metadataCache.getCache(state.state.file as string);
 
               if (cache?.frontmatter && cache.frontmatter[frontmatterKey]) {
                 // If we have it, force the view type to kanban
@@ -798,7 +818,7 @@ export default class KanbanPlugin extends Plugin {
                   type: kanbanViewType,
                 };
 
-                self.kanbanFileModes[state.state.file] = kanbanViewType;
+                self.kanbanFileModes[state.state.file as string] = kanbanViewType;
 
                 return next.apply(this, [newState, ...rest]);
               }

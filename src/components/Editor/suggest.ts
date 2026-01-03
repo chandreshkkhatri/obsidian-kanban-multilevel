@@ -41,6 +41,7 @@ export class DateSuggest extends EditorSuggest<[]> {
     this.app = app;
     this.plugin = plugin;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- accessing private obsidian api
     [...(this.scope as any).keys].forEach((k: any) => this.scope.unregister(k));
 
     this.suggestEl.addClass(c('date-suggest'));
@@ -117,8 +118,7 @@ export class DateSuggest extends EditorSuggest<[]> {
       suggestEl.addClasses([c('date-picker'), c('ignore-click-outside')]);
       constructDatePicker(context, stateManager, suggestEl, (picker) => {
         this.datepicker = picker;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error - updatePosition accepts optional parameter
         this.updatePosition(true);
       });
     }

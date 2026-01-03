@@ -1,6 +1,6 @@
 import classcat from 'classcat';
 import {
-  JSX,
+  MouseEventHandler,
   memo,
   useCallback,
   useContext,
@@ -78,7 +78,7 @@ const ItemInner = memo(function ItemInner({
     path,
   });
 
-  const onContextMenu: JSX.MouseEventHandler<HTMLDivElement> = useCallback(
+  const onContextMenu: MouseEventHandler<HTMLDivElement> = useCallback(
     (e) => {
       if (isEditing(editState)) return;
       if (
@@ -92,7 +92,7 @@ const ItemInner = memo(function ItemInner({
     [showItemMenu, editState]
   );
 
-  const onDoubleClick: JSX.MouseEventHandler<HTMLDivElement> = useCallback(
+  const onDoubleClick: MouseEventHandler<HTMLDivElement> = useCallback(
     (e) => setEditState({ x: e.clientX, y: e.clientY }),
     [setEditState]
   );
@@ -109,7 +109,7 @@ const ItemInner = memo(function ItemInner({
 
   return (
     <div
-      // eslint-disable-next-line react/no-unknown-property
+
       onDblClick={onDoubleClick}
       onContextMenu={onContextMenu}
       className={c('item-content-wrapper')}
@@ -147,7 +147,8 @@ export const DraggableItem = memo(function DraggableItem(props: DraggableItemPro
   const bindHandle = useDragHandle(measureRef, measureRef);
 
   const isMatch = search?.query ? innerProps.item.data.titleSearch.includes(search.query) : false;
-  const classModifiers: string[] = getItemClassModifiers(innerProps.item);
+  const { stateManager } = useContext(KanbanContext);
+  const classModifiers: string[] = getItemClassModifiers(innerProps.item, stateManager.app);
 
   return (
     <div

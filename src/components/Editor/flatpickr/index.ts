@@ -1,11 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Platform } from 'obsidian';
+
 import English from './l10n/default';
 import { FPDate, FPHTMLCollection, FPHTMLElement, FPNodeList } from './types/globals';
 
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
-/* eslint-disable no-empty */
-
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable no-empty -- Intentional empty blocks */
 import { DayElement, FlatpickrFn, Instance } from './types/instance';
 import { CustomLocale, Locale, key as LocaleKey } from './types/locale';
 import {
@@ -111,7 +110,8 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
 
     setCalendarWidth();
 
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    // Safari detection - use Platform.isMacOS as a heuristic since navigator.userAgent is deprecated for OS detection
+    const isSafari = Platform.isMacOS && !Platform.isDesktopApp;
 
     /* TODO: investigate this further
 
@@ -135,7 +135,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // Generic function binding
   function bindToInstance<F extends Function>(fn: F): F {
     return fn.bind(self);
   }
@@ -148,8 +148,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
     } else if (config.noCalendar !== true) {
       win.requestAnimationFrame(function () {
         if (self.calendarContainer !== undefined) {
-          self.calendarContainer.style.visibility = 'hidden';
-          self.calendarContainer.style.display = 'block';
+          self.calendarContainer.setCssProps({ visibility: 'hidden', display: 'block' });
         }
         if (self.daysContainer !== undefined) {
           const daysWidth = (self.days.offsetWidth + 1) * config.showMonths;
@@ -391,7 +390,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
     const debouncedResize = debounce(onResize, 50, win);
     self._debouncedChange = debounce(triggerChange, DEBOUNCED_CHANGE_MS, win);
 
-    if (self.daysContainer && !/iPhone|iPad|iPod/i.test(navigator.userAgent))
+    if (self.daysContainer && !Platform.isIosApp)
       bind(self.daysContainer, 'mouseover', (e: MouseEvent) => {
         if (self.config.mode === 'range') onMouseOver(getEventTarget(e) as DayElement);
       });
@@ -472,7 +471,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
       }
     } catch (e: any) {
       /* istanbul ignore next */
-      e.message = 'Invalid date supplied: ' + jumpTo;
+      e.message = 'Invalid date supplied: ' + String(jumpTo);
       self.config.errorHandler(e);
     }
 
@@ -655,10 +654,9 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
       className !== 'prevMonthDay' &&
       i % 7 === 6
     ) {
-      self.weekNumbers.insertAdjacentHTML(
-        'beforeend',
-        "<span class='flatpickr-day'>" + self.config.getWeek(date) + '</span>'
-      );
+      const weekSpan = createElement(win.document, 'span', 'flatpickr-day');
+      weekSpan.textContent = String(self.config.getWeek(date));
+      self.weekNumbers.appendChild(weekSpan);
     }
 
     triggerEvent('onDayCreate', dayElement);
@@ -973,10 +971,15 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
       'span',
       'flatpickr-prev-month'
     );
-    self.prevMonthNav.innerHTML = self.config.prevArrow;
+    // Use DOMParser to safely parse SVG content
+    const prevArrowDoc = new DOMParser().parseFromString(self.config.prevArrow, 'image/svg+xml');
+    const prevArrowSvg = prevArrowDoc.documentElement;
+    if (prevArrowSvg) self.prevMonthNav.appendChild(win.document.importNode(prevArrowSvg, true));
 
     self.nextMonthNav = createElement(win.document, 'span', 'flatpickr-next-month');
-    self.nextMonthNav.innerHTML = self.config.nextArrow;
+    const nextArrowDoc = new DOMParser().parseFromString(self.config.nextArrow, 'image/svg+xml');
+    const nextArrowSvg = nextArrowDoc.documentElement;
+    if (nextArrowSvg) self.nextMonthNav.appendChild(win.document.importNode(nextArrowSvg, true));
 
     buildMonths();
 
@@ -1303,8 +1306,8 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
     ).forEach((k) => {
       try {
         delete self[k as keyof Instance];
-      } catch (_) {
-        //
+      } catch {
+        // Intentionally ignore errors when deleting properties
       }
     });
   }
@@ -1901,7 +1904,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
       !self.config.disable.length &&
       !self.config.enable &&
       !self.config.weekNumbers &&
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      Platform.isMobile;
 
     for (let i = 0; i < self.config.plugins.length; i++) {
       const pluginConf = self.config.plugins[i](self) || ({} as Options);
@@ -2028,11 +2031,9 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
     self.calendarContainer.style.top = `${top}px`;
 
     if (!rightMost) {
-      self.calendarContainer.style.left = `${left}px`;
-      self.calendarContainer.style.right = 'auto';
+      self.calendarContainer.setCssProps({ left: `${left}px`, right: 'auto' });
     } else if (!centerMost) {
-      self.calendarContainer.style.left = 'auto';
-      self.calendarContainer.style.right = `${right}px`;
+      self.calendarContainer.setCssProps({ left: 'auto', right: `${right}px` });
     } else {
       const doc = getDocumentStyleSheet() as CSSStyleSheet;
       // some testing environments don't have css support
@@ -2046,8 +2047,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
       toggleClass(self.calendarContainer, 'rightMost', false);
       toggleClass(self.calendarContainer, 'centerMost', true);
       doc.insertRule(`${centerBefore},${centerAfter}${centerStyle}`, centerIndex);
-      self.calendarContainer.style.left = `${centerLeft}px`;
-      self.calendarContainer.style.right = 'auto';
+      self.calendarContainer.setCssProps({ left: `${centerLeft}px`, right: 'auto' });
     }
   }
 
@@ -2058,7 +2058,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
       if (!sheet.cssRules) continue;
       try {
         sheet.cssRules;
-      } catch (err) {
+      } catch {
         continue;
       }
       editableSheet = sheet;
@@ -2083,16 +2083,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
 
   function focusAndClose() {
     self._input.focus();
-
-    if (
-      win.navigator.userAgent.indexOf('MSIE') !== -1 ||
-      (navigator as any).msMaxTouchPoints !== undefined
-    ) {
-      // hack - bugs in the way IE handles focus keeps the calendar open
-      win.setTimeout(self.close, 0);
-    } else {
-      self.close();
-    }
+    self.close();
   }
 
   function selectDate(e: MouseEvent | KeyboardEvent) {

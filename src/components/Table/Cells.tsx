@@ -1,6 +1,6 @@
 import classcat from 'classcat';
 import { Menu } from 'obsidian';
-import { JSX, memo, useCallback, useContext, useState } from 'preact/compat';
+import { MouseEventHandler, memo, useCallback, useContext, useState } from 'preact/compat';
 import isEqual from 'react-fast-compare';
 import { ExplicitPathContext } from 'src/dnd/components/context';
 import { moveEntity } from 'src/dnd/util/data';
@@ -63,7 +63,7 @@ export const ItemCell = memo(
       path,
     });
 
-    const onContextMenu: JSX.MouseEventHandler<HTMLDivElement> = useCallback(
+    const onContextMenu: MouseEventHandler<HTMLDivElement> = useCallback(
       (e) => {
         if (isEditing(editState)) return;
         if (
@@ -78,7 +78,7 @@ export const ItemCell = memo(
       [showItemMenu, editState]
     );
 
-    const onDoubleClick: JSX.MouseEventHandler<HTMLDivElement> = useCallback((e) => {
+    const onDoubleClick: MouseEventHandler<HTMLDivElement> = useCallback((e) => {
       setEditState({ x: e.clientX, y: e.clientY });
     }, []);
 
@@ -86,7 +86,7 @@ export const ItemCell = memo(
       <ExplicitPathContext.Provider value={path}>
         <div
           onContextMenu={onContextMenu}
-          // eslint-disable-next-line react/no-unknown-property
+
           onDblClick={onDoubleClick}
           className={c('item-content-wrapper')}
         >

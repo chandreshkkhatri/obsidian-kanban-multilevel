@@ -1,5 +1,5 @@
-/* eslint-disable prefer-rest-params */
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable prefer-rest-params -- Using arguments for legacy debounce function compatibility */
+ 
 export const pad = (number: string | number, length = 2) => `000${number}`.slice(length * -1);
 export const int = (bool: boolean) => (bool === true ? 1 : 0);
 

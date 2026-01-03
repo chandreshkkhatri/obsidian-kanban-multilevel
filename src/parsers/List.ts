@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Legacy code from original Kanban plugin */
 import { isPlainObject } from 'is-plain-object';
 import { TFile } from 'obsidian';
 import { getAPI } from 'obsidian-dataview';

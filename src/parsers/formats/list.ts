@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Legacy code from original Kanban plugin */
 import update from 'immutability-helper';
 import { Content, List, Parent, Root } from 'mdast';
 import { ListItem } from 'mdast-util-from-markdown/lib';
@@ -194,7 +195,7 @@ export function listItemToItemData(stateManager: StateManager, md: string, item:
   itemData.title = preprocessTitle(stateManager, dedentNewLines(executeDeletion(title)));
 
   const firstLineEnd = itemData.title.indexOf('\n');
-  const inlineFields = extractInlineFields(itemData.title, true);
+  const inlineFields = extractInlineFields(itemData.title, true, stateManager.app);
 
   if (inlineFields?.length) {
     const inlineMetadata = (itemData.metadata.inlineMetadata = inlineFields.reduce((acc, curr) => {
@@ -406,23 +407,20 @@ function itemToMd(item: Item) {
 
 function laneToMd(lane: Lane) {
   const lines: string[] = [];
-
-  lines.push(`## ${replaceNewLines(laneTitleWithMaxItems(lane.data.title, lane.data.maxItems))}`);
-
+  // Serialize row if present
+  lines.push(
+    `## ${replaceNewLines(laneTitleWithMaxItems(lane.data.title, lane.data.maxItems, lane.data.row))}`
+  );
   lines.push('');
-
   if (lane.data.shouldMarkItemsComplete) {
     lines.push(completeString);
   }
-
   lane.children.forEach((item) => {
     lines.push(itemToMd(item));
   });
-
   lines.push('');
   lines.push('');
   lines.push('');
-
   return lines.join('\n');
 }
 

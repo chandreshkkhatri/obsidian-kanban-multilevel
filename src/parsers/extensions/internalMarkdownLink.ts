@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- micromark extensions use 'any' for tokens and states */
 import { Token } from 'mdast-util-from-markdown';
 
 export function internalMarkdownLinks(

@@ -30,13 +30,10 @@ export function getFolderChoices(app: App) {
 export function getTemplateChoices(app: App, folderStr?: string) {
   const fileList: IChoices.Choice[] = [];
 
-  let folder = folderStr ? app.vault.getAbstractFileByPath(folderStr) : null;
+  const abstractFile = folderStr ? app.vault.getAbstractFileByPath(folderStr) : null;
+  const folder = abstractFile instanceof TFolder ? abstractFile : app.vault.getRoot();
 
-  if (!folder || !(folder instanceof TFolder)) {
-    folder = app.vault.getRoot();
-  }
-
-  Vault.recurseChildren(folder as TFolder, (f) => {
+  Vault.recurseChildren(folder, (f) => {
     if (f instanceof TFile) {
       fileList.push({
         value: f.path,

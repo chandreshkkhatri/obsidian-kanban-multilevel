@@ -8,7 +8,7 @@ import {
   createColumnHelper,
 } from '@tanstack/react-table';
 import classcat from 'classcat';
-import moment from 'moment';
+import { moment } from 'obsidian';
 import { useCallback, useContext, useMemo, useRef, useState } from 'preact/hooks';
 import { StateManager } from 'src/StateManager';
 import { c } from 'src/components/helpers';
@@ -19,6 +19,7 @@ import { getDataviewPlugin, lableToName, taskFields } from 'src/parsers/helpers/
 import { Tags } from '../Item/ItemContent';
 import { MetadataValue, anyToString } from '../Item/MetadataTable';
 import { SearchContext } from '../context';
+/* eslint-disable @typescript-eslint/no-explicit-any -- Complex data structures for table layout */
 import { Board, Lane } from '../types';
 import { DateCell, ItemCell, LaneCell } from './Cells';
 import { TableData, TableItem } from './types';

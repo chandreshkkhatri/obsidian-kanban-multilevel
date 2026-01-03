@@ -1,5 +1,4 @@
-
-Notes can be created from Kanban cards by right clicking on a card, or clicking on the three dots menu on the right side of a card, and selecting `New note from card`.
+Notes can be created from Kanban Multilevel cards by right clicking on a card, or clicking on the three dots menu on the right side of a card, and selecting `New note from card`.
 
 ![[Screen Shot 2021-09-13 at 12.29.20 PM.png|400]]
 

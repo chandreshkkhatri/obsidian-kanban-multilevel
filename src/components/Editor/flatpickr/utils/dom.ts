@@ -41,12 +41,8 @@ export function createNumberInput(
     arrowUp = createElement<HTMLSpanElement>(doc, 'span', 'arrowUp'),
     arrowDown = createElement<HTMLSpanElement>(doc, 'span', 'arrowDown');
 
-  if (navigator.userAgent.indexOf('MSIE 9.0') === -1) {
-    numInput.type = 'number';
-  } else {
-    numInput.type = 'text';
-    numInput.pattern = '\\d*';
-  }
+  // MSIE is no longer supported, always use number type
+  numInput.type = 'number';
 
   if (opts !== undefined) for (const key in opts) numInput.setAttribute(key, opts[key]);
 
@@ -64,7 +60,7 @@ export function getEventTarget(event: Event): EventTarget | null {
       return path[0];
     }
     return event.target;
-  } catch (error) {
+  } catch {
     return event.target;
   }
 }

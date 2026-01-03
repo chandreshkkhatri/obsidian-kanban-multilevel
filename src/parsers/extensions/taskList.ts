@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- micromark extensions use 'any' for tokens and states */
+import { Token } from 'mdast-util-from-markdown';
 import { factorySpace } from 'micromark-factory-space';
 import { markdownLineEndingOrSpace, markdownSpace } from 'micromark-util-character';
-import { codes } from 'micromark-util-symbol/codes.js';
-import { types } from 'micromark-util-symbol/types.js';
-import { Effects, Extension, State, Token } from 'micromark-util-types';
+import { codes, types } from 'micromark-util-symbol';
+import { Effects, Extension, State } from 'micromark-util-types';
 
 const tasklistCheck = { tokenize: tokenizeTasklistCheck };
 

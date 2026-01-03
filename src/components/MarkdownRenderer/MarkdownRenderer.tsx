@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import classcat from 'classcat';
 import Mark from 'mark.js';
-import moment from 'moment';
+import { moment } from 'obsidian';
+/* eslint-disable @typescript-eslint/no-explicit-any -- Interaction with Obsidian MarkdownRenderer */
 import { Component, MarkdownRenderer as ObsidianRenderer, getLinkpath } from 'obsidian';
 import { CSSProperties, memo, useEffect, useRef } from 'preact/compat';
 import { useContext } from 'preact/hooks';
@@ -81,10 +81,10 @@ export class BasicMarkdownRenderer extends Component {
   }
 
   onload() {
-    this.render();
+    void this.render();
   }
 
-  // eslint-disable-next-line react/require-render-return
+
   async render() {
     this.containerEl.empty();
 
@@ -159,11 +159,12 @@ export class BasicMarkdownRenderer extends Component {
     const { lastRefHeight, lastRefWidth, containerEl } = this;
     this.wrapperEl = el;
     if (lastRefHeight > 0) {
-      el.style.width = `${lastRefWidth}px`;
-      el.style.height = `${lastRefHeight}px`;
+      el.setCssProps({
+        width: `${lastRefWidth}px`,
+        height: `${lastRefHeight}px`,
+      });
       el.win.setTimeout(() => {
-        el.style.width = '';
-        el.style.height = '';
+        el.setCssProps({ width: '', height: '' });
       }, 50);
     }
     if (containerEl.parentElement !== el) {
@@ -177,14 +178,14 @@ export class BasicMarkdownRenderer extends Component {
     const { wrapperEl, containerEl } = this;
     if (!wrapperEl) return;
     wrapperEl.append(containerEl);
-    if (wrapperEl.style.minHeight) wrapperEl.style.minHeight = '';
+    if (wrapperEl.style.minHeight) wrapperEl.setCssProps({ minHeight: '' });
     this.isVisible = true;
   }
 
   hide() {
     const { containerEl, wrapperEl } = this;
     if (!wrapperEl) return;
-    wrapperEl.style.minHeight = this.lastRefHeight + 'px';
+    wrapperEl.setCssProps({ minHeight: this.lastRefHeight + 'px' });
     containerEl.detach();
     this.isVisible = false;
   }
@@ -316,7 +317,7 @@ export const MarkdownRenderer = memo(function MarkdownPreviewRenderer({
     preview.renderCapability.resolve();
 
     preview.set(markdownString);
-    preview.renderCapability.promise.then(() => {
+    void preview.renderCapability.promise.then(() => {
       colorizeTags(elRef.current, getTagColor);
       colorizeDates(elRef.current, getDateColor);
     });

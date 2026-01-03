@@ -47,7 +47,12 @@ function confirmDatePlugin(pluginConfig: Config): Plugin {
         );
 
         confirmContainer.tabIndex = -1;
-        confirmContainer.innerHTML += config.confirmIcon;
+        // Use DOMParser to safely parse SVG icon content
+        if (config.confirmIcon) {
+          const iconDoc = new DOMParser().parseFromString(config.confirmIcon, 'image/svg+xml');
+          const iconSvg = iconDoc.documentElement;
+          if (iconSvg) confirmContainer.appendChild(fp.calendarContainer.doc.importNode(iconSvg, true));
+        }
 
         confirmContainer.addEventListener('click', fp.close);
         fp.calendarContainer.appendChild(confirmContainer);

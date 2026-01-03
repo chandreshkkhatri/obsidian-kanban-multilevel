@@ -57,7 +57,7 @@ export function bindMarkdownEvents(view: KanbanView) {
     if (!link) return;
 
     evt.preventDefault();
-    app.workspace.openLinkText(link.href, view.file.path, Keymap.isModEvent(evt));
+    void app.workspace.openLinkText(link.href, view.file.path, Keymap.isModEvent(evt));
   };
 
   contentEl.on('click', 'a.internal-link', onLinkClick);
@@ -70,7 +70,9 @@ export function bindMarkdownEvents(view: KanbanView) {
     if (!link) return;
 
     const menu = new Menu();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
     (menu as any).addSections(['title', 'open', 'action', 'view', 'info', '', 'danger']);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
     (app.workspace as any).handleLinkContextMenu(menu, link.href, view.file.path);
     menu.showAtMouseEvent(evt);
   });
@@ -95,7 +97,7 @@ export function bindMarkdownEvents(view: KanbanView) {
     if (!link.href || link.href.contains(' ')) return;
     try {
       new URL(link.href);
-    } catch (e) {
+    } catch {
       return;
     }
 
@@ -108,6 +110,7 @@ export function bindMarkdownEvents(view: KanbanView) {
     if (!link) return;
 
     const menu = new Menu();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
     (menu as any).addSections([
       'title',
       'open',
@@ -119,6 +122,7 @@ export function bindMarkdownEvents(view: KanbanView) {
       '',
       'danger',
     ]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
     (app.workspace as any).handleExternalLinkContextMenu(menu, link.href);
     menu.showAtMouseEvent(evt);
   });
@@ -126,6 +130,7 @@ export function bindMarkdownEvents(view: KanbanView) {
     if (evt.button !== 0) return;
 
     const tag = targetEl.getText();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
     const searchPlugin = (app as any).internalPlugins.getPluginById('global-search');
     const stateManager = view.plugin.getStateManager(view.file);
     const tagAction = stateManager.getSetting('tag-action');

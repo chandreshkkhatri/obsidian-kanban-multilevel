@@ -57,8 +57,8 @@ export function DragDropApp({ win, plugin }: { win: Window; plugin: KanbanPlugin
             const isComplete = !!destinationParent?.data?.shouldMarkItemsComplete;
 
             if (isComplete) {
-              item = update(item, { data: { checkChar: { $set: getTaskStatusPreDone() } } });
-              const updates = toggleTask(item, stateManager.file);
+              item = update(item, { data: { checkChar: { $set: getTaskStatusPreDone(stateManager.app) } } });
+              const updates = toggleTask(item, stateManager.file, stateManager.app);
               if (updates) {
                 const [itemStrings, checkChars, thisIndex] = updates;
                 const nextItem = itemStrings[thisIndex];
@@ -74,7 +74,7 @@ export function DragDropApp({ win, plugin }: { win: Window; plugin: KanbanPlugin
                 },
                 checkChar: {
                   $set: destinationParent?.data?.shouldMarkItemsComplete
-                    ? getTaskStatusDone()
+                    ? getTaskStatusDone(stateManager.app)
                     : ' ',
                 },
               },

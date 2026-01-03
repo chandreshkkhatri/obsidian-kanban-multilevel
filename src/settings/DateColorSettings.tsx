@@ -91,7 +91,11 @@ function Item({
                     onChange={(e) => {
                       updateKey({
                         ...dateColorKey,
-                        unit: (e.target as HTMLSelectElement).value as any,
+                        unit: (e.target as HTMLSelectElement).value as
+                          | 'hours'
+                          | 'days'
+                          | 'weeks'
+                          | 'months',
                       });
                     }}
                   >
@@ -106,7 +110,7 @@ function Item({
                     onChange={(e) => {
                       updateKey({
                         ...dateColorKey,
-                        direction: (e.target as HTMLSelectElement).value as any,
+                        direction: (e.target as HTMLSelectElement).value as 'after' | 'before',
                       });
                     }}
                   >
@@ -195,8 +199,7 @@ function DateSettings({ dataKeys, onChange, getTimeFormat, getDateFormat }: Date
     const wrapper = createDiv(c('item-metadata'));
     const date = wrapper.createSpan(c('item-metadata-date'));
 
-    wrapper.style.position = 'absolute';
-    wrapper.style.visibility = 'hidden';
+    wrapper.setCssProps({ position: 'absolute', visibility: 'hidden' });
 
     activeDocument.body.append(wrapper);
 

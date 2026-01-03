@@ -68,20 +68,27 @@ export function useItemMenu({
               const newNoteFolder = stateManager.getSetting('new-note-folder');
               const newNoteTemplatePath = stateManager.getSetting('new-note-template');
 
-              const targetFolder = newNoteFolder
-                ? (stateManager.app.vault.getAbstractFileByPath(newNoteFolder as string) as TFolder)
-                : stateManager.app.fileManager.getNewFileParent(stateManager.file.path);
+              const folderPath = stateManager.app.vault.getAbstractFileByPath(
+                newNoteFolder as string
+              );
+              const targetFolder =
+                newNoteFolder && folderPath instanceof TFolder
+                  ? folderPath
+                  : stateManager.app.fileManager.getNewFileParent(stateManager.file.path);
 
-              const newFile = (await (stateManager.app.fileManager as any).createNewMarkdownFile(
-                targetFolder,
-                sanitizedTitle
-              )) as TFile;
+              const createdFile = await (
+                stateManager.app.fileManager as unknown as {
+                  createNewMarkdownFile: (folder: TFolder, name: string) => Promise<TFile>;
+                }
+              ).createNewMarkdownFile(targetFolder, sanitizedTitle);
+              const newFile = createdFile instanceof TFile ? createdFile : null;
+              if (!newFile) return;
 
-              const newLeaf = stateManager.app.workspace.splitActiveLeaf();
+              const newLeaf = stateManager.app.workspace.getLeaf('split');
 
               await newLeaf.openFile(newFile);
 
-              stateManager.app.workspace.setActiveLeaf(newLeaf, false, true);
+              stateManager.app.workspace.setActiveLeaf(newLeaf, { focus: true });
 
               await applyTemplate(stateManager, newNoteTemplatePath as string | undefined);
 
@@ -98,8 +105,8 @@ export function useItemMenu({
             .setTitle(t('Copy link to card'))
             .onClick(() => {
               if (item.data.blockId) {
-                navigator.clipboard.writeText(
-                  `${this.app.fileManager.generateMarkdownLink(
+                void navigator.clipboard.writeText(
+                  `${stateManager.app.fileManager.generateMarkdownLink(
                     stateManager.file,
                     '',
                     '#^' + item.data.blockId
@@ -108,8 +115,8 @@ export function useItemMenu({
               } else {
                 const id = generateInstanceId(6);
 
-                navigator.clipboard.writeText(
-                  `${this.app.fileManager.generateMarkdownLink(stateManager.file, '', '#^' + id)}`
+                void navigator.clipboard.writeText(
+                  `${stateManager.app.fileManager.generateMarkdownLink(stateManager.file, '', '#^' + id)}`
                 );
 
                 boardModifiers.updateItem(
@@ -128,13 +135,11 @@ export function useItemMenu({
         menu.addItem((i) => {
           i.setIcon('lucide-wrap-text')
             .setTitle(t('Split card'))
-            .onClick(async () => {
+            .onClick(() => {
               const titles = item.data.titleRaw.split(/[\r\n]+/g).map((t) => t.trim());
-              const newItems = await Promise.all(
-                titles.map((title) => {
-                  return stateManager.getNewItem(title, ' ');
-                })
-              );
+              const newItems = titles.map((title) => {
+                return stateManager.getNewItem(title, ' ');
+              });
 
               boardModifiers.splitItem(path, newItems);
             });
@@ -288,6 +293,7 @@ export function useItemMenu({
         addMoveToOptions(menu);
       } else {
         menu.addItem((item) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const submenu = (item as any)
             .setTitle(t('Move to list'))
             .setIcon('lucide-square-kanban')

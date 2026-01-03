@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Generic object patching utility */
 import { isPlainObject } from 'is-plain-object';
-import moment from 'moment';
+import { moment } from 'obsidian';
 import { getAPI } from 'obsidian-dataview';
 
 type Key = string | number;
@@ -252,7 +253,11 @@ export function diffApply(obj: Diffable, diff: Op[]) {
     }
 
     if (thisOp === REMOVE && typeof lastProp === 'number') {
-      Array.isArray(subObject) ? subObject.splice(lastProp, 1) : delete subObject[lastProp];
+      if (Array.isArray(subObject)) {
+        subObject.splice(lastProp, 1);
+      } else {
+        delete subObject[lastProp];
+      }
     }
 
     if (thisOp === REPLACE || thisOp === ADD) {

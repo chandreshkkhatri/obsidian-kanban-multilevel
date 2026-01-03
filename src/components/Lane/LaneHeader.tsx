@@ -130,7 +130,7 @@ export const LaneHeader = memo(function LaneHeader({
   return (
     <>
       <div
-        // eslint-disable-next-line react/no-unknown-property
+         
         onDblClick={onDoubleClick}
         className={c('lane-header-wrapper')}
       >

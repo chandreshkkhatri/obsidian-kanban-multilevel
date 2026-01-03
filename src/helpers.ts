@@ -4,24 +4,26 @@ import { getDailyNoteSettings, getDateFromFile } from 'obsidian-daily-notes-inte
 import { frontmatterKey } from './parsers/common';
 
 export function gotoNextDailyNote(app: App, file: TFile) {
-  const date = getDateFromFile(file as any, 'day');
+  const date = getDateFromFile(file, 'day');
 
   if (!date || !date.isValid()) {
     return;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
   const dailyNotePlugin = (app as any).internalPlugins.plugins['daily-notes'].instance;
 
   dailyNotePlugin.gotoNextExisting(date);
 }
 
 export function gotoPrevDailyNote(app: App, file: TFile) {
-  const date = getDateFromFile(file as any, 'day');
+  const date = getDateFromFile(file, 'day');
 
   if (!date || !date.isValid()) {
     return;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
   const dailyNotePlugin = (app as any).internalPlugins.plugins['daily-notes'].instance;
 
   dailyNotePlugin.gotoPreviousExisting(date);
@@ -29,6 +31,7 @@ export function gotoPrevDailyNote(app: App, file: TFile) {
 
 export function buildLinkToDailyNote(app: App, dateStr: string) {
   const dailyNoteSettings = getDailyNoteSettings();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
   const shouldUseMarkdownLinks = !!(app.vault as any).getConfig('useMarkdownLinks');
 
   if (shouldUseMarkdownLinks) {
@@ -56,13 +59,18 @@ export function hasFrontmatterKeyRaw(data: string) {
   return true;
 }
 
-export function hasFrontmatterKey(file: TFile) {
+export function hasFrontmatterKey(app: App, file: TFile) {
   if (!file) return false;
   const cache = app.metadataCache.getFileCache(file);
   return !!cache?.frontmatter?.[frontmatterKey];
 }
 
-export function laneTitleWithMaxItems(title: string, maxItems?: number) {
-  if (!maxItems) return title;
-  return `${title} (${maxItems})`;
+/**
+ * Compose lane title for markdown, including maxItems and row if present.
+ */
+export function laneTitleWithMaxItems(title: string, maxItems?: number, row?: string) {
+  let result = title;
+  if (maxItems) result += ` (${maxItems})`;
+  if (row) result += ` {row:${row}}`;
+  return result;
 }

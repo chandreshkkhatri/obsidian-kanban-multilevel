@@ -39,6 +39,7 @@ function getEditorAppProxy(view: KanbanView) {
         return new Proxy(view.app.vault, {
           get(target, prop, reveiver) {
             if (prop === 'config') {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian vault config
               return new Proxy((view.app.vault as any).config, {
                 get(target, prop, reveiver) {
                   if (['showLineNumber', 'foldHeading', 'foldIndent'].includes(prop as string)) {
@@ -60,6 +61,7 @@ function getEditorAppProxy(view: KanbanView) {
 function getMarkdownController(
   view: KanbanView,
   getEditor: () => ObsidianEditor
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Return object contains internal Obsidian Editor properties
 ): Record<any, any> {
   return {
     app: view.app,
@@ -84,11 +86,13 @@ function getMarkdownController(
 function setInsertMode(cm: EditorView) {
   const vim = getVimPlugin(cm);
   if (vim) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing CodeMirror Vim plugin adapter
     (window as any).CodeMirrorAdapter?.Vim?.enterInsertMode(vim);
   }
 }
 
 function getVimPlugin(cm: EditorView): string {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- EditorView.plugins is not exposed in type definitions
   return (cm as any)?.plugins?.find((p: any) => {
     if (!p?.value) return false;
     return 'useNextTextInput' in p.value && 'waitForCopy' in p.value;
@@ -126,7 +130,7 @@ export function MarkdownEditor({
         return undefined;
       }
 
-      updateBottomPadding() {}
+      updateBottomPadding() { }
       onUpdate(update: ViewUpdate, changed: boolean) {
         super.onUpdate(update, changed);
         onChange && onChange(update);
@@ -181,6 +185,7 @@ export function MarkdownEditor({
           if (this.app.vault.getConfig('smartIndentList')) {
             this.editor.newlineAndIndentContinueMarkdownList();
           } else {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- CodeMirror EditorView type compatibility
             insertBlankLine(cm as any);
           }
           return true;
@@ -219,6 +224,7 @@ export function MarkdownEditor({
 
     const controller = getMarkdownController(view, () => editor.editor);
     const app = getEditorAppProxy(view);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Editor class is not exposed in type definitions
     const editor = view.plugin.addChild(new (Editor as any)(app, elRef.current, controller));
     const cm: EditorView = editor.cm;
 
@@ -256,6 +262,7 @@ export function MarkdownEditor({
 
         if (app.workspace.activeEditor === controller) {
           app.workspace.activeEditor = null;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal mobileToolbar
           (app as any).mobileToolbar.update();
           view.contentEl.removeClass('is-mobile-editing');
         }

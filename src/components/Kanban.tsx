@@ -8,6 +8,7 @@ import { useIsAnythingDragging } from 'src/dnd/components/DragOverlay';
 import { ScrollContainer } from 'src/dnd/components/ScrollContainer';
 import { SortPlaceholder } from 'src/dnd/components/SortPlaceholder';
 import { Sortable } from 'src/dnd/components/Sortable';
+/* eslint-disable @typescript-eslint/no-explicit-any -- Complex Preact component props and state */
 import { createHTMLDndHandlers } from 'src/dnd/managers/DragManager';
 import { t } from 'src/lang/helpers';
 
@@ -17,6 +18,7 @@ import { frontmatterKey } from '../parsers/common';
 import { Icon } from './Icon/Icon';
 import { Lanes } from './Lane/Lane';
 import { LaneForm } from './Lane/LaneForm';
+import { MultiRowBoard } from './MultiRowBoard/MultiRowBoard';
 import { TableView } from './Table/Table';
 import { KanbanContext, SearchContext } from './context';
 import { baseClassName, c, useSearchValue } from './helpers';
@@ -83,7 +85,7 @@ export const Kanban = ({ view, stateManager }: KanbanProps) => {
       const board = rootRef.current?.getElementsByClassName(c('board'));
 
       if (board?.length) {
-        animateScrollTo([board[0].scrollWidth, 0], {
+        void animateScrollTo([board[0].scrollWidth, 0], {
           elementToScroll: board[0],
           speed: 300,
           minDuration: 150,
@@ -263,31 +265,36 @@ export const Kanban = ({ view, stateManager }: KanbanProps) => {
             )}
             {boardView === 'table' ? (
               <TableView boardData={boardData} stateManager={stateManager} />
-            ) : (
-              <ScrollContainer
-                id={view.id}
-                className={classcat([
-                  c('board'),
-                  {
-                    [c('horizontal')]: boardView !== 'list',
-                    [c('vertical')]: boardView === 'list',
-                    'is-adding-lane': isLaneFormVisible,
-                  },
-                ])}
-                triggerTypes={boardScrollTiggers}
-              >
-                <div>
-                  <Sortable axis={axis}>
-                    <Lanes lanes={boardData.children} collapseDir={axis} />
-                    <SortPlaceholder
-                      accepts={boardAccepts}
-                      className={c('lane-placeholder')}
-                      index={boardData.children.length}
-                    />
-                  </Sortable>
+            ) : // Decide if we need multi-row layout: if any lane has data.row defined
+              boardData.children.some((l) => l.data.row) ? (
+                <div className={c('multirow-container')}>
+                  <MultiRowBoard lanes={boardData.children} />
                 </div>
-              </ScrollContainer>
-            )}
+              ) : (
+                <ScrollContainer
+                  id={view.id}
+                  className={classcat([
+                    c('board'),
+                    {
+                      [c('horizontal')]: boardView !== 'list',
+                      [c('vertical')]: boardView === 'list',
+                      'is-adding-lane': isLaneFormVisible,
+                    },
+                  ])}
+                  triggerTypes={boardScrollTiggers}
+                >
+                  <div>
+                    <Sortable axis={axis}>
+                      <Lanes lanes={boardData.children} collapseDir={axis} />
+                      <SortPlaceholder
+                        accepts={boardAccepts}
+                        className={c('lane-placeholder')}
+                        index={boardData.children.length}
+                      />
+                    </Sortable>
+                  </div>
+                </ScrollContainer>
+              )}
           </div>
         </SearchContext.Provider>
       </KanbanContext.Provider>

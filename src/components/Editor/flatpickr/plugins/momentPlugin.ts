@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
+ 
 import { Plugin } from '../types/options';
 import { IncrementEvent } from '../utils';
 import { getEventTarget } from '../utils/dom';

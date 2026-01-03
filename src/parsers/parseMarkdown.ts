@@ -168,7 +168,7 @@ export function parseMarkdown(stateManager: StateManager, md: string) {
   const mdFrontmatter = extractFrontmatter(md);
   const mdSettings = extractSettingsFooter(md);
   const settings = { ...mdSettings };
-  const fileFrontmatter: Record<string, any> = {};
+  const fileFrontmatter: Record<string, unknown> = {};
 
   Object.keys(mdFrontmatter).forEach((key) => {
     if (key === frontmatterKey) {

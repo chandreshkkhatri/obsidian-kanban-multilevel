@@ -1,3 +1,54 @@
+.kanban-plugin__multirow-wrapper,
+.kanban-plugin__multirow-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.kanban-plugin__row-section {
+  border-radius: 8px;
+  border: 1px solid var(--background-modifier-border);
+  margin-bottom: 1.5rem;
+  background: var(--background-secondary-alt);
+  overflow: hidden;
+}
+
+.kanban-plugin__row-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--background-secondary);
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+}
+
+.kanban-plugin__row-header-icon {
+  font-size: 1.1em;
+  transition: transform 0.2s;
+}
+.kanban-plugin__row-header .kanban-plugin__chevron.is-collapsed {
+  transform: rotate(-90deg);
+}
+
+.kanban-plugin__row-title {
+  flex: 1 1 auto;
+}
+.kanban-plugin__row-meta {
+  color: var(--text-faint);
+  font-size: 0.9em;
+}
+
+.kanban-plugin__row-body {
+  padding: 1rem;
+  background: var(--background-secondary-alt);
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  overflow-x: auto;
+}
 @import 'choices.js/public/assets/styles/choices.css';
 @import './components/Editor/flatpickr/flatpickr.min.css';
 

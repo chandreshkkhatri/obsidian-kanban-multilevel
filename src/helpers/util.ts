@@ -10,7 +10,7 @@ export class PromiseCapability<T = void> {
   promise: Promise<T>;
 
   resolve: (data: T) => void;
-  reject: (reason?: any) => void;
+  reject: (reason?: unknown) => void;
 
   settled = false;
 
@@ -29,7 +29,7 @@ export class PromiseCapability<T = void> {
   }
 }
 
-type QAble = () => Promise<any>;
+type QAble = () => Promise<unknown>;
 
 export class PromiseQueue {
   queue: Array<QAble> = [];
@@ -46,7 +46,7 @@ export class PromiseQueue {
     this.queue.push(item);
 
     if (!this.isRunning) {
-      this.run();
+      void this.run();
     }
   }
 

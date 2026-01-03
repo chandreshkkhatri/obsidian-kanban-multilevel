@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- Complex Preact component with many any usages */
 import { EditorView } from '@codemirror/view';
 import { memo } from 'preact/compat';
 import {
@@ -100,11 +101,11 @@ function checkCheckbox(stateManager: StateManager, title: string, checkboxIndex:
 
     if (match) {
       if (count === checkboxIndex) {
-        const updates = toggleTaskString(line, stateManager.file);
+        const updates = toggleTaskString(line, stateManager.file, stateManager.app);
         if (updates) {
           results.push(updates);
         } else {
-          const check = match[3] === ' ' ? getTaskStatusDone() : ' ';
+          const check = match[3] === ' ' ? getTaskStatusDone(stateManager.app) : ' ';
           const m1 = match[1] ?? '';
           const m2 = match[2] ?? '';
           const m4 = match[4] ?? '';
@@ -161,9 +162,8 @@ export function Tags({
                 .instance.openGlobalSearch(`tag:${tag}`);
             }}
             key={i}
-            className={`tag ${c('item-tag')} ${
-              searchQuery && tag.toLocaleLowerCase().contains(searchQuery) ? 'is-search-match' : ''
-            }`}
+            className={`tag ${c('item-tag')} ${searchQuery && tag.toLocaleLowerCase().contains(searchQuery) ? 'is-search-match' : ''
+              }`}
             style={
               tagColor && {
                 '--tag-color': tagColor.color,

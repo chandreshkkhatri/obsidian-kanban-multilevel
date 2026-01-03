@@ -1,11 +1,12 @@
 import { FlatpickrFn } from '../types/instance';
+import { FPWindowOptional } from '../types/globals';
 
 /* Romanian locals for flatpickr */
 import { CustomLocale } from '../types/locale';
 
 const fp =
-  typeof window !== 'undefined' && (window as any).flatpickr !== undefined
-    ? (window as any).flatpickr
+  typeof window !== 'undefined' && (window as FPWindowOptional).flatpickr !== undefined
+    ? (window as FPWindowOptional).flatpickr
     : ({
         l10ns: {},
       } as FlatpickrFn);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DayElement, Instance } from '../../types/instance';
 import { Plugin } from '../../types/options';
 import { clearNode, getEventTarget } from '../../utils/dom';

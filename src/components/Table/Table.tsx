@@ -8,6 +8,8 @@ import {
 import classcat from 'classcat';
 import update from 'immutability-helper';
 import { useEffect, useMemo, useRef } from 'preact/compat';
+/* eslint-disable @typescript-eslint/no-explicit-any -- Complex Preact component props */
+
 import { IntersectionObserverHandler } from 'src/dnd/managers/ScrollManager';
 
 import { StateManager } from '../../StateManager';
@@ -101,8 +103,7 @@ export function TableView({
     getColumnCanGlobalFilter: () => true,
     enableColumnResizing: true,
     columnResizeMode: 'onChange',
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - columnResizeDirection is a valid option
     columnResizeDirection: stateManager.app.vault.getConfig('rightToLeft') ? 'rtl' : 'ltr',
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -182,9 +183,8 @@ export function TableView({
                             onDoubleClick: () => header.column.resetSize(),
                             onMouseDown: header.getResizeHandler(),
                             onTouchStart: header.getResizeHandler(),
-                            className: `resizer ${table.options.columnResizeDirection} ${
-                              header.column.getIsResizing() ? 'isResizing' : ''
-                            }`,
+                            className: `resizer ${table.options.columnResizeDirection} ${header.column.getIsResizing() ? 'isResizing' : ''
+                              }`,
                           }}
                         />
                       </div>

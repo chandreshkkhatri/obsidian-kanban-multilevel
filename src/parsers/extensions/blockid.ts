@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- micromark extensions use 'any' for tokens and states */
 import { Extension as FromMarkdownExtension, Token } from 'mdast-util-from-markdown';
 import { markdownLineEnding, markdownSpace } from 'micromark-util-character';
 import { Effects, Extension, State } from 'micromark-util-types';
