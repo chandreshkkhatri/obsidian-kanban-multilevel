@@ -1,10 +1,9 @@
- 
 import { Plugin } from '../types/options';
 import { IncrementEvent } from '../utils';
 import { getEventTarget } from '../utils/dom';
 
 export interface Config {
-  moment: Function;
+  moment: (...args: any[]) => any;
 }
 
 function momentPlugin(config: Config): Plugin {

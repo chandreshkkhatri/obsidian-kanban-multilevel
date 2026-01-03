@@ -20,6 +20,7 @@ import { getParentWindow } from './dnd/util/getWindow';
 import { hasFrontmatterKey } from './helpers';
 import { t } from './lang/helpers';
 import { basicFrontmatter, frontmatterKey } from './parsers/common';
+import { KanbanApp, KanbanGlobal, KanbanLeaf } from './types';
 
 interface WindowRegistry {
   viewMap: Map<string, KanbanView>;
@@ -27,8 +28,7 @@ interface WindowRegistry {
   appRoot: HTMLElement;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
-function getEditorClass(app: any) {
+function getEditorClass(app: KanbanApp) {
   const md = app.embedRegistry.embedByExtension.md(
     { app: app, containerEl: createDiv(), state: {} },
     null,
@@ -72,8 +72,7 @@ export default class KanbanPlugin extends Plugin {
     super.unload();
     void Promise.all(
       this.app.workspace.getLeavesOfType(kanbanViewType).map((leaf) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
-        this.kanbanFileModes[(leaf as any).id] = 'markdown';
+        this.kanbanFileModes[(leaf as KanbanLeaf).id] = 'markdown';
         return this.setMarkdownView(leaf);
       })
     );
@@ -92,31 +91,27 @@ export default class KanbanPlugin extends Plugin {
     this.windowRegistry.clear();
     this.kanbanFileModes = {};
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal API
-    (this.app.workspace as any).unregisterHoverLinkSource(frontmatterKey);
+    (this.app as KanbanApp).workspace.unregisterHoverLinkSource(frontmatterKey);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- MarkdownEditor class is not exposed
-  MarkdownEditor: any;
+  MarkdownEditor: unknown;
 
   async onload() {
     await this.loadSettings();
 
-    this.MarkdownEditor = getEditorClass(this.app);
+    this.MarkdownEditor = getEditorClass(this.app as KanbanApp);
 
     this.registerEditorSuggest(new TimeSuggest(this.app, this));
     this.registerEditorSuggest(new DateSuggest(this.app, this));
 
     this.registerEvent(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Event includes generic data
-      this.app.workspace.on('window-open', (_: any, win: Window) => {
+      this.app.workspace.on('window-open', (_: unknown, win: Window) => {
         this.mount(win);
       })
     );
 
     this.registerEvent(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Event includes generic data
-      this.app.workspace.on('window-close', (_: any, win: Window) => {
+      this.app.workspace.on('window-close', (_: unknown, win: Window) => {
         this.unmount(win);
       })
     );
@@ -746,11 +741,9 @@ export default class KanbanPlugin extends Plugin {
   registerMonkeyPatches() {
     this.app.workspace.onLayoutReady(() => {
       this.register(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Monkey patching commands
-        around((this.app as any).commands, {
+        around((this.app as KanbanApp).commands, {
           executeCommand(next) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Command type is not exposed
-            return function (command: any) {
+            return function (command: { id: string }) {
               const view = this.app.workspace.getActiveViewOfType(KanbanView);
 
               if (view && command?.id) {
@@ -788,8 +781,15 @@ export default class KanbanPlugin extends Plugin {
           return function () {
             const state = this.view?.getState();
 
-            if (state?.file && self.kanbanFileModes[this.id || state.file]) {
-              delete self.kanbanFileModes[this.id || state.file];
+            if (
+              state?.file &&
+              (self as unknown as KanbanGlobal).kanbanFileModes[
+                (this as KanbanLeaf).id || state.file
+              ]
+            ) {
+              delete (self as unknown as KanbanGlobal).kanbanFileModes[
+                (this as KanbanLeaf).id || state.file
+              ];
             }
 
             return next.apply(this);
@@ -801,15 +801,19 @@ export default class KanbanPlugin extends Plugin {
           return function (state: ViewState, ...rest: any[]) {
             if (
               // Don't force kanban mode during shutdown
-              self._loaded &&
+              (self as unknown as KanbanGlobal)._loaded &&
               // If we have a markdown file
               state.type === 'markdown' &&
               state.state?.file &&
               // And the current mode of the file is not set to markdown
-              self.kanbanFileModes[this.id || (state.state.file as string)] !== 'markdown'
+              (self as unknown as KanbanGlobal).kanbanFileModes[
+                (this as KanbanLeaf).id || (state.state.file as string)
+              ] !== 'markdown'
             ) {
               // Then check for the kanban frontMatterKey
-              const cache = self.app.metadataCache.getCache(state.state.file as string);
+              const cache = (self as unknown as KanbanGlobal).app.metadataCache.getCache(
+                state.state.file as string
+              );
 
               if (cache?.frontmatter && cache.frontmatter[frontmatterKey]) {
                 // If we have it, force the view type to kanban
@@ -818,7 +822,8 @@ export default class KanbanPlugin extends Plugin {
                   type: kanbanViewType,
                 };
 
-                self.kanbanFileModes[state.state.file as string] = kanbanViewType;
+                (self as unknown as KanbanGlobal).kanbanFileModes[state.state.file as string] =
+                  kanbanViewType;
 
                 return next.apply(this, [newState, ...rest]);
               }

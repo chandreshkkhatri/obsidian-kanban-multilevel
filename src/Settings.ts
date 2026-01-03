@@ -340,7 +340,10 @@ export class SettingsManager {
 
         text.inputEl.setAttr('type', 'number');
         text.inputEl.placeholder = `${globalValue ? (globalValue as number) : '272'} (default)`;
-        text.inputEl.value = value ? value.toString() : '';
+        text.inputEl.value =
+          value !== null && value !== undefined && typeof value !== 'object'
+            ? value.toString()
+            : '';
 
         text.onChange((val) => {
           if (val && numberRegEx.test(val)) {
@@ -414,7 +417,10 @@ export class SettingsManager {
 
         text.inputEl.setAttr('type', 'number');
         text.inputEl.placeholder = `${globalValue ? (globalValue as number) : '-1'} (default)`;
-        text.inputEl.value = value ? value.toString() : '';
+        text.inputEl.value =
+          value !== null && value !== undefined && typeof value !== 'object'
+            ? value.toString()
+            : '';
 
         text.onChange((val) => {
           if (val && numberRegEx.test(val)) {
@@ -1054,7 +1060,7 @@ export class SettingsManager {
 
         text.inputEl.placeholder =
           typeof globalValue === 'string' ? `${globalValue} (default)` : '(default)';
-        text.inputEl.value = value ? (value as string) : '';
+        text.inputEl.value = value && typeof value === 'string' ? value : '';
 
         text.onChange((val) => {
           if (val) {
@@ -1143,7 +1149,13 @@ export class SettingsManager {
         const [value, globalValue] = this.getSetting('date-picker-week-start', local);
 
         dropdown.setValue(
-          (value && value.toString()) || (globalValue && globalValue.toString()) || ''
+          (value !== null && value !== undefined && typeof value !== 'object'
+            ? value.toString()
+            : '') ||
+            (globalValue !== null && globalValue !== undefined && typeof globalValue !== 'object'
+              ? globalValue.toString()
+              : '') ||
+            ''
         );
         dropdown.onChange((value) => {
           if (value) {
@@ -1161,7 +1173,7 @@ export class SettingsManager {
       });
 
     contentEl.createEl('br');
-    contentEl.createEl('h4', { text: t('Inline Metadata') });
+    contentEl.createEl('h4', { text: t('Inline metadata') });
 
     new Setting(contentEl)
       .setName(t('Inline metadata position'))
@@ -1181,8 +1193,12 @@ export class SettingsManager {
           const [value, globalValue] = this.getSetting('inline-metadata-position', local);
 
           dropdown.setValue(
-            (value && value.toString()) ||
-              (globalValue && globalValue.toString()) ||
+            (value !== null && value !== undefined && typeof value !== 'object'
+              ? value.toString()
+              : '') ||
+              (globalValue !== null && globalValue !== undefined && typeof globalValue !== 'object'
+                ? globalValue.toString()
+                : '') ||
               defaultMetadataPosition
           );
           dropdown.onChange((value: 'body' | 'footer' | 'metadata-table') => {
@@ -1257,7 +1273,7 @@ export class SettingsManager {
       });
 
     contentEl.createEl('br');
-    contentEl.createEl('h4', { text: t('Linked Page Metadata') });
+    contentEl.createEl('h4', { text: t('Linked page metadata') });
     contentEl.createEl('p', {
       cls: c('metadata-setting-desc'),
       text: t(
@@ -1294,7 +1310,7 @@ export class SettingsManager {
       });
     });
 
-    contentEl.createEl('h4', { text: t('Board Header Buttons') });
+    contentEl.createEl('h4', { text: t('Board header buttons') });
 
     new Setting(contentEl).setName(t('Add a list')).then((setting) => {
       let toggleComponent: ToggleComponent;

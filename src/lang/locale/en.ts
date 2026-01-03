@@ -138,11 +138,11 @@ const en = {
     'This setting controls whether clicking the tags displayed below the card title opens the Obsidian search or the Kanban board search.',
   'Tag colors': 'Tag colors',
   'Set colors for tags displayed in cards.': 'Set colors for tags displayed in cards.',
-  'Linked Page Metadata': 'Linked page metadata',
-  'Inline Metadata': 'Inline metadata',
+  'Linked page metadata': 'Linked page metadata',
+  'Inline metadata': 'Inline metadata',
   'Display metadata for the first note linked within a card. Specify which metadata keys to display below. An optional label can be provided, and labels can be hidden altogether.':
     'Display metadata for the first note linked within a card. Specify which metadata keys to display below. An optional label can be provided, and labels can be hidden altogether.',
-  'Board Header Buttons': 'Board header buttons',
+  'Board header buttons': 'Board header buttons',
   'Calendar: first day of week': 'Calendar: first day of week',
   'Override which day is used as the start of the week':
     'Override which day is used as the start of the week',

@@ -1,4 +1,6 @@
-type HTMLAttributes<T extends EventTarget> = import('preact/compat').JSX.HTMLAttributes<T> &
+import { App, WorkspaceLeaf } from 'obsidian';
+
+type HTMLAttributes<T extends EventTarget> = import('preact').JSX.HTMLAttributes<T> &
   AriaAttributes;
 
 declare const Fragment: import('preact').FunctionComponent<Record<string, never>>;
@@ -6,8 +8,8 @@ declare const Fragment: import('preact').FunctionComponent<Record<string, never>
 declare function h(
   type: string,
   props:
-    | (import('preact/compat').JSX.HTMLAttributes &
-        import('preact/compat').JSX.SVGAttributes &
+    | (import('preact').JSX.HTMLAttributes &
+        import('preact').JSX.SVGAttributes &
         Record<string, unknown>)
     | null,
   ...children: import('preact').ComponentChildren[]
@@ -234,4 +236,39 @@ interface AriaAttributes {
   'aria-valuenow'?: number | undefined;
   /** Defines the human readable text alternative of aria-valuenow for a range widget. */
   'aria-valuetext'?: string | undefined;
+}
+
+export interface KanbanApp extends App {
+  mobileNavbar: {
+    containerEl: HTMLElement;
+  };
+  commands: {
+    executeCommand: (command: unknown) => void;
+  };
+  embedRegistry: {
+    embedByExtension: {
+      md: (ctx: unknown, file: unknown, path: string) => InternalMarkdownView;
+    };
+  };
+  workspace: App['workspace'] & {
+    unregisterHoverLinkSource: (source: string) => void;
+  };
+}
+
+export interface InternalMarkdownView {
+  load(): void;
+  editable: boolean;
+  showEditor(): void;
+  editMode: unknown;
+  unload(): void;
+}
+
+export interface KanbanGlobal extends Window {
+  kanbanFileModes: Record<string, string>;
+  _loaded: boolean;
+  app: App;
+}
+
+export interface KanbanLeaf extends WorkspaceLeaf {
+  id: string;
 }

@@ -134,7 +134,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
   }
 
   // Generic function binding
-  function bindToInstance<F extends Function>(fn: F): F {
+  function bindToInstance<F extends (...args: any[]) => any>(fn: F): F {
     return fn.bind(self);
   }
 
@@ -2168,7 +2168,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
     triggerChange();
   }
 
-  const CALLBACKS: { [k in keyof Options]: Function[] } = {
+  const CALLBACKS: { [k in keyof Options]: (() => void)[] } = {
     locale: [setupLocale, updateWeekdays],
     showMonths: [buildMonths, setCalendarWidth, buildWeekdays],
     minDate: [jumpToDate],
@@ -2191,13 +2191,13 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
     if (option !== null && typeof option === 'object') {
       Object.assign(self.config, option);
       for (const key in option) {
-        if (CALLBACKS[key] !== undefined) (CALLBACKS[key] as Function[]).forEach((x) => x());
+        if (CALLBACKS[key] !== undefined) (CALLBACKS[key] as (() => void)[]).forEach((x) => x());
       }
     } else {
       self.config[option as K] = value;
 
       if (CALLBACKS[option as K] !== undefined)
-        (CALLBACKS[option as K] as Function[]).forEach((x) => x());
+        (CALLBACKS[option as K] as (() => void)[]).forEach((x) => x());
       else if (HOOKS.indexOf(option as HookKey) > -1)
         (self.config as any)[option] = arrayify(value);
     }
