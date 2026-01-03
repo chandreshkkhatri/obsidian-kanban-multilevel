@@ -1052,7 +1052,8 @@ export class SettingsManager {
       .addText((text) => {
         const [value, globalValue] = this.getSetting('archive-date-separator', local);
 
-        text.inputEl.placeholder = globalValue ? `${globalValue} (default)` : '';
+        text.inputEl.placeholder =
+          typeof globalValue === 'string' ? `${globalValue} (default)` : '(default)';
         text.inputEl.value = value ? (value as string) : '';
 
         text.onChange((val) => {
@@ -1141,7 +1142,9 @@ export class SettingsManager {
 
         const [value, globalValue] = this.getSetting('date-picker-week-start', local);
 
-        dropdown.setValue(value?.toString() || globalValue?.toString() || '');
+        dropdown.setValue(
+          (value && value.toString()) || (globalValue && globalValue.toString()) || ''
+        );
         dropdown.onChange((value) => {
           if (value) {
             this.applySettingsUpdate({
@@ -1178,7 +1181,9 @@ export class SettingsManager {
           const [value, globalValue] = this.getSetting('inline-metadata-position', local);
 
           dropdown.setValue(
-            value?.toString() || globalValue?.toString() || defaultMetadataPosition
+            (value && value.toString()) ||
+              (globalValue && globalValue.toString()) ||
+              defaultMetadataPosition
           );
           dropdown.onChange((value: 'body' | 'footer' | 'metadata-table') => {
             if (value) {

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- micromark extensions use 'any' for tokens and states */
 import { Token } from 'mdast-util-from-markdown';
 import { factorySpace } from 'micromark-factory-space';
 import { markdownLineEndingOrSpace, markdownSpace } from 'micromark-util-character';
@@ -12,24 +11,28 @@ export const gfmTaskListItem: Extension = {
 };
 
 function tokenizeTasklistCheck(effects: Effects, ok: State, nok: State) {
-  const self = this;
+  // const self = this;
+  const ctx = this;
 
   return open;
 
   function open(code: number) {
     if (
       // Exit if there’s stuff before.
-      self.previous !== codes.eof ||
+      ctx.previous !== codes.eof ||
       // Exit if not in the first content that is the first child of a list
       // item.
-      !self._gfmTasklistFirstContentOfListItem
+      !ctx._gfmTasklistFirstContentOfListItem
     ) {
       return nok(code);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     effects.enter('taskListCheck' as any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     effects.enter('taskListCheckMarker' as any);
     effects.consume(code);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     effects.exit('taskListCheckMarker' as any);
     return inside;
   }
@@ -37,15 +40,19 @@ function tokenizeTasklistCheck(effects: Effects, ok: State, nok: State) {
   /** @type {State} */
   function inside(code: number) {
     if (markdownSpace(code)) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       effects.enter('taskListCheckValueUnchecked' as any);
       effects.consume(code);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       effects.exit('taskListCheckValueUnchecked' as any);
       return close;
     }
 
     if (code !== codes.rightSquareBracket) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       effects.enter('taskListCheckValueChecked' as any);
       effects.consume(code);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       effects.exit('taskListCheckValueChecked' as any);
       return close;
     }
@@ -56,9 +63,12 @@ function tokenizeTasklistCheck(effects: Effects, ok: State, nok: State) {
   /** @type {State} */
   function close(code: number) {
     if (code === codes.rightSquareBracket) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       effects.enter('taskListCheckMarker' as any);
       effects.consume(code);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       effects.exit('taskListCheckMarker' as any);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       effects.exit('taskListCheck' as any);
       return effects.check({ tokenize: spaceThenNonSpace }, ok, nok);
     }
@@ -99,7 +109,7 @@ export const gfmTaskListItemFromMarkdown = {
 function exitCheck(token: Token) {
   const node = /** @type {ListItem} */ this.stack[this.stack.length - 2];
   // We’re always in a paragraph, in a list item.
-  node.checked = token.type === ('taskListCheckValueChecked' as any);
+  node.checked = token.type === ('taskListCheckValueChecked' as string);
   node.checkChar = this.sliceSerialize(token);
 }
 

@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Platform } from 'obsidian';
 
 import English from './l10n/default';
 import { FPDate, FPHTMLCollection, FPHTMLElement, FPNodeList } from './types/globals';
-
-/* eslint-disable no-empty -- Intentional empty blocks */
+// Intentional empty blocks
 import { DayElement, FlatpickrFn, Instance } from './types/instance';
 import { CustomLocale, Locale, key as LocaleKey } from './types/locale';
 import {
@@ -1498,7 +1496,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
     const allowKeydown = self.isOpen && (!allowInput || !isInput);
     const allowInlineKeydown = self.config.inline && isInput && !allowInput;
 
-    if (e.keyCode === 13 && isInput) {
+    if (e.key === 'Enter' && isInput) {
       if (allowInput) {
         self.setDate(
           self._input.value,
@@ -1514,8 +1512,8 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
       const isTimeObj =
         !!self.timeContainer && self.timeContainer.contains(eventTarget as HTMLElement);
 
-      switch (e.keyCode) {
-        case 13:
+      switch (e.key) {
+        case 'Enter':
           if (isTimeObj) {
             e.preventDefault();
             updateTime();
@@ -1524,21 +1522,21 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
 
           break;
 
-        case 27: // escape
+        case 'Escape': // escape
           e.preventDefault();
           focusAndClose();
           break;
 
-        case 8:
-        case 46:
+        case 'Backspace':
+        case 'Delete':
           if (isInput && !self.config.allowInput) {
             e.preventDefault();
             self.clear();
           }
           break;
 
-        case 37:
-        case 39:
+        case 'ArrowLeft':
+        case 'ArrowRight':
           if (!isTimeObj && !isInput) {
             e.preventDefault();
 
@@ -1547,7 +1545,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
               self.daysContainer !== undefined &&
               (allowInput === false || (activeElement && isInView(activeElement)))
             ) {
-              const delta = e.keyCode === 39 ? 1 : -1;
+              const delta = e.key === 'ArrowRight' ? 1 : -1;
 
               if (!e.ctrlKey) focusOnDay(undefined, delta);
               else {
@@ -1560,10 +1558,10 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
 
           break;
 
-        case 38:
-        case 40: {
+        case 'ArrowUp':
+        case 'ArrowDown': {
           e.preventDefault();
-          const delta = e.keyCode === 40 ? 1 : -1;
+          const delta = e.key === 'ArrowDown' ? 1 : -1;
           if (
             (self.daysContainer && (eventTarget as DayElement).$i !== undefined) ||
             eventTarget === self.input ||
@@ -1584,7 +1582,7 @@ function FlatpickrInstance(element: HTMLElement, instanceConfig?: Options): Inst
 
           break;
         }
-        case 9:
+        case 'Tab':
           if (isTimeObj) {
             const elems = (
               [self.hourElement, self.minuteElement, self.secondElement, self.amPM] as Node[]

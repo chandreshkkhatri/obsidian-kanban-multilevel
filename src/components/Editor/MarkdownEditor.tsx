@@ -2,7 +2,7 @@ import { insertBlankLine } from '@codemirror/commands';
 import { EditorSelection, Extension, Prec } from '@codemirror/state';
 import { EditorView, ViewUpdate, keymap, placeholder as placeholderExt } from '@codemirror/view';
 import classcat from 'classcat';
-import { EditorPosition, Editor as ObsidianEditor, Platform } from 'obsidian';
+import { Component, EditorPosition, Editor as ObsidianEditor, Platform } from 'obsidian';
 import { MutableRefObject, useContext, useEffect, useRef } from 'preact/compat';
 import { KanbanView } from 'src/KanbanView';
 import { StateManager } from 'src/StateManager';
@@ -39,15 +39,20 @@ function getEditorAppProxy(view: KanbanView) {
         return new Proxy(view.app.vault, {
           get(target, prop, reveiver) {
             if (prop === 'config') {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian vault config
-              return new Proxy((view.app.vault as any).config, {
-                get(target, prop, reveiver) {
-                  if (['showLineNumber', 'foldHeading', 'foldIndent'].includes(prop as string)) {
-                    return false;
-                  }
-                  return Reflect.get(target, prop, reveiver);
-                },
-              });
+              // Internal Obsidian vault config
+              return new Proxy(
+                ((view.app.vault as unknown as { config: Record<string, unknown> }).config as Record<
+                  string,
+                  unknown
+                >) || {},
+                {
+                  get(target, prop, reveiver) {
+                    if (['showLineNumber', 'foldHeading', 'foldIndent'].includes(prop as string)) {
+                      return false;
+                    }
+                    return Reflect.get(target, prop, reveiver);
+                  },
+                });
             }
             return Reflect.get(target, prop, reveiver);
           },
@@ -61,8 +66,8 @@ function getEditorAppProxy(view: KanbanView) {
 function getMarkdownController(
   view: KanbanView,
   getEditor: () => ObsidianEditor
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Return object contains internal Obsidian Editor properties
-): Record<any, any> {
+  // Return object contains internal Obsidian Editor properties
+): Record<string, unknown> {
   return {
     app: view.app,
     showSearch: noop,
@@ -86,17 +91,19 @@ function getMarkdownController(
 function setInsertMode(cm: EditorView) {
   const vim = getVimPlugin(cm);
   if (vim) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing CodeMirror Vim plugin adapter
-    (window as any).CodeMirrorAdapter?.Vim?.enterInsertMode(vim);
+    // Accessing CodeMirror Vim plugin adapter
+    (window as unknown as { CodeMirrorAdapter?: { Vim?: { enterInsertMode: (vim: unknown) => void } } })
+      .CodeMirrorAdapter?.Vim?.enterInsertMode(vim);
   }
 }
 
 function getVimPlugin(cm: EditorView): string {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- EditorView.plugins is not exposed in type definitions
-  return (cm as any)?.plugins?.find((p: any) => {
-    if (!p?.value) return false;
-    return 'useNextTextInput' in p.value && 'waitForCopy' in p.value;
-  })?.value?.cm;
+  return (cm as unknown as { plugins?: { value: { cm: string } }[] })?.plugins?.find(
+    (p: { value: { cm: string } }) => {
+      if (!p?.value) return false;
+      return 'useNextTextInput' in p.value && 'waitForCopy' in p.value;
+    }
+  )?.value?.cm;
 }
 
 export function MarkdownEditor({
@@ -133,7 +140,7 @@ export function MarkdownEditor({
       updateBottomPadding() { }
       onUpdate(update: ViewUpdate, changed: boolean) {
         super.onUpdate(update, changed);
-        onChange && onChange(update);
+        if (onChange) onChange(update);
       }
       buildLocalExtensions(): Extension[] {
         const extensions = super.buildLocalExtensions();
@@ -185,8 +192,8 @@ export function MarkdownEditor({
           if (this.app.vault.getConfig('smartIndentList')) {
             this.editor.newlineAndIndentContinueMarkdownList();
           } else {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- CodeMirror EditorView type compatibility
-            insertBlankLine(cm as any);
+            // CodeMirror EditorView type compatibility
+            insertBlankLine(cm as unknown as EditorView);
           }
           return true;
         };
@@ -222,10 +229,26 @@ export function MarkdownEditor({
       }
     }
 
+    interface KanbanInternalEditor extends Component {
+      cm: EditorView;
+      editor: ObsidianEditor;
+      set(val: string): void;
+    }
+
     const controller = getMarkdownController(view, () => editor.editor);
     const app = getEditorAppProxy(view);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Editor class is not exposed in type definitions
-    const editor = view.plugin.addChild(new (Editor as any)(app, elRef.current, controller));
+    // Editor class is not exposed in type definitions
+    const editor = view.plugin.addChild(
+      new (Editor as unknown as new (
+        app: unknown,
+        el: unknown,
+        controller: unknown
+      ) => KanbanInternalEditor)(
+        app,
+        elRef.current,
+        controller
+      )
+    );
     const cm: EditorView = editor.cm;
 
     internalRef.current = cm;
@@ -260,7 +283,7 @@ export function MarkdownEditor({
           view.activeEditor = null;
         }
 
-        if (app.workspace.activeEditor === controller) {
+        if ((app.workspace.activeEditor as unknown) === controller) {
           app.workspace.activeEditor = null;
           // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal mobileToolbar
           (app as any).mobileToolbar.update();

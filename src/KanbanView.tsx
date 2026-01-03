@@ -37,8 +37,7 @@ export class KanbanView extends TextFileView implements HoverParent {
   previewCache: Map<string, BasicMarkdownRenderer>;
   previewQueue: PromiseQueue;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- MarkdownEditor class is not exposed in type definitions
-  activeEditor: any;
+  activeEditor: unknown;
   viewSettings: KanbanViewSettings = {};
 
   get isPrimary(): boolean {
@@ -46,8 +45,7 @@ export class KanbanView extends TextFileView implements HoverParent {
   }
 
   get id(): string {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- WorkspaceLeaf.id is not exposed in type definitions
-    return `${(this.leaf as any).id}:::${this.file?.path}`;
+    return `${(this.leaf as unknown as { id: string }).id}:::${this.file?.path}`;
   }
 
   get isShiftPressed(): boolean {
