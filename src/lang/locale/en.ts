@@ -11,7 +11,7 @@ const en = {
     'Error: cannot create kanban, the current note is not empty',
   'New kanban board': 'New kanban board',
   'Untitled kanban': 'Untitled kanban',
-  'Toggle between kanban and markdown mode': 'Toggle between kanban and markdown mode',
+  'Toggle between kanban and Markdown mode': 'Toggle between kanban and Markdown mode',
 
   'View as board': 'View as board',
   'View as list': 'View as list',
@@ -19,12 +19,12 @@ const en = {
   'Board view': 'Board view',
 
   // KanbanView.tsx
-  'Open as markdown': 'Open as markdown',
+  'Open as Markdown': 'Open as Markdown',
   'Open board settings': 'Open board settings',
   'Archive completed cards': 'Archive completed cards',
   'Something went wrong': 'Something went wrong',
   'You may wish to open as markdown and inspect or edit the file.':
-    'You may wish to open as markdown and inspect or edit the file.',
+    'You may wish to open as Markdown and inspect or edit the file.',
   'Are you sure you want to archive all completed cards on this board?':
     'Are you sure you want to archive all completed cards on this board?',
 
@@ -32,7 +32,7 @@ const en = {
   Complete: 'Complete',
   Archive: 'Archive',
   'Invalid Kanban file: problems parsing frontmatter':
-    'Invalid Kanban file: problems parsing frontmatter',
+    'Invalid kanban file: problems parsing frontmatter',
   "I don't know how to interpret this line:": "I don't know how to interpret this line:",
   Untitled: 'Untitled', // auto-created column
 
@@ -72,7 +72,7 @@ const en = {
     'Enter a number to set the list width in pixels.',
   'Maximum number of archived cards': 'Maximum number of archived cards',
   "Archived cards can be viewed in markdown mode. This setting will begin removing old cards once the limit is reached. Setting this value to -1 will allow a board's archive to grow infinitely.":
-    "Archived cards can be viewed in markdown mode. This setting will begin removing old cards once the limit is reached. Setting this value to -1 will allow a board's archive to grow infinitely.",
+    "Archived cards can be viewed in Markdown mode. This setting will begin removing old cards once the limit is reached. Setting this value to -1 will allow a board's archive to grow infinitely.",
   'Display card checkbox': 'Display card checkbox',
   'When toggled, a checkbox will be displayed with each card':
     'When toggled, a checkbox will be displayed with each card',
@@ -86,7 +86,7 @@ const en = {
     'When this is typed, it will trigger the time selector',
   'Date format': 'Date format',
   'This format will be used when saving dates in markdown.':
-    'This format will be used when saving dates in markdown.',
+    'This format will be used when saving dates in Markdown.',
   'For more syntax, refer to': 'For more syntax, refer to',
   'Format reference': 'Format reference',
   'Your current syntax looks like this': 'Your current syntax looks like this',
@@ -96,7 +96,7 @@ const en = {
     'This format will be used when displaying dates in kanban cards.',
   'Show relative date': 'Show relative date',
   "When toggled, cards will display the distance between today and the card's date. Eg. 'In 3 days', 'A month ago'. Relative dates will not be shown for dates from the tasks and dataview plugins.":
-    "When toggled, cards will display the distance between today and the card's date. Eg. 'In 3 days', 'A month ago'. Relative dates will not be shown for dates from the tasks and dataview plugins.",
+    "When toggled, cards will display the distance between today and the card's date. eg. 'In 3 days', 'A month ago'. Relative dates will not be shown for dates from the Tasks and Dataview plugins.",
 
   'Move dates to card footer': 'Move dates to card footer',
   "When toggled, dates will be displayed in the card's footer instead of the card's body.":
@@ -122,7 +122,7 @@ const en = {
     'When toggled, dates will link to daily notes. Eg. [[2021-04-26]]',
   'Add date and time to archived cards': 'Add date and time to archived cards',
   'When toggled, the current date and time will be added to the card title when it is archived. Eg. - [ ] 2021-05-14 10:00am My card title':
-    'When toggled, the current date and time will be added to the card title when it is archived. Eg. - [ ] 2021-05-14 10:00am My card title',
+    'When toggled, the current date and time will be added to the card title when it is archived. eg. - [ ] 2021-05-14 10:00am My card title',
   'Add archive date/time after card title': 'Add archive date/time after card title',
   'When toggled, the archived date/time will be added after the card title, e.g.- [ ] My card title 2021-05-14 10:00am. By default, it is inserted before the title.':
     'When toggled, the archived date/time will be added after the card title, e.g.- [ ] My card title 2021-05-14 10:00am. By default, it is inserted before the title.',
@@ -133,9 +133,9 @@ const en = {
   'Kanban Plugin': 'Kanban plugin',
   'Tag click action': 'Tag click action',
   'Search Kanban Board': 'Search kanban board',
-  'Search Obsidian Vault': 'Search obsidian vault',
+  'Search Obsidian Vault': 'Search Obsidian vault',
   'This setting controls whether clicking the tags displayed below the card title opens the obsidian search or the kanban board search.':
-    'This setting controls whether clicking the tags displayed below the card title opens the obsidian search or the kanban board search.',
+    'This setting controls whether clicking the tags displayed below the card title opens the Obsidian search or the kanban board search.',
   'Tag colors': 'Tag colors',
   'Set colors for tags displayed in cards.': 'Set colors for tags displayed in cards.',
   'Linked page metadata': 'Linked page metadata',
@@ -174,7 +174,7 @@ const en = {
   Delete: 'Delete',
   'Add key': 'Add key',
   'Add tag': 'Add tag',
-  'Field contains markdown': 'Field contains markdown',
+  'Field contains Markdown': 'Field contains Markdown',
   'Tag sort order': 'Tag sort order',
   'Set an explicit sort order for the specified tags.':
     'Set an explicit sort order for the specified tags.',
