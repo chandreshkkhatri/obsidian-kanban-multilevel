@@ -948,12 +948,12 @@ export class SettingsManager {
         () => {
           const [value, globalValue] = this.getSetting('date-display-format', local);
           const defaultFormat = getDefaultDateFormat(this.app);
-          return value || globalValue || defaultFormat;
+          return (value || globalValue || defaultFormat) as string;
         },
         () => {
           const [value, globalValue] = this.getSetting('time-format', local);
           const defaultFormat = getDefaultTimeFormat(this.app);
-          return value || globalValue || defaultFormat;
+          return (value || globalValue || defaultFormat) as string;
         }
       );
 
@@ -1108,7 +1108,7 @@ export class SettingsManager {
         const [timeFmt, globalTimeFmt] = this.getSetting('time-format', local);
         const defaultTimeFmt = timeFmt || globalTimeFmt || getDefaultTimeFormat(this.app);
 
-        const defaultFormat = `${defaultDateFmt} ${defaultTimeFmt}`;
+        const defaultFormat = `${defaultDateFmt as string} ${defaultTimeFmt as string}`;
 
         mf.setPlaceholder(defaultFormat);
         mf.setDefaultFormat(defaultFormat);

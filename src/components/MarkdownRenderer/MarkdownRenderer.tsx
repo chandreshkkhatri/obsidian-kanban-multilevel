@@ -1,7 +1,7 @@
 import classcat from 'classcat';
 import Mark from 'mark.js';
 import { moment } from 'obsidian';
-/* eslint-disable @typescript-eslint/no-explicit-any -- Interaction with Obsidian MarkdownRenderer */
+
 import { Component, MarkdownRenderer as ObsidianRenderer, getLinkpath } from 'obsidian';
 import * as preact from 'preact';
 import { memo, useEffect, useRef } from 'preact/compat';
@@ -98,7 +98,7 @@ export class BasicMarkdownRenderer extends Component {
     );
 
     this.renderCapability.resolve();
-    if (!(this.view as any)?._loaded || !(this as any)._loaded) return;
+    if (!(this.view as unknown as { _loaded: boolean })?._loaded || !(this as unknown as { _loaded: boolean })._loaded) return;
 
     const { containerEl } = this;
 
@@ -192,7 +192,7 @@ export class BasicMarkdownRenderer extends Component {
   }
 
   set(markdown: string) {
-    if ((this as any)._loaded) {
+    if ((this as unknown as { _loaded: boolean })._loaded) {
       this.markdown = markdown;
       this.renderCapability = new PromiseCapability<void>();
       this.unload();

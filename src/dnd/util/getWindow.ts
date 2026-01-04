@@ -1,9 +1,12 @@
+interface ObsidianElement extends Element {
+  win: Window;
+  doc: Document;
+}
+
 export function getParentWindow(el: Element) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Obsidian-specific property
-  return (el as any).win;
+  return (el as ObsidianElement).win;
 }
 
 export function getParentBodyElement(el: Element) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Obsidian-specific property
-  return (el as any).doc.body;
+  return (el as ObsidianElement).doc.body;
 }

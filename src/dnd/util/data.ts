@@ -9,7 +9,7 @@ export function getEntityFromPath(root: Nestable, path: Path): Nestable {
   const step = path.length ? path[0] : null;
 
   if (step !== null && root.children && root.children[step]) {
-    return getEntityFromPath(root.children[step], path.slice(1));
+    return getEntityFromPath(root.children[step] as Nestable, path.slice(1));
   }
 
   return root;
@@ -22,7 +22,7 @@ export function buildUpdateMutation(path: Path, mutation: Spec<Nestable>) {
     pathedMutation = {
       children: {
         [path[i]]: pathedMutation,
-      },
+      } as unknown as Spec<unknown[], never>,
     };
   }
 
@@ -36,7 +36,7 @@ export function buildUpdateParentMutation(path: Path, mutation: Spec<Nestable>) 
     pathedMutation = {
       children: {
         [path[i]]: pathedMutation,
-      },
+      } as unknown as Spec<unknown[], never>,
     };
   }
 
@@ -44,8 +44,9 @@ export function buildUpdateParentMutation(path: Path, mutation: Spec<Nestable>) 
 }
 
 export function buildRemoveMutation(path: Path, replacement?: Nestable) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Spec type from immutability-helper
-  const val: Spec<any, any> = replacement ? [path.last(), 1, replacement] : [path.last(), 1];
+  const val: [number, number, Nestable?] = replacement
+    ? [path.last(), 1, replacement]
+    : [path.last(), 1];
   return buildUpdateParentMutation(path, {
     children: {
       $splice: [val],

@@ -6,9 +6,9 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import classcat from 'classcat';
-import update from 'immutability-helper';
+import update, { Spec } from 'immutability-helper';
 import { useEffect, useMemo, useRef } from 'preact/compat';
-/* eslint-disable @typescript-eslint/no-explicit-any -- Complex Preact component props */
+
 
 import { IntersectionObserverHandler } from 'src/dnd/managers/ScrollManager';
 
@@ -103,7 +103,6 @@ export function TableView({
     getColumnCanGlobalFilter: () => true,
     enableColumnResizing: true,
     columnResizeMode: 'onChange',
-    // @ts-expect-error - columnResizeDirection is a valid option
     columnResizeDirection: stateManager.app.vault.getConfig('rightToLeft') ? 'rtl' : 'ltr',
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -130,7 +129,7 @@ export function TableView({
               },
             },
           },
-        });
+        } as unknown as Spec<Board>);
       });
     }, 500);
   }, [tableState.columnSizing]);
@@ -204,7 +203,8 @@ export function TableView({
                       className={classcat({
                         'mod-has-icon': cell.column.id === 'lane',
                         'mod-search-match': row.columnFiltersMeta[cell.column.id]
-                          ? (row.columnFiltersMeta[cell.column.id] as any).itemRank.passed
+                          ? (row.columnFiltersMeta[cell.column.id] as unknown as { itemRank: { passed: boolean } }).itemRank
+                            .passed
                           : false,
                       })}
                     >

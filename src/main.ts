@@ -20,7 +20,7 @@ import { getParentWindow } from './dnd/util/getWindow';
 import { hasFrontmatterKey } from './helpers';
 import { t } from './lang/helpers';
 import { basicFrontmatter, frontmatterKey } from './parsers/common';
-import { KanbanApp, KanbanGlobal, KanbanLeaf } from './types';
+import { KanbanApp, KanbanGlobal, KanbanLeaf, MarkdownEditorComponent } from './types';
 
 interface WindowRegistry {
   viewMap: Map<string, KanbanView>;
@@ -91,15 +91,15 @@ export default class KanbanPlugin extends Plugin {
     this.windowRegistry.clear();
     this.kanbanFileModes = {};
 
-    (this.app as KanbanApp).workspace.unregisterHoverLinkSource(frontmatterKey);
+    (this.app as unknown as KanbanApp).workspace.unregisterHoverLinkSource(frontmatterKey);
   }
 
-  MarkdownEditor: unknown;
+  MarkdownEditor: new (...args: unknown[]) => MarkdownEditorComponent;
 
   async onload() {
     await this.loadSettings();
 
-    this.MarkdownEditor = getEditorClass(this.app as KanbanApp);
+    this.MarkdownEditor = getEditorClass(this.app as unknown as KanbanApp);
 
     this.registerEditorSuggest(new TimeSuggest(this.app, this));
     this.registerEditorSuggest(new DateSuggest(this.app, this));
@@ -138,8 +138,7 @@ export default class KanbanPlugin extends Plugin {
     // Mount an empty component to start; views will be added as we go
     this.mount(window);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal floatingSplit
-    (this.app.workspace as any).floatingSplit?.children?.forEach((c: any) => {
+    this.app.workspace.floatingSplit?.children?.forEach((c: { win: Window }) => {
       this.mount(c.win);
     });
 
@@ -267,8 +266,7 @@ export default class KanbanPlugin extends Plugin {
     }
 
     const reg = this.windowRegistry.get(win);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
-    const oldId = `${(view.leaf as any).id}:::${oldPath}`;
+    const oldId = `${view.leaf.id}:::${oldPath}`;
 
     if (reg.viewMap.has(oldId)) {
       reg.viewMap.delete(oldId);
@@ -345,8 +343,7 @@ export default class KanbanPlugin extends Plugin {
       : this.app.fileManager.getNewFileParent(this.app.workspace.getActiveFile()?.path || '');
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- createNewMarkdownFile is internal
-      const kanban: TFile = await (this.app.fileManager as any).createNewMarkdownFile(
+      const kanban: TFile = await this.app.fileManager.createNewMarkdownFile(
         targetFolder,
         t('Untitled Kanban')
       );
@@ -408,8 +405,7 @@ export default class KanbanPlugin extends Plugin {
                 .setIcon(kanbanIcon)
                 .setSection('pane')
                 .onClick(() => {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
-                  this.kanbanFileModes[(leaf as any).id || file.path] = kanbanViewType;
+                  this.kanbanFileModes[leaf.id || file.path] = kanbanViewType;
                   void this.setKanbanView(leaf);
                 });
             });
@@ -430,8 +426,7 @@ export default class KanbanPlugin extends Plugin {
               .setIcon(kanbanIcon)
               .setSection('pane')
               .onClick(() => {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
-                this.kanbanFileModes[(leaf as any).id || file.path] = kanbanViewType;
+                this.kanbanFileModes[leaf.id || file.path] = kanbanViewType;
                 void this.setKanbanView(leaf);
               });
           });
@@ -445,8 +440,7 @@ export default class KanbanPlugin extends Plugin {
                 .setIcon(kanbanIcon)
                 .setSection('pane')
                 .onClick(() => {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
-                  this.kanbanFileModes[(leaf as any).id || file.path] = 'markdown';
+                  this.kanbanFileModes[leaf.id || file.path] = 'markdown';
                   void this.setMarkdownView(leaf);
                 });
             });
@@ -560,23 +554,20 @@ export default class KanbanPlugin extends Plugin {
     );
 
     this.registerEvent(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dataview event args
-      (this.app as any).metadataCache.on('dataview:metadata-change', (_: any, file: TFile) => {
+      this.app.metadataCache.on('dataview:metadata-change', (_: unknown, file: TFile) => {
         notifyFileChange(file);
       })
     );
 
     this.registerEvent(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dataview event args
-      (this.app as any).metadataCache.on('dataview:api-ready', () => {
+      this.app.metadataCache.on('dataview:api-ready', () => {
         this.stateManagers.forEach((manager) => {
           manager.forceRefresh();
         });
       })
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Internal API registerHoverLinkSource
-    (this.app.workspace as any).registerHoverLinkSource(frontmatterKey, {
+    this.app.workspace.registerHoverLinkSource(frontmatterKey, {
       display: 'Kanban',
       defaultMod: true,
     });
@@ -623,15 +614,13 @@ export default class KanbanPlugin extends Plugin {
         const activeView = this.app.workspace.getActiveViewOfType(KanbanView);
 
         if (activeView) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
-          this.kanbanFileModes[(activeView.leaf as any).id || activeFile.path] = 'markdown';
+          this.kanbanFileModes[activeView.leaf.id || activeFile.path] = 'markdown';
           void this.setMarkdownView(activeView.leaf);
         } else if (fileIsKanban) {
           const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
 
           if (activeView) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal ID
-            this.kanbanFileModes[(activeView.leaf as any).id || activeFile.path] = kanbanViewType;
+            this.kanbanFileModes[activeView.leaf.id || activeFile.path] = kanbanViewType;
             void this.setKanbanView(activeView.leaf);
           }
         }
@@ -741,7 +730,7 @@ export default class KanbanPlugin extends Plugin {
   registerMonkeyPatches() {
     this.app.workspace.onLayoutReady(() => {
       this.register(
-        around((this.app as KanbanApp).commands, {
+        around((this.app as unknown as KanbanApp).commands, {
           executeCommand(next) {
             return function (command: { id: string }) {
               const view = this.app.workspace.getActiveViewOfType(KanbanView);
@@ -797,8 +786,9 @@ export default class KanbanPlugin extends Plugin {
         },
 
         setViewState(next) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Rest parameters contain internal Obsidian event data
-          return function (state: ViewState, ...rest: any[]) {
+          return function (state: ViewState, ...rest: unknown[]) {
+            const self = this as unknown as KanbanLeaf;
+
             if (
               // Don't force kanban mode during shutdown
               (self as unknown as KanbanGlobal)._loaded &&
@@ -807,7 +797,7 @@ export default class KanbanPlugin extends Plugin {
               state.state?.file &&
               // And the current mode of the file is not set to markdown
               (self as unknown as KanbanGlobal).kanbanFileModes[
-                (this as KanbanLeaf).id || (state.state.file as string)
+                (self as unknown as KanbanLeaf).id || (state.state.file as string)
               ] !== 'markdown'
             ) {
               // Then check for the kanban frontMatterKey
@@ -825,11 +815,11 @@ export default class KanbanPlugin extends Plugin {
                 (self as unknown as KanbanGlobal).kanbanFileModes[state.state.file as string] =
                   kanbanViewType;
 
-                return next.apply(this, [newState, ...rest]);
+                return next.apply(self, [newState, ...rest]);
               }
             }
 
-            return next.apply(this, [state, ...rest]);
+            return next.apply(self, [state, ...rest]);
           };
         },
       })

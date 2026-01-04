@@ -70,10 +70,8 @@ export function bindMarkdownEvents(view: KanbanView) {
     if (!link) return;
 
     const menu = new Menu();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
-    (menu as any).addSections(['title', 'open', 'action', 'view', 'info', '', 'danger']);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
-    (app.workspace as any).handleLinkContextMenu(menu, link.href, view.file.path);
+    menu.addSections(['title', 'open', 'action', 'view', 'info', '', 'danger']);
+    app.workspace.handleLinkContextMenu(menu, link.href, view.file.path);
     menu.showAtMouseEvent(evt);
   });
   contentEl.on('mouseover', 'a.internal-link', (evt: MouseEvent, targetEl: HTMLElement) => {
@@ -110,8 +108,7 @@ export function bindMarkdownEvents(view: KanbanView) {
     if (!link) return;
 
     const menu = new Menu();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
-    (menu as any).addSections([
+    menu.addSections([
       'title',
       'open',
       'selection',
@@ -122,23 +119,23 @@ export function bindMarkdownEvents(view: KanbanView) {
       '',
       'danger',
     ]);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
-    (app.workspace as any).handleExternalLinkContextMenu(menu, link.href);
+    app.workspace.handleExternalLinkContextMenu(menu, link.href);
     menu.showAtMouseEvent(evt);
   });
   contentEl.on('click', 'a.tag', (evt: MouseEvent, targetEl: HTMLElement) => {
     if (evt.button !== 0) return;
 
     const tag = targetEl.getText();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian API
-    const searchPlugin = (app as any).internalPlugins.getPluginById('global-search');
+    const searchPlugin = app.internalPlugins.getPluginById('global-search');
     const stateManager = view.plugin.getStateManager(view.file);
     const tagAction = stateManager.getSetting('tag-action');
 
     if (tagAction === 'kanban') {
       view.emitter.emit('hotkey', { commandId: 'editor:open-search', data: tag });
     } else if (searchPlugin) {
-      searchPlugin.instance.openGlobalSearch(`tag:${tag}`);
+      (searchPlugin.instance as { openGlobalSearch: (q: string) => void }).openGlobalSearch(
+        `tag:${tag}`
+      );
     }
   });
 }

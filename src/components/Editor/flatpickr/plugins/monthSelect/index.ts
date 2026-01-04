@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DayElement, Instance } from '../../types/instance';
 import { Plugin } from '../../types/options';
 import { clearNode, getEventTarget } from '../../utils/dom';
@@ -235,7 +234,7 @@ function monthSelectPlugin(pluginConfig?: Partial<Config>): Plugin {
       ArrowUp: -3,
     };
 
-    function onKeyDown(_: any, __: any, ___: any, e: KeyboardEvent) {
+    function onKeyDown(_: unknown, __: unknown, ___: unknown, e: KeyboardEvent) {
       const shouldMove = shifts[e.key] !== undefined;
       if (!shouldMove && e.key !== 'Enter') {
         return;

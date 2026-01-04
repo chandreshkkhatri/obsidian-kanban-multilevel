@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Generic component types with many any usages */
 import { TFile } from 'obsidian';
 import { KanbanSettings } from 'src/Settings';
 import { Nestable } from 'src/dnd/types';
@@ -126,7 +125,7 @@ export const DataTypes = {
 export const ItemTemplate = {
   accepts: [DataTypes.Item],
   type: DataTypes.Item,
-  children: [] as any[],
+  children: [] as unknown[],
 };
 
 export const LaneTemplate = {
@@ -142,27 +141,27 @@ export const BoardTemplate = {
 export const MetadataSettingTemplate = {
   accepts: [DataTypes.MetadataSetting],
   type: DataTypes.MetadataSetting,
-  children: [] as any[],
+  children: [] as unknown[],
 };
 
 export const TagSortSettingTemplate = {
   accepts: [DataTypes.TagSortSetting],
   type: DataTypes.TagSortSetting,
-  children: [] as any[],
+  children: [] as unknown[],
 };
 
 // TODO: all this is unecessary because these aren't sortable
 export const TagColorSettingTemplate = {
   accepts: [] as string[],
   type: DataTypes.TagColorSetting,
-  children: [] as any[],
+  children: [] as unknown[],
 };
 
 // TODO: all this is unecessary because these aren't sortable
 export const DateColorSettingTemplate = {
   accepts: [] as string[],
   type: DataTypes.DateColorSetting,
-  children: [] as any[],
+  children: [] as unknown[],
 };
 
 export interface EditCoordinates {

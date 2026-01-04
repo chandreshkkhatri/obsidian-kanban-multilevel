@@ -1,6 +1,6 @@
 import animateScrollTo from 'animated-scroll-to';
 import classcat from 'classcat';
-import update from 'immutability-helper';
+import update, { Spec } from 'immutability-helper';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat';
 import { KanbanView } from 'src/KanbanView';
 import { StateManager } from 'src/StateManager';
@@ -8,7 +8,7 @@ import { useIsAnythingDragging } from 'src/dnd/components/DragOverlay';
 import { ScrollContainer } from 'src/dnd/components/ScrollContainer';
 import { SortPlaceholder } from 'src/dnd/components/SortPlaceholder';
 import { Sortable } from 'src/dnd/components/Sortable';
-/* eslint-disable @typescript-eslint/no-explicit-any -- Complex Preact component props and state */
+
 import { createHTMLDndHandlers } from 'src/dnd/managers/DragManager';
 import { t } from 'src/lang/helpers';
 
@@ -22,7 +22,7 @@ import { MultiRowBoard } from './MultiRowBoard/MultiRowBoard';
 import { TableView } from './Table/Table';
 import { KanbanContext, SearchContext } from './context';
 import { baseClassName, c, useSearchValue } from './helpers';
-import { DataTypes } from './types';
+import { Board, DataTypes } from './types';
 
 const boardScrollTiggers = [DataTypes.Item, DataTypes.Lane];
 const boardAccepts = [DataTypes.Lane];
@@ -32,7 +32,7 @@ interface KanbanProps {
   view: KanbanView;
 }
 
-function getCSSClass(frontmatter: Record<string, any>): string[] {
+function getCSSClass(frontmatter: Record<string, unknown>): string[] {
   const classes = [];
   if (Array.isArray(frontmatter.cssclass)) {
     classes.push(...frontmatter.cssclass);
@@ -160,7 +160,7 @@ export const Kanban = ({ view, stateManager }: KanbanProps) => {
               $set: board.data.archive.slice(maxArchiveLength * -1),
             },
           },
-        })
+        } as Spec<Board>)
       );
     }
   }, [boardData?.data.archive.length, maxArchiveLength]);

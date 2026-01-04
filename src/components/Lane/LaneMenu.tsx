@@ -1,5 +1,5 @@
-import update from 'immutability-helper';
-/* eslint-disable @typescript-eslint/no-explicit-any -- Internal Obsidian API access in menu codes */
+import update, { Spec } from 'immutability-helper';
+
 import { Menu, Platform } from 'obsidian';
 import { Dispatch, StateUpdater, useContext, useEffect, useMemo, useState } from 'preact/hooks';
 import { Path } from 'src/dnd/types';
@@ -185,7 +185,7 @@ export function useSettingsMenu({ setEditState, path, lane }: UseSettingsMenuPar
                         : LaneSort.TitleAsc,
                   },
                 },
-              })
+              } as unknown as Spec<Lane>)
             );
           });
       });
@@ -224,7 +224,7 @@ export function useSettingsMenu({ setEditState, path, lane }: UseSettingsMenuPar
                         lane.data.sorted === LaneSort.DateAsc ? LaneSort.DateDsc : LaneSort.DateAsc,
                     },
                   },
-                })
+                } as unknown as Spec<Lane>)
               );
             });
         });
@@ -275,7 +275,7 @@ export function useSettingsMenu({ setEditState, path, lane }: UseSettingsMenuPar
                         lane.data.sorted === LaneSort.TagsAsc ? LaneSort.TagsDsc : LaneSort.TagsAsc,
                     },
                   },
-                })
+                } as unknown as Spec<Lane>)
               );
             });
         });
@@ -321,7 +321,7 @@ export function useSettingsMenu({ setEditState, path, lane }: UseSettingsMenuPar
                         $set: lane.data.sorted === k + '-asc' ? k + '-desc' : k + '-asc',
                       },
                     },
-                  })
+                  } as unknown as Spec<Lane>)
                 );
               });
           });
@@ -333,7 +333,7 @@ export function useSettingsMenu({ setEditState, path, lane }: UseSettingsMenuPar
       addSortOptions(menu);
     } else {
       menu.addItem((item) => {
-        const submenu = (item as any).setTitle(t('Sort by')).setIcon('arrow-down-up').setSubmenu();
+        const submenu = (item as unknown as { setTitle: (title: string) => { setIcon: (icon: string) => { setSubmenu: () => Menu } } }).setTitle(t('Sort by')).setIcon('arrow-down-up').setSubmenu();
 
         addSortOptions(submenu);
       });

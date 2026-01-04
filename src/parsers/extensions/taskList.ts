@@ -22,33 +22,26 @@ function tokenizeTasklistCheck(effects: Effects, ok: State, nok: State) {
       return nok(code);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    effects.enter('taskListCheck' as any);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    effects.enter('taskListCheckMarker' as any);
+    effects.enter('taskListCheck' as unknown as typeof types.whitespace);
+    effects.enter('taskListCheckMarker' as unknown as typeof types.whitespace);
     effects.consume(code);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    effects.exit('taskListCheckMarker' as any);
+    effects.exit('taskListCheckMarker' as unknown as typeof types.whitespace);
     return inside;
   };
 
   /** @type {State} */
   const inside = (code: number) => {
     if (markdownSpace(code)) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      effects.enter('taskListCheckValueUnchecked' as any);
+      effects.enter('taskListCheckValueUnchecked' as unknown as typeof types.whitespace);
       effects.consume(code);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      effects.exit('taskListCheckValueUnchecked' as any);
+      effects.exit('taskListCheckValueUnchecked' as unknown as typeof types.whitespace);
       return close;
     }
 
     if (code !== codes.rightSquareBracket) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      effects.enter('taskListCheckValueChecked' as any);
+      effects.enter('taskListCheckValueChecked' as unknown as typeof types.whitespace);
       effects.consume(code);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      effects.exit('taskListCheckValueChecked' as any);
+      effects.exit('taskListCheckValueChecked' as unknown as typeof types.whitespace);
       return close;
     }
 
@@ -58,13 +51,10 @@ function tokenizeTasklistCheck(effects: Effects, ok: State, nok: State) {
   /** @type {State} */
   const close = (code: number) => {
     if (code === codes.rightSquareBracket) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      effects.enter('taskListCheckMarker' as any);
+      effects.enter('taskListCheckMarker' as unknown as typeof types.whitespace);
       effects.consume(code);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      effects.exit('taskListCheckMarker' as any);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      effects.exit('taskListCheck' as any);
+      effects.exit('taskListCheckMarker' as unknown as typeof types.whitespace);
+      effects.exit('taskListCheck' as unknown as typeof types.whitespace);
       return effects.check({ tokenize: spaceThenNonSpace }, ok, nok);
     }
 

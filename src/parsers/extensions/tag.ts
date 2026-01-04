@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- micromark extensions use 'any' for tokens and states */
 import { Extension as FromMarkdownExtension, Token } from 'mdast-util-from-markdown';
 import { markdownLineEndingOrSpace } from 'micromark-util-character';
-import { Effects, Extension, State } from 'micromark-util-types';
+import { Effects, Extension, State, TokenType } from 'micromark-util-types';
 
 import { getSelf } from './helpers';
 
@@ -21,15 +20,15 @@ export function tagExtension(): Extension {
         return nok(code);
       }
 
-      effects.enter(name as any);
-      effects.enter(`${name}Marker` as any);
+      effects.enter(name as TokenType);
+      effects.enter(`${name}Marker` as TokenType);
 
       return consumeStart(code);
     };
 
-    const consumeStart = (code: number): State => {
+    const consumeStart = (code: number) => {
       if (startMarkerCursor === 1) {
-        effects.exit(`${name}Marker` as any);
+        effects.exit(`${name}Marker` as TokenType);
         return consumeData(code);
       }
 
@@ -44,12 +43,12 @@ export function tagExtension(): Extension {
     };
 
     const consumeData = (code: number) => {
-      effects.enter(`${name}Data` as any);
-      effects.enter(`${name}Target` as any);
+      effects.enter(`${name}Data` as TokenType);
+      effects.enter(`${name}Target` as TokenType);
       return consumeTarget(code);
     };
 
-    const consumeTarget = (code: number): State => {
+    const consumeTarget = (code: number) => {
       if (
         code === null ||
         markdownLineEndingOrSpace(code) ||
@@ -58,9 +57,9 @@ export function tagExtension(): Extension {
         )
       ) {
         if (!data) return nok(code);
-        effects.exit(`${name}Target` as any);
-        effects.exit(`${name}Data` as any);
-        effects.exit(name as any);
+        effects.exit(`${name}Target` as TokenType);
+        effects.exit(`${name}Data` as TokenType);
+        effects.exit(name as TokenType);
 
         return ok(code);
       }
@@ -98,7 +97,7 @@ export function tagFromMarkdown(): FromMarkdownExtension {
     const target = this.sliceSerialize(token);
     const current = getSelf(this.stack);
 
-    (current as any).value = target;
+    (current as { value?: string }).value = target;
   }
 
   function exitTag(token: Token) {

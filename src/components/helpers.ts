@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Internal Obsidian API access and complex data structures */
-import update from 'immutability-helper';
+import update, { Spec } from 'immutability-helper';
 import { App, MarkdownView, TFile, moment } from 'obsidian';
 import Preact, { Dispatch, RefObject, useEffect } from 'preact/compat';
 import { StateUpdater, useMemo } from 'preact/hooks';
@@ -46,8 +45,8 @@ export function maybeCompleteForMove(
   const sourceParent = getEntityFromPath(sourceBoard, sourcePath.slice(0, -1));
   const destinationParent = getEntityFromPath(destinationBoard, destinationPath.slice(0, -1));
 
-  const oldShouldComplete = sourceParent?.data?.shouldMarkItemsComplete;
-  const newShouldComplete = destinationParent?.data?.shouldMarkItemsComplete;
+  const oldShouldComplete = (sourceParent as Lane | undefined)?.data?.shouldMarkItemsComplete;
+  const newShouldComplete = (destinationParent as Lane | undefined)?.data?.shouldMarkItemsComplete;
 
   // If neither the old or new lane set it complete, leave it alone
   if (!oldShouldComplete && !newShouldComplete) return { next: item };
@@ -61,7 +60,7 @@ export function maybeCompleteForMove(
   if (newShouldComplete) {
     item = update(item, {
       data: { checkChar: { $set: getTaskStatusPreDone(destinationStateManager.app) } },
-    });
+    } as unknown as Spec<Item>);
   }
 
   const updates = toggleTask(item, destinationStateManager.file, destinationStateManager.app);
@@ -93,7 +92,7 @@ export function maybeCompleteForMove(
           $set: newShouldComplete ? getTaskStatusDone(destinationStateManager.app) : ' ',
         },
       },
-    }),
+    } as unknown as Spec<Item>),
   };
 }
 
@@ -148,11 +147,11 @@ export async function applyTemplate(stateManager: StateManager, templatePath?: s
           return await templaterPlugin.append_template_to_active_file(templateFile);
         }
 
-        return await templatesPlugin.instance.insertTemplate(templateFile);
+        return await templatesPlugin.insertTemplate(templateFile);
       }
 
       if (templatesEnabled) {
-        return await templatesPlugin.instance.insertTemplate(templateFile);
+        return await templatesPlugin.insertTemplate(templateFile);
       }
 
       if (templaterEnabled) {
@@ -171,13 +170,42 @@ export async function applyTemplate(stateManager: StateManager, templatePath?: s
   }
 }
 
+interface NLDatesPlugin {
+  settings: {
+    format: string;
+    timeFormat: string;
+  };
+}
+
+interface DailyNotesPluginInstance {
+  options: {
+    format: string;
+  };
+}
+
+interface TemplatesPluginInstance {
+  options: {
+    dateFormat?: string;
+    timeFormat?: string;
+    folder?: string;
+  };
+  insertTemplate: (file: TFile) => Promise<void>;
+}
+
 export function getDefaultDateFormat(app: App) {
-  const internalPlugins = (app as any).internalPlugins.plugins;
+  const internalPlugins = app.internalPlugins.plugins;
   const dailyNotesEnabled = internalPlugins['daily-notes']?.enabled;
-  const dailyNotesValue = internalPlugins['daily-notes']?.instance.options.format;
-  const nlDatesValue = (app as any).plugins.plugins['nldates-obsidian']?.settings.format;
+  const dailyNotesInstance = internalPlugins['daily-notes']?.instance as unknown as
+    | DailyNotesPluginInstance
+    | undefined;
+  const dailyNotesValue = dailyNotesInstance?.options.format;
+  const nlDates = app.plugins.plugins['nldates-obsidian'] as NLDatesPlugin | undefined;
+  const nlDatesValue = nlDates?.settings.format;
   const templatesEnabled = internalPlugins.templates?.enabled;
-  const templatesValue = internalPlugins.templates?.instance.options.dateFormat;
+  const templatesInstance = internalPlugins.templates?.instance as unknown as
+    | TemplatesPluginInstance
+    | undefined;
+  const templatesValue = templatesInstance?.options.dateFormat;
 
   return (
     (dailyNotesEnabled && dailyNotesValue) ||
@@ -188,10 +216,14 @@ export function getDefaultDateFormat(app: App) {
 }
 
 export function getDefaultTimeFormat(app: App) {
-  const internalPlugins = (app as any).internalPlugins.plugins;
-  const nlDatesValue = (app as any).plugins.plugins['nldates-obsidian']?.settings.timeFormat;
+  const internalPlugins = app.internalPlugins.plugins;
+  const nlDates = app.plugins.plugins['nldates-obsidian'] as NLDatesPlugin | undefined;
+  const nlDatesValue = nlDates?.settings.timeFormat;
   const templatesEnabled = internalPlugins.templates?.enabled;
-  const templatesValue = internalPlugins.templates?.instance.options.timeFormat;
+  const templatesInstance = internalPlugins.templates?.instance as unknown as
+    | TemplatesPluginInstance
+    | undefined;
+  const templatesValue = templatesInstance?.options.timeFormat;
 
   return nlDatesValue || (templatesEnabled && templatesValue) || 'HH:mm';
 }
@@ -203,25 +235,37 @@ export function escapeRegExpStr(str: string) {
   return str && reHasRegExChar.test(str) ? str.replace(reRegExChar, '\\$&') : str || '';
 }
 
+interface TemplaterPlugin {
+  settings: {
+    empty_file_template: string;
+    template_folder: string;
+  };
+  templater: unknown;
+}
+
 export function getTemplatePlugins(app: App) {
-  const templatesPlugin = (app as any).internalPlugins.plugins.templates;
-  const templatesEnabled = templatesPlugin.enabled;
-  const templaterPlugin = (app as any).plugins.plugins['templater-obsidian'];
-  const templaterEnabled = (app as any).plugins.enabledPlugins.has('templater-obsidian');
+  const templatesPlugin = app.internalPlugins.plugins.templates;
+  const templatesEnabled = templatesPlugin?.enabled;
+  const templatesInstance = templatesPlugin?.instance as unknown as
+    | TemplatesPluginInstance
+    | undefined;
+  const templaterPlugin = app.plugins.plugins['templater-obsidian'] as TemplaterPlugin | undefined;
+  const templaterEnabled = app.plugins.enabledPlugins.has('templater-obsidian');
   const templaterEmptyFileTemplate =
-    templaterPlugin &&
-    (app as any).plugins.plugins['templater-obsidian'].settings?.empty_file_template;
+    templaterPlugin && templaterPlugin.settings?.empty_file_template;
 
   const templateFolder = templatesEnabled
-    ? templatesPlugin.instance.options.folder
+    ? templatesInstance?.options.folder
     : templaterPlugin
       ? templaterPlugin.settings.template_folder
       : undefined;
 
   return {
-    templatesPlugin,
+    templatesPlugin: templatesInstance,
     templatesEnabled,
-    templaterPlugin: templaterPlugin?.templater,
+    templaterPlugin: templaterPlugin?.templater as
+      | { append_template_to_active_file: (file: TFile) => Promise<void> }
+      | undefined,
     templaterEnabled,
     templaterEmptyFileTemplate,
     templateFolder,

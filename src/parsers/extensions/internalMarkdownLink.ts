@@ -1,16 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- micromark extensions use 'any' for tokens and states */
 import { Token } from 'mdast-util-from-markdown';
 
 export function internalMarkdownLinks(
-  process: (node: Record<string, any>, isEmbed: boolean) => void
+  process: (node: Record<string, unknown>, isEmbed: boolean) => void
 ) {
   function exitLink(token: Token) {
-    process(this.stack[this.stack.length - 1], false);
+    process(this.stack[this.stack.length - 1] as Record<string, unknown>, false);
     this.exit(token);
   }
 
   function exitImage(token: Token) {
-    process(this.stack[this.stack.length - 1], true);
+    process(this.stack[this.stack.length - 1] as Record<string, unknown>, true);
     this.exit(token);
   }
 

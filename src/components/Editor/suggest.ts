@@ -41,8 +41,9 @@ export class DateSuggest extends EditorSuggest<[]> {
     this.app = app;
     this.plugin = plugin;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- accessing private obsidian api
-    [...(this.scope as any).keys].forEach((k: any) => this.scope.unregister(k));
+    [...(this.scope as unknown as { keys: unknown[] }).keys].forEach((k) =>
+      this.scope.unregister(k as Parameters<typeof this.scope.unregister>[0])
+    );
 
     this.suggestEl.addClass(c('date-suggest'));
 

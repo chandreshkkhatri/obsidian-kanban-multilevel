@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Complex Preact component with many any usages */
+
 import { EditorView } from '@codemirror/view';
 import { memo } from 'preact/compat';
 import {
@@ -157,9 +157,11 @@ export function Tags({
                 return;
               }
 
-              (stateManager.app as any).internalPlugins
-                .getPluginById('global-search')
-                .instance.openGlobalSearch(`tag:${tag}`);
+              (
+                stateManager.app.internalPlugins.getPluginById('global-search') as unknown as {
+                  instance: { openGlobalSearch: (query: string) => void };
+                }
+              ).instance.openGlobalSearch(`tag:${tag}`);
             }}
             key={i}
             className={`tag ${c('item-tag')} ${searchQuery && tag.toLocaleLowerCase().contains(searchQuery) ? 'is-search-match' : ''

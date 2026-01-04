@@ -1,4 +1,4 @@
-import { compareItems, rankItem, rankings } from '@tanstack/match-sorter-utils';
+import { RankItem, compareItems, rankItem, rankings } from '@tanstack/match-sorter-utils';
 import {
   ColumnDef,
   FilterFn,
@@ -18,7 +18,7 @@ import { getDataviewPlugin, lableToName, taskFields } from 'src/parsers/helpers/
 import { Tags } from '../Item/ItemContent';
 import { MetadataValue, anyToString } from '../Item/MetadataTable';
 import { SearchContext } from '../context';
-/* eslint-disable @typescript-eslint/no-explicit-any -- Complex data structures for table layout */
+
 import { Board, Lane } from '../types';
 import { DateCell, ItemCell, LaneCell } from './Cells';
 import { TableData, TableItem } from './types';
@@ -39,14 +39,14 @@ export const fuzzyAnyFilter: FilterFn<TableItem> = (row, columnId, search, addMe
   return itemRank.passed;
 };
 
-export const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
+export const fuzzySort: SortingFn<TableItem> = (rowA, rowB, columnId) => {
   if (!rowA.columnFiltersMeta[columnId] && !rowB.columnFiltersMeta[columnId]) return null;
   if (!rowA.columnFiltersMeta[columnId]) return -1;
   if (!rowB.columnFiltersMeta[columnId]) return 1;
 
   return compareItems(
-    (rowA.columnFiltersMeta[columnId] as any)?.itemRank,
-    (rowB.columnFiltersMeta[columnId] as any)?.itemRank
+    (rowA.columnFiltersMeta[columnId] as unknown as { itemRank: RankItem })?.itemRank,
+    (rowB.columnFiltersMeta[columnId] as unknown as { itemRank: RankItem })?.itemRank
   );
 };
 
@@ -113,7 +113,7 @@ export function useTableData(board: Board, stateManager: StateManager): TableDat
   }, [board]);
 }
 
-export const baseColumns = (sizing: Record<string, number>): ColumnDef<TableItem, any>[] => [
+export const baseColumns = (sizing: Record<string, number>): ColumnDef<TableItem, unknown>[] => [
   columnHelper.accessor((row) => row.item.data.title, {
     id: 'card',
     cell: (info) => {
@@ -177,7 +177,7 @@ export function useTableColumns(boardData: Board, stateManager: StateManager) {
     stateManager
   );
 
-  const withMetadata: ColumnDef<TableItem, any>[] = useMemo(() => {
+  const withMetadata: ColumnDef<TableItem, unknown>[] = useMemo(() => {
     const columns = [...baseColumns(tableSizing)];
     for (const key of metadata) {
       switch (key) {

@@ -8,7 +8,7 @@ import { emptyHitbox } from '../util/hitbox';
 import { DndManagerContext } from './context';
 
 export interface DragOverlayProps {
-  children(entity: Entity, styles: Record<string, string | number>): preact.VNode;
+  children: (entity: Entity, styles: Record<string, string | number>) => preact.VNode;
 }
 
 function getDragOverlayStyles(

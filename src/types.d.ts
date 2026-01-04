@@ -276,3 +276,129 @@ export interface KanbanGlobal extends Window {
 export interface KanbanLeaf extends WorkspaceLeaf {
   id: string;
 }
+
+declare module 'obsidian' {
+  interface App {
+    internalPlugins: {
+      plugins: {
+        [key: string]: {
+          instance: {
+            gotoNextExisting: (date: unknown) => void;
+            gotoPreviousExisting: (date: unknown) => void;
+          };
+          enabled: boolean;
+        };
+      };
+      getPluginById(id: string): { instance: unknown } | undefined;
+    };
+    commands: {
+      executeCommandById(id: string): void;
+      findCommand(id: string): unknown;
+      commands: Record<string, unknown>;
+    };
+    mobileToolbar: {
+        containerEl: HTMLElement;
+    };
+    dragManager: {
+        draggable: unknown;
+    };
+  }
+  interface Vault {
+    getConfig(key: string): unknown;
+  }
+  interface Workspace {
+    floatingSplit: {
+      children: { win: Window }[];
+    };
+  }
+}
+
+declare module 'obsidian' {
+  interface WorkspaceLeaf {
+    id: string;
+  }
+  interface FileManager {
+    createNewMarkdownFile(folder: TFolder, name: string): Promise<TFile>;
+  }
+  interface MetadataCache {
+    on(name: 'dataview:metadata-change', callback: (type: unknown, file: TFile) => void): EventRef;
+    on(name: 'dataview:api-ready', callback: () => void): EventRef;
+  }
+}
+
+declare module 'obsidian' {
+  interface Workspace {
+    registerHoverLinkSource(id: string, info: { display: string; defaultMod: boolean }): void;
+    unregisterHoverLinkSource(id: string): void;
+  }
+}
+
+declare module 'obsidian' {
+  interface MobileToolbar {
+    containerEl: HTMLElement;
+    update(): void;
+  }
+  interface App {
+    mobileToolbar: MobileToolbar;
+    internalPlugins: {
+      plugins: Record<
+        string,
+        | {
+            enabled: boolean;
+            instance: unknown;
+          }
+        | undefined
+      >;
+    };
+    plugins: {
+      enabledPlugins: Set<string>;
+      plugins: Record<string, unknown>;
+    };
+  }
+}
+
+import { Component, App, Editor as ObsidianEditor, ViewUpdate } from 'obsidian';
+import { Extension } from '@codemirror/state';
+
+export interface MarkdownEditorComponent extends Component {
+  owner: unknown;
+  app: App;
+  editor: ObsidianEditor;
+  updateBottomPadding(): void;
+  onUpdate(update: ViewUpdate, changed: boolean): void;
+  buildLocalExtensions(): Extension[];
+}
+
+declare module 'obsidian' {
+  interface Menu {
+    addSections(sections: string[]): void;
+  }
+  interface Workspace {
+    handleLinkContextMenu(menu: Menu, href: string, path: string): void;
+    handleExternalLinkContextMenu(menu: Menu, href: string): void;
+  }
+}
+
+declare module 'obsidian' {
+  interface App {
+    plugins: {
+      enabledPlugins: Set<string>;
+      plugins: Record<string, unknown>;
+      getPlugin(id: string): unknown;
+    };
+  }
+}
+
+declare module 'obsidian' {
+  interface Workspace {
+    editorSuggest: {
+      suggests: {
+        settings?: {
+          taskFormat?: string;
+          statusSettings?: unknown;
+          recurrenceOnNextLine?: boolean;
+        };
+      }[];
+    };
+  }
+}

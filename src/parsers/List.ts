@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Legacy code from original Kanban plugin */
 import { isPlainObject } from 'is-plain-object';
 import { TFile } from 'obsidian';
 import { getAPI } from 'obsidian-dataview';
@@ -58,7 +57,7 @@ export class ListFormat implements BaseFormat {
         (path) => {
           return generatedKeys.includes(path.last());
         },
-        (val: any) => {
+        (val: unknown) => {
           if (!val) return String(val);
           if (val instanceof TFile) return val.path;
           if (isPlainObject(val) || Array.isArray(val)) return String(val);

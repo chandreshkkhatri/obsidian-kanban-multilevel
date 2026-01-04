@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Legacy code from dataview/tasks plugin for metadata parsing */
-
 /*
 This code is modified from https://github.com/blacksmithgu/obsidian-dataview
 and https://github.com/obsidian-tasks-group/obsidian-tasks
@@ -54,6 +52,7 @@ import { App, TFile } from 'obsidian';
 import { RRule } from 'rrule';
 import { Item } from 'src/components/types';
 import { t } from 'src/lang/helpers';
+import { KanbanGlobal } from 'src/types';
 
 export enum Priority {
   Highest = '0',
@@ -84,10 +83,10 @@ export const DEFAULT_SYMBOLS = {
   idSymbol: '🆔',
 } as const;
 
-export function lableToIcon(label: string, value: any) {
+export function lableToIcon(label: string, value: unknown) {
   switch (label) {
     case 'priority':
-      return priorityToIcon(value);
+      return priorityToIcon(value as Priority);
     case 'start':
       return DEFAULT_SYMBOLS.startDateSymbol;
     case 'created':
@@ -170,29 +169,46 @@ export function iconToPriority(icon: string) {
   return null;
 }
 
+interface TasksPlugin {
+  apiV1?: {
+    executeToggleTaskDoneCommand?: (item: string, path: string) => string;
+  };
+}
+
 export function getTasksPlugin(app?: App) {
-  const appRef = app || ((window as any).app as App);
-  if (!(appRef as any).plugins.enabledPlugins.has('obsidian-tasks-plugin')) {
+  const appRef = app || (window as unknown as KanbanGlobal).app;
+  if (!appRef.plugins.enabledPlugins.has('obsidian-tasks-plugin')) {
     return null;
   }
 
-  return (appRef as any).plugins.plugins['obsidian-tasks-plugin'];
+  return appRef.plugins.plugins['obsidian-tasks-plugin'] as TasksPlugin;
 }
 
 function getTasksPluginSettings(app?: App) {
-  const appRef = app || ((window as any).app as App);
-  return (appRef as any).workspace.editorSuggest.suggests.find(
-    (s: any) => s.settings && s.settings.taskFormat
+  const appRef = app || (window as unknown as KanbanGlobal).app;
+  return appRef.workspace.editorSuggest.suggests.find(
+    (s: { settings?: { taskFormat?: string; recurrenceOnNextLine?: boolean } }) =>
+      s.settings && s.settings.taskFormat
   )?.settings;
+}
+
+interface StatusSettings {
+  coreStatuses?: { type: string; symbol: string; nextStatusSymbol?: string }[];
+  customStatuses?: { type: string; symbol: string; nextStatusSymbol?: string }[];
 }
 
 export function getTaskStatusDone(app?: App): string {
   const settings = getTasksPluginSettings(app);
-  const statuses = settings?.statusSettings;
+  const statuses = settings?.statusSettings as StatusSettings | undefined;
   if (!statuses) return 'x';
 
-  let done = statuses.coreStatuses?.find((s: any) => s.type === 'DONE');
-  if (!done) done = statuses.customStatuses?.find((s: any) => s.type === 'DONE');
+  let done = statuses.coreStatuses?.find(
+    (s: { type: string; symbol: string }) => s.type === 'DONE'
+  );
+  if (!done)
+    done = statuses.customStatuses?.find(
+      (s: { type: string; symbol: string }) => s.type === 'DONE'
+    );
   if (!done) return 'x';
 
   return done.symbol;
@@ -200,13 +216,18 @@ export function getTaskStatusDone(app?: App): string {
 
 export function getTaskStatusPreDone(app?: App): string {
   const settings = getTasksPluginSettings(app);
-  const statuses = settings?.statusSettings;
+  const statuses = settings?.statusSettings as StatusSettings | undefined;
   if (!statuses) return ' ';
 
   const done = getTaskStatusDone(app);
 
-  let preDone = statuses.coreStatuses?.find((s: any) => s.nextStatusSymbol === done);
-  if (!preDone) preDone = statuses.customStatuses?.find((s: any) => s.nextStatusSymbol === done);
+  let preDone = statuses.coreStatuses?.find(
+    (s: { nextStatusSymbol?: string; symbol: string }) => s.nextStatusSymbol === done
+  );
+  if (!preDone)
+    preDone = statuses.customStatuses?.find(
+      (s: { nextStatusSymbol?: string; symbol: string }) => s.nextStatusSymbol === done
+    );
   if (!preDone) return ' ';
 
   return preDone.symbol;
@@ -462,10 +483,10 @@ export function extractInlineFields(
 }
 
 export function getDataviewPlugin(app?: App) {
-  const appRef = app || ((window as any).app as App);
-  if (!(appRef as any).plugins.enabledPlugins.has('dataview')) {
+  const appRef = app || (window as unknown as KanbanGlobal).app;
+  if (!appRef.plugins.enabledPlugins.has('dataview')) {
     return null;
   }
 
-  return (appRef as any).plugins.plugins['dataview'];
+  return appRef.plugins.plugins['dataview'];
 }

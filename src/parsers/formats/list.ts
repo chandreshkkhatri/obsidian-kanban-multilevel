@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Legacy code from original Kanban plugin */
 import update from 'immutability-helper';
 import { Content, List, Parent, Root } from 'mdast';
 import { ListItem } from 'mdast-util-from-markdown/lib';
@@ -79,13 +78,14 @@ export function listItemToItemData(stateManager: StateManager, md: string, item:
   visit(
     item,
     ['text', 'wikilink', 'embedWikilink', 'image', 'inlineCode', 'code', 'hashtag'],
-    (node: any, i, parent) => {
-      if (node.type === 'hashtag') {
-        if (!parent.children.first()?.value?.startsWith('```')) {
-          titleSearch += ' #' + node.value;
+    (node, i, parent) => {
+      const n = node as unknown as { type: string; value?: string; alt?: string };
+      if (n.type === 'hashtag') {
+        if (!(parent.children.first() as unknown as { value?: string })?.value?.startsWith('```')) {
+          titleSearch += ' #' + (n.value || '');
         }
       } else {
-        titleSearch += node.value || node.alt || '';
+        titleSearch += n.value || n.alt || '';
       }
     }
   );
@@ -126,7 +126,7 @@ export function listItemToItemData(stateManager: StateManager, md: string, item:
 
       if (
         genericNode.type === 'hashtag' &&
-        !(parent.children.first() as any)?.value?.startsWith('```')
+        !(parent.children.first() as unknown as { value?: string })?.value?.startsWith('```')
       ) {
         if (!itemData.metadata.tags) {
           itemData.metadata.tags = [];
@@ -241,7 +241,7 @@ function isArchiveLane(child: Content, children: Content[], currentIndex: number
 export function astToUnhydratedBoard(
   stateManager: StateManager,
   settings: KanbanSettings,
-  frontmatter: Record<string, any>,
+  frontmatter: Record<string, unknown>,
   root: Root,
   md: string
 ): Board {

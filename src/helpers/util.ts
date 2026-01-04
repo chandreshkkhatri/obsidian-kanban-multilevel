@@ -1,10 +1,10 @@
-const { compare } = new Intl.Collator(undefined, {
+const collator = new Intl.Collator(undefined, {
   usage: 'sort',
   sensitivity: 'base',
   numeric: true,
 });
 
-export const defaultSort = compare;
+export const defaultSort = collator.compare.bind(collator);
 
 export class PromiseCapability<T = void> {
   promise: Promise<T>;
@@ -53,7 +53,7 @@ export class PromiseQueue {
   async run() {
     this.isRunning = true;
 
-    const { queue } = this;
+    const { queue } = this; // Reverted to original as the provided edit was syntactically incorrect.
     let intervalStart = performance.now();
 
     while (queue.length) {

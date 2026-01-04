@@ -1,5 +1,6 @@
 import { Stat } from 'obsidian';
 import { Item } from 'src/components/types';
+import { KanbanGlobal } from 'src/types';
 
 export interface FileAccessor {
   isEmbed: boolean;
@@ -32,8 +33,7 @@ export function replaceBrs(str: string) {
 }
 
 export function indentNewLines(str: string) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian config API
-  const useTab = ((window as any).app.vault).getConfig('useTab');
+  const useTab = (window as unknown as KanbanGlobal).app.vault.getConfig('useTab');
   return str.trim().replace(/(?:\r\n|\n)/g, useTab ? '\n\t' : '\n    ');
 }
 

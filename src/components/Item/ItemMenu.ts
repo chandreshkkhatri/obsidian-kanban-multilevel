@@ -68,9 +68,7 @@ export function useItemMenu({
               const newNoteFolder = stateManager.getSetting('new-note-folder');
               const newNoteTemplatePath = stateManager.getSetting('new-note-template');
 
-              const folderPath = stateManager.app.vault.getAbstractFileByPath(
-                newNoteFolder
-              );
+              const folderPath = stateManager.app.vault.getAbstractFileByPath(newNoteFolder);
               const targetFolder =
                 newNoteFolder && folderPath instanceof TFolder
                   ? folderPath
@@ -221,9 +219,7 @@ export function useItemMenu({
               const contentMatch = shouldLinkDates
                 ? '(?:\\[[^\\]]+\\]\\([^\\)]+\\)|\\[\\[[^\\]]+\\]\\])'
                 : '{[^}]+}';
-              const dateRegEx = new RegExp(
-                `(^|\\s)${escapeRegExpStr(dateTrigger)}${contentMatch}`
-              );
+              const dateRegEx = new RegExp(`(^|\\s)${escapeRegExpStr(dateTrigger)}${contentMatch}`);
 
               const titleRaw = item.data.titleRaw.replace(dateRegEx, '').trim();
 
@@ -257,9 +253,7 @@ export function useItemMenu({
               .setTitle(t('Remove time'))
               .onClick(() => {
                 const timeTrigger = stateManager.getSetting('time-trigger');
-                const timeRegEx = new RegExp(
-                  `(^|\\s)${escapeRegExpStr(timeTrigger)}{([^}]+)}`
-                );
+                const timeRegEx = new RegExp(`(^|\\s)${escapeRegExpStr(timeTrigger)}{([^}]+)}`);
 
                 const titleRaw = item.data.titleRaw.replace(timeRegEx, '').trim();
                 boardModifiers.updateItem(path, stateManager.updateItemContent(item, titleRaw));
@@ -293,8 +287,13 @@ export function useItemMenu({
         addMoveToOptions(menu);
       } else {
         menu.addItem((item) => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const submenu = (item as any)
+          const submenu = (
+            item as unknown as {
+              setTitle: (title: string) => {
+                setIcon: (icon: string) => { setSubmenu: () => Menu };
+              };
+            }
+          )
             .setTitle(t('Move to list'))
             .setIcon('lucide-square-kanban')
             .setSubmenu();

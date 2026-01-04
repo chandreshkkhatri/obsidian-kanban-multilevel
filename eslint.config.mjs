@@ -6,6 +6,8 @@ import globals from 'globals';
 import sdl from '@microsoft/eslint-plugin-sdl';
 import importPlugin from 'eslint-plugin-import';
 
+import eslintComments from 'eslint-plugin-eslint-comments';
+
 // Patches typescript-eslint plugin to support legacy rules referenced by obsidianmd
 if (tseslint.plugin && tseslint.plugin.rules && !tseslint.plugin.rules['ban-types']) {
     tseslint.plugin.rules['ban-types'] = {
@@ -30,7 +32,8 @@ export default tseslint.config(
         plugins: {
             react,
             '@microsoft/sdl': sdl,
-            'import': importPlugin
+            'import': importPlugin,
+            'eslint-comments': eslintComments
         },
         languageOptions: {
             parser: tseslint.parser,
@@ -79,7 +82,7 @@ export default tseslint.config(
             '@typescript-eslint/no-unsafe-function-type': 'off',
             '@typescript-eslint/restrict-template-expressions': 'error',
             '@typescript-eslint/no-base-to-string': 'off',
-            '@typescript-eslint/unbound-method': 'off',
+            '@typescript-eslint/unbound-method': 'error',
             '@typescript-eslint/no-deprecated': 'error',
             '@typescript-eslint/no-require-imports': 'error',
             '@typescript-eslint/no-unused-expressions': 'error',
@@ -96,6 +99,11 @@ export default tseslint.config(
             // Set obsidianmd's security rules to error/warn
             '@microsoft/sdl/no-inner-html': 'warn',
             'no-restricted-globals': 'error',
+
+            // ESLint Comments rules to match PR bot
+            'eslint-comments/require-description': 'error',
+            'eslint-comments/disable-enable-pair': 'error',
+            'eslint-comments/no-restricted-disable': ['error', '@typescript-eslint/no-explicit-any'],
 
             // Existing React rules
             'react/no-unescaped-entities': 'off',

@@ -1,7 +1,7 @@
 import animateScrollTo from 'animated-scroll-to';
-/* eslint-disable @typescript-eslint/no-explicit-any -- Complex Preact component props and state */
+
 import classcat from 'classcat';
-import update from 'immutability-helper';
+import update, { Spec } from 'immutability-helper';
 import { Fragment, memo, useCallback, useContext, useMemo, useRef, useState } from 'preact/compat';
 import {
   DraggableProps,
@@ -20,7 +20,7 @@ import { Items } from '../Item/Item';
 import { ItemForm } from '../Item/ItemForm';
 import { KanbanContext, SearchContext, SortContext } from '../context';
 import { c, generateInstanceId } from '../helpers';
-import { DataTypes, EditState, EditingState, Item, Lane } from '../types';
+import { Board, DataTypes, EditState, EditingState, Item, Lane } from '../types';
 import { LaneHeader } from './LaneHeader';
 
 const laneAccepts = [DataTypes.Item];
@@ -76,7 +76,7 @@ function DraggableLaneRaw({
       view.setViewState('list-collapse', collapseState);
       return update(board, {
         data: { settings: { 'list-collapse': { $set: collapseState } } },
-      });
+      } as unknown as Spec<Board>);
     });
   }, [stateManager, laneIndex]);
 
@@ -95,7 +95,7 @@ function DraggableLaneRaw({
                 $set: shouldMarkItemsComplete ? getTaskStatusDone(stateManager.app) : ' ',
               },
             },
-          })
+          } as unknown as Spec<Item>)
         )
       );
 
@@ -122,7 +122,7 @@ function DraggableLaneRaw({
   const SortableComponent = isStatic ? StaticSortable : Sortable;
   const CollapsedDropArea = !isCollapsed || isStatic ? Fragment : Droppable;
   const dropAreaProps: DraggableProps = useMemo(() => {
-    if (!isCollapsed || isStatic) return {} as any;
+    if (!isCollapsed || isStatic) return {} as unknown as DraggableProps;
     const data = {
       id: generateInstanceId(),
       type: 'lane',

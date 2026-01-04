@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- micromark extensions use 'any' for tokens and states */
 import { Extension as FromMarkdownExtension, Token } from 'mdast-util-from-markdown';
 import { markdownLineEnding, markdownSpace } from 'micromark-util-character';
-import { Effects, Extension, State } from 'micromark-util-types';
+import { Effects, Extension, State, TokenType } from 'micromark-util-types';
 
 import { getSelf } from './helpers';
 
@@ -18,15 +17,15 @@ export function blockidExtension(): Extension {
     function start(code: number) {
       if (code !== startMarker.charCodeAt(startMarkerCursor)) return nok(code);
 
-      effects.enter(name as any);
-      effects.enter(`${name}Marker` as any);
+      effects.enter(name as TokenType);
+      effects.enter(`${name}Marker` as TokenType);
 
       return consumeStart(code);
     }
 
     function consumeStart(code: number) {
       if (startMarkerCursor === startMarker.length) {
-        effects.exit(`${name}Marker` as any);
+        effects.exit(`${name}Marker` as TokenType);
         return consumeData(code);
       }
 
@@ -41,8 +40,8 @@ export function blockidExtension(): Extension {
     }
 
     function consumeData(code: number) {
-      effects.enter(`${name}Data` as any);
-      effects.enter(`${name}Target` as any);
+      effects.enter(`${name}Data` as TokenType);
+      effects.enter(`${name}Target` as TokenType);
       return consumeTarget(code);
     }
 
@@ -53,9 +52,9 @@ export function blockidExtension(): Extension {
 
       if (markdownLineEnding(code) || code === null) {
         if (!data) return nok(code);
-        effects.exit(`${name}Target` as any);
-        effects.exit(`${name}Data` as any);
-        effects.exit(name as any);
+        effects.exit(`${name}Target` as TokenType);
+        effects.exit(`${name}Data` as TokenType);
+        effects.exit(name as TokenType);
 
         return ok(code);
       }
@@ -91,7 +90,7 @@ export function blockidFromMarkdown(): FromMarkdownExtension {
     const target = this.sliceSerialize(token);
     const current = getSelf(this.stack);
 
-    (current as any).value = target;
+    (current as Record<string, unknown>).value = target;
   }
 
   function exit(token: Token) {

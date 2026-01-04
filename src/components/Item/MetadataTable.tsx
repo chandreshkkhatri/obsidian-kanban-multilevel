@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Complex metadata display logic */
+
 import classcat from 'classcat';
 import { isPlainObject } from 'is-plain-object';
 import { TFile, moment } from 'obsidian';
@@ -81,11 +81,11 @@ interface MetadataValueProps {
   searchQuery?: string;
 }
 
-export function getDateFromObj(v: any, stateManager: StateManager) {
-  let m: moment.Moment;
+export function getDateFromObj(v: unknown, stateManager: StateManager) {
+  let m: moment.Moment | undefined;
 
-  if (v.ts) {
-    m = moment(v.ts);
+  if (v && typeof v === 'object' && 'ts' in v) {
+    m = moment((v as { ts: number }).ts);
   } else if (moment.isMoment(v)) {
     m = v;
   } else if (v instanceof Date) {
@@ -103,24 +103,25 @@ export function getDateFromObj(v: any, stateManager: StateManager) {
   return null;
 }
 
-export function getLinkFromObj(v: any, view: KanbanView, stateManager: StateManager) {
-  if (typeof v !== 'object' || !v.path) return null;
+export function getLinkFromObj(v: unknown, view: KanbanView, stateManager: StateManager) {
+  const obj = v as { path?: string; subpath?: string; display?: string; embed?: boolean };
+  if (typeof v !== 'object' || v === null || !obj.path) return null;
 
-  const file = stateManager.app.vault.getAbstractFileByPath(v.path);
+  const file = stateManager.app.vault.getAbstractFileByPath(obj.path);
   if (file && file instanceof TFile) {
     const link = stateManager.app.fileManager.generateMarkdownLink(
       file,
       view.file.path,
-      v.subpath,
-      v.display
+      obj.subpath,
+      obj.display
     );
-    return `${v.embed && link[0] !== '!' ? '!' : ''}${link}`;
+    return `${obj.embed && link[0] !== '!' ? '!' : ''}${link}`;
   }
 
-  return `${v.embed ? '!' : ''}[[${v.path}${v.display ? `|${v.display}` : ''}]]`;
+  return `${obj.embed ? '!' : ''}[[${obj.path}${obj.display ? `|${obj.display}` : ''}]]`;
 }
 
-function getDate(v: any) {
+function getDate(v: unknown) {
   if (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}/.test(v)) {
     const d = moment(v);
     if (d.isValid()) {
@@ -130,23 +131,27 @@ function getDate(v: any) {
   if (moment.isMoment(v)) return v;
   if (v instanceof Date) return moment(v);
   const dv = getAPI();
-  if (dv?.value.isDate(v)) return moment(v.ts);
+  if (v && typeof v === 'object' && 'ts' in v && dv?.value.isDate(v)) return moment((v as { ts: number }).ts);
   return null;
 }
 
-export function anyToString(v: any, stateManager: StateManager): string {
-  if (isPlainObject(v) && v.value) v = v.value;
+export function anyToString(val: unknown, stateManager: StateManager): string {
+  let v = val;
+  if (v && typeof v === 'object' && 'value' in v && isPlainObject(v)) {
+    v = (v as { value: unknown }).value;
+  }
   const date = getDate(v);
-  if (date) return getDateFromObj(date, stateManager);
+  if (date) return getDateFromObj(date, stateManager) || '';
   if (typeof v === 'string') return v;
   if (v instanceof TFile) return v.path;
   if (Array.isArray(v)) {
     return v.map((v2) => anyToString(v2, stateManager)).join(' ');
   }
-  if (v.rrule) return v.toText();
+  if (v && typeof v === 'object' && 'rrule' in v)
+    return (v as unknown as { toText: () => string }).toText();
   const dv = getAPI();
   if (dv) return dv.value.toString(v);
-  return `${v}`;
+  return `${v as string}`;
 }
 
 export function pageDataToString(data: PageData, stateManager: StateManager): string {
@@ -157,7 +162,7 @@ export function MetadataValue({ data, dateLabel, searchQuery }: MetadataValuePro
   const { view, stateManager } = useContext(KanbanContext);
   const getDateColor = useGetDateColorFn(stateManager);
 
-  const renderChild = (v: any, sep?: string) => {
+  const renderChild = (v: unknown, sep?: string) => {
     const link = getLinkFromObj(v, view, stateManager);
     const date = getDate(v);
     const str = anyToString(v, stateManager);

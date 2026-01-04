@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Generic object patching utility */
 import { isPlainObject } from 'is-plain-object';
 import { moment } from 'obsidian';
 import { getAPI } from 'obsidian-dataview';
 
 type Key = string | number;
-type Diffable = Record<Key, any> | any[];
+type Diffable = Record<Key, unknown> | unknown[];
+type Indexable = { [k: string]: unknown; [k: number]: unknown; length?: number };
 type OpPath = Array<Key>;
 
 const REMOVE = 'remove';
@@ -14,7 +14,7 @@ const ADD = 'add';
 export interface Op {
   op: 'remove' | 'replace' | 'add';
   path: OpPath;
-  value?: any;
+  value?: unknown;
 }
 
 interface Diff {
@@ -23,10 +23,10 @@ interface Diff {
   add: Op[];
 }
 
-type SkipFn = (k: OpPath, val?: any) => boolean;
-type ToStringFn = (val: any) => string;
+type SkipFn = (k: OpPath, val?: unknown) => boolean;
+type ToStringFn = (val: unknown) => string;
 
-function isDiffable(obj: any): obj is Diffable {
+function isDiffable(obj: unknown): obj is Diffable {
   if (!obj) return false;
   if (isPlainObject(obj) || Array.isArray(obj)) return true;
 
@@ -74,7 +74,9 @@ function getDiff(
   const obj1Keys = Object.keys(obj1);
   const obj2Keys = Object.keys(obj2);
   const obj2KeysLength = obj2Keys.length;
-  const lengthDelta = obj1.length - obj2.length;
+  const len1 = (obj1 as unknown[]).length || 0;
+  const len2 = (obj2 as unknown[]).length || 0;
+  const lengthDelta = len1 - len2;
 
   let path: OpPath;
 
@@ -116,7 +118,7 @@ function getDiff(
     }
 
     // now make a copy of obj1 with excess elements left trimmed and see if there any replaces
-    const obj1Trimmed = obj1.slice(lengthDelta);
+    const obj1Trimmed = (obj1 as unknown[]).slice(lengthDelta);
     for (let i = 0; i < obj2KeysLength; i++) {
       pushReplaces(
         i,
@@ -137,7 +139,7 @@ function getDiff(
 }
 
 function pushReplaces(
-  key: any,
+  key: Key,
   obj1: Diffable,
   obj2: Diffable,
   path: OpPath,
@@ -146,8 +148,8 @@ function pushReplaces(
   skip: SkipFn,
   toString: ToStringFn
 ) {
-  const obj1AtKey = obj1[key];
-  const obj2AtKey = obj2[key];
+  const obj1AtKey = (obj1 as Indexable)[key];
+  const obj2AtKey = (obj2 as Indexable)[key];
 
   if (skip(path, obj2AtKey)) return;
 
@@ -168,23 +170,36 @@ function pushReplaces(
       ) {
         diffs.replace.push({ op: REPLACE, path, value: obj2AtKey });
       } else {
-        getDiff(obj1[key], obj2[key], path, pathForRemoves, diffs, skip, toString);
+        getDiff(
+          (obj1 as Indexable)[key] as Diffable,
+          (obj2 as Indexable)[key] as Diffable,
+          path,
+          pathForRemoves,
+          diffs,
+          skip,
+          toString
+        );
       }
     }
   }
 }
 
-function differentTypes(a: any, b: any) {
+function differentTypes(a: unknown, b: unknown) {
   return Object.prototype.toString.call(a) !== Object.prototype.toString.call(b);
 }
 
-function trimFromRight(obj1: Record<string, any>, obj2: Record<string, any>) {
-  const lengthDelta = obj1.length - obj2.length;
+function trimFromRight(
+  obj1: Record<string, unknown> | unknown[],
+  obj2: Record<string, unknown> | unknown[]
+) {
+  const len1 = (obj1 as unknown[]).length || 0;
+  const len2 = (obj2 as unknown[]).length || 0;
+  const lengthDelta = len1 - len2;
 
   if (Array.isArray(obj1) && Array.isArray(obj2) && lengthDelta > 0) {
     let leftMatches = 0;
     let rightMatches = 0;
-    for (let i = 0; i < obj2.length; i++) {
+    for (let i = 0; i < len2; i++) {
       if (String(obj1[i]) === String(obj2[i])) {
         leftMatches++;
       } else {
@@ -192,7 +207,7 @@ function trimFromRight(obj1: Record<string, any>, obj2: Record<string, any>) {
       }
     }
 
-    for (let j = obj2.length; j > 0; j--) {
+    for (let j = len2; j > 0; j--) {
       if (String(obj1[j + lengthDelta]) === String(obj2[j])) {
         rightMatches++;
       } else {
@@ -223,25 +238,27 @@ export function diffApply(obj: Diffable, diff: Op[]) {
     const thisOp = thisDiff.op;
     const thisPath = thisDiff.path;
     const pathCopy = thisPath.slice();
-    const lastProp: any = pathCopy.pop();
-    let subObject = obj;
+    const lastProp = pathCopy.pop();
+    let subObject: Indexable = obj as Indexable;
 
     prototypeCheck(lastProp);
     if (lastProp == null) return false;
 
-    let thisProp: any;
+    let thisProp: Key | undefined;
     while ((thisProp = pathCopy.shift()) !== null) {
       if (thisProp === undefined) break;
 
       prototypeCheck(thisProp);
       if (!(thisProp in subObject)) {
-        subObject = subObject[thisProp] = {};
+        subObject = (subObject[thisProp] = {}) as Indexable;
       } else if (Array.isArray(subObject[thisProp])) {
-        subObject = subObject[thisProp] = subObject[thisProp].slice();
+        subObject = subObject[thisProp] = (
+          subObject[thisProp] as unknown[]
+        ).slice() as unknown as Indexable;
       } else if (isPlainObject(subObject[thisProp])) {
-        subObject = subObject[thisProp] = { ...subObject[thisProp] };
+        subObject = (subObject[thisProp] = { ...(subObject[thisProp] as object) }) as Indexable;
       } else {
-        subObject = subObject[thisProp];
+        subObject = subObject[thisProp] as Indexable;
       }
     }
 

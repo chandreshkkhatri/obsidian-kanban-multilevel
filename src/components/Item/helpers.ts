@@ -1,15 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- Internal Obsidian API access and complex data structures */
 import { FileWithPath, fromEvent } from 'file-selector';
-import {
-  App,
-  Platform,
-  TFile,
-  TFolder,
-  htmlToMarkdown,
-  moment,
-  parseLinktext,
-  setIcon,
-} from 'obsidian';
+import { App, Platform, TFile, TFolder, htmlToMarkdown, moment, setIcon } from 'obsidian';
 import { StateManager } from 'src/StateManager';
 import { Path } from 'src/dnd/types';
 import { buildLinkToDailyNote } from 'src/helpers';
@@ -420,11 +410,15 @@ async function linkFromBuffer(
   ext: string,
   buffer: ArrayBuffer
 ) {
-  const path = (await (stateManager.app.vault as any).getAvailablePathForAttachments(
-    fileName,
-    ext,
-    stateManager.file
-  )) as string;
+  const path = await (
+    stateManager.app.vault as unknown as {
+      getAvailablePathForAttachments: (
+        fileName: string,
+        ext: string,
+        file: TFile
+      ) => Promise<string>;
+    }
+  ).getAvailablePathForAttachments(fileName, ext, stateManager.file);
 
   const newFile = await stateManager.app.vault.createBinary(path, buffer);
 
@@ -449,13 +443,18 @@ async function handleElectronPaste(stateManager: StateManager, win: Window & typ
           const ext = splitFile.pop();
           const fileName = splitFile.join('.');
 
-          const path = (await (stateManager.app.vault as any).getAvailablePathForAttachments(
-            fileName,
-            ext,
-            stateManager.file
-          )) as string;
+          const path = await (
+            stateManager.app.vault as unknown as {
+              getAvailablePathForAttachments: (
+                fileName: string,
+                ext: string,
+                file: TFile
+              ) => Promise<string>;
+            }
+          ).getAvailablePathForAttachments(fileName, ext, stateManager.file);
 
-          const basePath = (stateManager.app.vault.adapter as any).basePath;
+          const basePath = (stateManager.app.vault.adapter as unknown as { basePath: string })
+            .basePath;
 
           await fs.copyFile(file, nPath.join(basePath, path));
 
@@ -506,11 +505,15 @@ function handleFiles(stateManager: StateManager, files: FileWithPath[], isPaste?
         const reader = new FileReader();
         reader.onload = async (e) => {
           try {
-            const path = (await (stateManager.app.vault as any).getAvailablePathForAttachments(
-              fileName,
-              ext,
-              stateManager.file
-            )) as string;
+            const path = await (
+              stateManager.app.vault as unknown as {
+                getAvailablePathForAttachments: (
+                  fileName: string,
+                  ext: string,
+                  file: TFile
+                ) => Promise<string>;
+              }
+            ).getAvailablePathForAttachments(fileName, ext, stateManager.file);
             const newFile = await stateManager.app.vault.createBinary(
               path,
               e.target.result as ArrayBuffer
@@ -585,38 +588,48 @@ export async function handleDragOrPaste(
   e: DragEvent | ClipboardEvent,
   win: Window & typeof globalThis
 ): Promise<string[]> {
-  const draggable = (stateManager.app as any).dragManager.draggable;
+  const draggable = (
+    stateManager.app as unknown as {
+      dragManager: { draggable?: { type: string; file: TFile; files: TFile[] } };
+    }
+  ).dragManager.draggable;
   const transfer = (e as DragEvent).view
     ? (e as DragEvent).dataTransfer
     : (e as ClipboardEvent).clipboardData;
 
   switch (draggable?.type) {
     case 'file':
-      return [linkTo(stateManager, draggable.file, stateManager.file.path)];
+      return [
+        linkTo(
+          stateManager,
+          (draggable as unknown as { file: TFile }).file,
+          stateManager.file.path
+        ),
+      ];
     case 'files':
-      return draggable.files.map((f: TFile) => linkTo(stateManager, f, stateManager.file.path));
+      return (draggable as unknown as { files: TFile[] }).files.map((f: TFile) =>
+        linkTo(stateManager, f, stateManager.file.path)
+      );
     case 'folder': {
-      return draggable.file.children
+      return (draggable as unknown as { file: TFolder }).file.children
         .map((f: TFile | TFolder) => {
           if (f instanceof TFolder) {
             return null;
           }
-
           return linkTo(stateManager, f, stateManager.file.path);
         })
-        .filter((link: string | null) => link);
+        .filter(Boolean);
     }
     case 'link': {
-      let link = draggable.file
-        ? linkTo(stateManager, draggable.file, parseLinktext(draggable.linktext).subpath)
-        : `[[${draggable.linktext}]]`;
+      let link = (draggable as unknown as { linktext: string }).linktext.startsWith('http')
+        ? (draggable as unknown as { linktext: string }).linktext
+        : `[[${(draggable as unknown as { linktext: string }).linktext}]]`;
       const alias = new DOMParser().parseFromString(transfer.getData('text/html'), 'text/html')
         .documentElement.textContent; // Get raw text
       link = link.replace(/]]$/, `|${alias}]]`).replace(/^\[[^\]].+]\(/, `[${alias}](`);
       return [link];
     }
-    default: {
+    default:
       return await handleNullDraggable(stateManager, e, win);
-    }
   }
 }

@@ -282,8 +282,7 @@ export function MarkdownEditor({
 
         if ((app.workspace.activeEditor as unknown) === controller) {
           app.workspace.activeEditor = null;
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal mobileToolbar
-          (app as any).mobileToolbar.update();
+          app.mobileToolbar.update();
           view.contentEl.removeClass('is-mobile-editing');
         }
       }
