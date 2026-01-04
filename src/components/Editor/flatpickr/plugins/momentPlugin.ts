@@ -3,7 +3,7 @@ import { IncrementEvent } from '../utils';
 import { getEventTarget } from '../utils/dom';
 
 export interface Config {
-  moment: (...args: any[]) => any;
+  moment: (...args: unknown[]) => unknown;
 }
 
 function momentPlugin(config: Config): Plugin {
@@ -19,7 +19,7 @@ function momentPlugin(config: Config): Plugin {
       const unit = Array.from(input.classList)
         .filter((name) => name.startsWith('flatpickr-'))
         .map((name) => name.substring(10))[0];
-      const step = parseFloat(input.getAttribute('step') as string);
+      const step = parseFloat(input.getAttribute('step'));
 
       date.add(step * event.delta, unit);
       fp.setDate(date.toDate());

@@ -1,4 +1,4 @@
-import { JSX } from 'preact';
+import * as preact from 'preact';
 import { createPortal, useContext, useEffect, useState } from 'preact/compat';
 
 import { DragEventData } from '../managers/DragManager';
@@ -8,7 +8,7 @@ import { emptyHitbox } from '../util/hitbox';
 import { DndManagerContext } from './context';
 
 export interface DragOverlayProps {
-  children(entity: Entity, styles: JSX.CSSProperties): JSX.Element;
+  children(entity: Entity, styles: Record<string, string | number>): preact.VNode;
 }
 
 function getDragOverlayStyles(
@@ -18,7 +18,7 @@ function getDragOverlayStyles(
   margin: Hitbox,
   transition?: string,
   transform?: string
-): JSX.CSSProperties {
+): Record<string, string | number> {
   const adjustedHitbox = [
     originHitbox[0] - margin[0],
     originHitbox[1] - margin[1],
@@ -41,7 +41,7 @@ export function DragOverlay({ children }: DragOverlayProps) {
   const dndManager = useContext(DndManagerContext);
 
   const [dragEntity, setDragEntity] = useState<Entity | undefined>();
-  const [styles, setStyles] = useState<JSX.CSSProperties | undefined>();
+  const [styles, setStyles] = useState<Record<string, string | number> | undefined>();
 
   useEffect(() => {
     if (!dndManager) return;
@@ -100,7 +100,7 @@ export function DragOverlay({ children }: DragOverlayProps) {
           )
         );
 
-        activeWindow.setTimeout(() => {
+        window.setTimeout(() => {
           setDragEntity(undefined);
           setStyles(undefined);
         }, dropDuration);
@@ -146,7 +146,7 @@ export function useIsAnythingDragging() {
         destination: dropDestination,
       });
 
-      activeWindow.setTimeout(() => setIsDragging(false), dropDuration);
+      window.setTimeout(() => setIsDragging(false), dropDuration);
     };
 
     const { emitter } = dndManager.dragManager;

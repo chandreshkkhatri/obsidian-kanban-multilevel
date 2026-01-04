@@ -27,7 +27,7 @@ function rangePlugin(config: Config = {}): Plugin {
       if (config.input) {
         secondInput =
           typeof config.input === 'string'
-            ? (win.document.querySelector(config.input) as HTMLInputElement)
+            ? win.document.querySelector(config.input)
             : config.input;
 
         if (!secondInput) {
@@ -36,12 +36,12 @@ function rangePlugin(config: Config = {}): Plugin {
         }
 
         if (fp.config.wrap) {
-          secondInput = secondInput.querySelector('[data-input]') as HTMLInputElement;
+          secondInput = secondInput.querySelector('[data-input]');
         }
       } else {
         secondInput = fp._input.cloneNode() as HTMLInputElement;
         secondInput.removeAttribute('id');
-        (secondInput as any)._flatpickr = undefined;
+        (secondInput as unknown)._flatpickr = undefined;
       }
 
       if (secondInput.value) {
@@ -74,15 +74,14 @@ function rangePlugin(config: Config = {}): Plugin {
 
       if (fp.config.allowInput)
         fp._bind(secondInput, 'keydown', (e: KeyboardEvent) => {
-          if ((e as KeyboardEvent).key === 'Enter') {
+          if (e.key === 'Enter') {
             fp.setDate([fp.selectedDates[0], secondInput.value], true, dateFormat);
             secondInput.click();
           }
         });
 
-      if (!config.input)
-        fp._input.parentNode &&
-          fp._input.parentNode.insertBefore(secondInput, fp._input.nextSibling);
+      if (!config.input && fp._input.parentNode)
+        fp._input.parentNode.insertBefore(secondInput, fp._input.nextSibling);
     };
 
     const plugin = {
@@ -111,7 +110,7 @@ function rangePlugin(config: Config = {}): Plugin {
 
         if (fp.config.allowInput)
           fp._bind(fp._input, 'keydown', (e: KeyboardEvent) => {
-            if ((e as KeyboardEvent).key === 'Enter')
+            if (e.key === 'Enter')
               fp.setDate([fp._input.value, fp.selectedDates[1]], true, dateFormat);
           });
 
@@ -147,8 +146,8 @@ function rangePlugin(config: Config = {}): Plugin {
       },
 
       onDestroy() {
-        if (!config.input)
-          secondInput.parentNode && secondInput.parentNode.removeChild(secondInput);
+        if (!config.input && secondInput.parentNode)
+          secondInput.parentNode.removeChild(secondInput);
       },
 
       onValueUpdate(selDates: Date[]) {

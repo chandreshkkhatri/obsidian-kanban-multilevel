@@ -11,18 +11,13 @@ export const gfmTaskListItem: Extension = {
 };
 
 function tokenizeTasklistCheck(effects: Effects, ok: State, nok: State) {
-  // const self = this;
-  const ctx = this;
-
-  return open;
-
-  function open(code: number) {
+  const open = (code: number) => {
     if (
       // Exit if there’s stuff before.
-      ctx.previous !== codes.eof ||
+      this.previous !== codes.eof ||
       // Exit if not in the first content that is the first child of a list
       // item.
-      !ctx._gfmTasklistFirstContentOfListItem
+      !this._gfmTasklistFirstContentOfListItem
     ) {
       return nok(code);
     }
@@ -35,10 +30,10 @@ function tokenizeTasklistCheck(effects: Effects, ok: State, nok: State) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     effects.exit('taskListCheckMarker' as any);
     return inside;
-  }
+  };
 
   /** @type {State} */
-  function inside(code: number) {
+  const inside = (code: number) => {
     if (markdownSpace(code)) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       effects.enter('taskListCheckValueUnchecked' as any);
@@ -58,10 +53,10 @@ function tokenizeTasklistCheck(effects: Effects, ok: State, nok: State) {
     }
 
     return nok(code);
-  }
+  };
 
   /** @type {State} */
-  function close(code: number) {
+  const close = (code: number) => {
     if (code === codes.rightSquareBracket) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       effects.enter('taskListCheckMarker' as any);
@@ -74,18 +69,15 @@ function tokenizeTasklistCheck(effects: Effects, ok: State, nok: State) {
     }
 
     return nok(code);
-  }
+  };
+
+  return open;
 }
 
 /** @type {Tokenizer} */
 function spaceThenNonSpace(effects: Effects, ok: State, nok: State) {
-  const self = this;
-
-  return factorySpace(effects, after, types.whitespace);
-
-  /** @type {State} */
-  function after(code: number) {
-    const tail = self.events[self.events.length - 1];
+  const after = (code: number) => {
+    const tail = this.events[this.events.length - 1];
 
     return tail &&
       tail[1].type === types.whitespace &&
@@ -93,7 +85,9 @@ function spaceThenNonSpace(effects: Effects, ok: State, nok: State) {
       !markdownLineEndingOrSpace(code)
       ? ok(code)
       : nok(code);
-  }
+  };
+
+  return factorySpace(effects, after, types.whitespace);
 }
 
 /** @type {FromMarkdownExtension} */

@@ -1,24 +1,28 @@
 import { App, WorkspaceLeaf } from 'obsidian';
+import {
+  Attributes,
+  ComponentChildren,
+  ComponentType,
+  FunctionComponent,
+  HTMLAttributes,
+  SVGAttributes,
+  VNode,
+} from 'preact';
 
-type HTMLAttributes<T extends EventTarget> = import('preact').JSX.HTMLAttributes<T> &
-  AriaAttributes;
+type HTMLAttributesAlias<T extends EventTarget> = HTMLAttributes<T> & AriaAttributes;
 
-declare const Fragment: import('preact').FunctionComponent<Record<string, never>>;
+declare const Fragment: FunctionComponent<Record<string, never>>;
 
 declare function h(
   type: string,
-  props:
-    | (import('preact').JSX.HTMLAttributes &
-        import('preact').JSX.SVGAttributes &
-        Record<string, unknown>)
-    | null,
-  ...children: import('preact').ComponentChildren[]
-): import('preact').VNode<unknown>;
+  props: (HTMLAttributes & SVGAttributes & Record<string, unknown>) | null,
+  ...children: ComponentChildren[]
+): VNode<unknown>;
 declare function h<P>(
-  type: import('preact').ComponentType<P>,
-  props: (import('preact').Attributes & P) | null,
-  ...children: import('preact').ComponentChildren[]
-): import('preact').VNode<unknown>;
+  type: ComponentType<P>,
+  props: (Attributes & P) | null,
+  ...children: ComponentChildren[]
+): VNode<unknown>;
 
 type Booleanish = boolean | 'true' | 'false';
 

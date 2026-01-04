@@ -33,7 +33,7 @@ export function replaceBrs(str: string) {
 
 export function indentNewLines(str: string) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Accessing internal Obsidian config API
-  const useTab = ((window as any).app.vault as any).getConfig('useTab');
+  const useTab = ((window as any).app.vault).getConfig('useTab');
   return str.trim().replace(/(?:\r\n|\n)/g, useTab ? '\n\t' : '\n    ');
 }
 

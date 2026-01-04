@@ -23,7 +23,7 @@ export class PromiseCapability<T = void> {
 
       this.reject = (reason) => {
         this.settled = true;
-        reject(reason);
+        reject(reason instanceof Error ? reason : new Error(String(reason)));
       };
     });
   }

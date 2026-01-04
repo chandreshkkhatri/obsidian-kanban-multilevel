@@ -1,6 +1,5 @@
 import classcat from 'classcat';
 import {
-  MouseEventHandler,
   memo,
   useCallback,
   useContext,
@@ -78,12 +77,13 @@ const ItemInner = memo(function ItemInner({
     path,
   });
 
-  const onContextMenu: MouseEventHandler<HTMLDivElement> = useCallback(
+  const onContextMenu: (e: MouseEvent) => void = useCallback(
     (e) => {
       if (isEditing(editState)) return;
+      const target = e.target as HTMLElement;
       if (
-        e.targetNode.instanceOf(HTMLAnchorElement) &&
-        (e.targetNode.hasClass('internal-link') || e.targetNode.hasClass('external-link'))
+        target instanceof HTMLAnchorElement &&
+        (target.classList.contains('internal-link') || target.classList.contains('external-link'))
       ) {
         return;
       }
@@ -92,7 +92,7 @@ const ItemInner = memo(function ItemInner({
     [showItemMenu, editState]
   );
 
-  const onDoubleClick: MouseEventHandler<HTMLDivElement> = useCallback(
+  const onDoubleClick: (e: MouseEvent) => void = useCallback(
     (e) => setEditState({ x: e.clientX, y: e.clientY }),
     [setEditState]
   );

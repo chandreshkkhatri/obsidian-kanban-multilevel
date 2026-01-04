@@ -1,10 +1,9 @@
 import classcat from 'classcat';
 import { getLinkpath, moment } from 'obsidian';
-import { JSX } from 'preact';
+import * as preact from 'preact';
 import { useMemo } from 'preact/compat';
 import { StateManager } from 'src/StateManager';
 import { t } from 'src/lang/helpers';
-
 import { c } from '../helpers';
 import { DateColor, Item } from '../types';
 
@@ -50,8 +49,8 @@ export function RelativeDate({ item, stateManager }: DateProps) {
 }
 
 interface DateAndTimeProps {
-  onEditDate?: JSX.MouseEventHandler<HTMLSpanElement>;
-  onEditTime?: JSX.MouseEventHandler<HTMLSpanElement>;
+  onEditDate?: (e: MouseEvent) => void;
+  onEditTime?: (e: MouseEvent) => void;
   filePath: string;
   getDateColor: (date: moment.Moment) => DateColor;
 }
@@ -106,7 +105,7 @@ export function DateAndTime({
       dateDisplayStr
     );
 
-  const dateProps: HTMLAttributes<HTMLSpanElement> = {};
+  const dateProps: preact.ComponentProps<'span'> = {};
 
   if (!shouldLinkDate) {
     dateProps['aria-label'] = t('Change date');

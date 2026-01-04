@@ -122,7 +122,7 @@ export const LaneHeader = memo(function LaneHeader({
 
   const onDoubleClick = useCallback(
     (e: MouseEvent) => {
-      !isCollapsed && setEditState({ x: e.clientX, y: e.clientY });
+      if (!isCollapsed) setEditState({ x: e.clientX, y: e.clientY });
     },
     [isCollapsed, setEditState]
   );
@@ -130,7 +130,7 @@ export const LaneHeader = memo(function LaneHeader({
   return (
     <>
       <div
-         
+
         onDblClick={onDoubleClick}
         className={c('lane-header-wrapper')}
       >

@@ -3,7 +3,7 @@ import Mark from 'mark.js';
 import { moment } from 'obsidian';
 /* eslint-disable @typescript-eslint/no-explicit-any -- Interaction with Obsidian MarkdownRenderer */
 import { Component, MarkdownRenderer as ObsidianRenderer, getLinkpath } from 'obsidian';
-import { JSX } from 'preact';
+import * as preact from 'preact';
 import { memo, useEffect, useRef } from 'preact/compat';
 import { useContext } from 'preact/hooks';
 import { KanbanView } from 'src/KanbanView';
@@ -15,7 +15,7 @@ import { IntersectionObserverContext, KanbanContext, SortContext } from '../cont
 import { c, useGetDateColorFn, useGetTagColorFn } from '../helpers';
 import { DateColor, TagColor } from '../types';
 
-interface MarkdownRendererProps extends JSX.HTMLAttributes<HTMLDivElement> {
+interface MarkdownRendererProps extends preact.ComponentProps<'div'> {
   className?: string;
   markdownString: string;
   searchQuery?: string;
@@ -346,7 +346,7 @@ export const MarkdownRenderer = memo(function MarkdownPreviewRenderer({
     }
   }, []);
 
-  let styles: JSX.CSSProperties | undefined = undefined;
+  let styles: Record<string, string | number> | undefined = undefined;
   if (!renderer.current && view.previewCache.has(entityId)) {
     const preview = view.previewCache.get(entityId);
     if (preview.lastRefHeight > 0) {
@@ -376,7 +376,7 @@ export const MarkdownClonedPreviewRenderer = memo(function MarkdownClonedPreview
   const elRef = useRef<HTMLDivElement>();
   const preview = view.previewCache.get(entityId);
 
-  let styles: JSX.CSSProperties | undefined = undefined;
+  let styles: Record<string, string | number> | undefined = undefined;
   if (preview && preview.lastRefHeight > 0) {
     styles = {
       width: `${preview.lastRefWidth}px`,

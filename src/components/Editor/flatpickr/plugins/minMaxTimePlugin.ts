@@ -61,23 +61,23 @@ function minMaxTimePlugin(config: Config = {}): Plugin {
         if (latest && matchingTimeLimit !== undefined) {
           this.set(matchingTimeLimit);
 
-          (fp.config.minTime as Date).setFullYear(latest.getFullYear());
-          (fp.config.maxTime as Date).setFullYear(latest.getFullYear());
-          (fp.config.minTime as Date).setMonth(latest.getMonth());
-          (fp.config.maxTime as Date).setMonth(latest.getMonth());
-          (fp.config.minTime as Date).setDate(latest.getDate());
-          (fp.config.maxTime as Date).setDate(latest.getDate());
+          (fp.config.minTime).setFullYear(latest.getFullYear());
+          (fp.config.maxTime).setFullYear(latest.getFullYear());
+          (fp.config.minTime).setMonth(latest.getMonth());
+          (fp.config.maxTime).setMonth(latest.getMonth());
+          (fp.config.minTime).setDate(latest.getDate());
+          (fp.config.maxTime).setDate(latest.getDate());
 
-          if ((fp.config.minTime as Date) > (fp.config.maxTime as Date)) {
+          if ((fp.config.minTime) > (fp.config.maxTime)) {
             const minBound = calculateSecondsSinceMidnight(
-              (fp.config.minTime as Date).getHours(),
-              (fp.config.minTime as Date).getMinutes(),
-              (fp.config.minTime as Date).getSeconds()
+              (fp.config.minTime).getHours(),
+              (fp.config.minTime).getMinutes(),
+              (fp.config.minTime).getSeconds()
             );
             const maxBound = calculateSecondsSinceMidnight(
-              (fp.config.maxTime as Date).getHours(),
-              (fp.config.maxTime as Date).getMinutes(),
-              (fp.config.maxTime as Date).getSeconds()
+              (fp.config.maxTime).getHours(),
+              (fp.config.maxTime).getMinutes(),
+              (fp.config.maxTime).getSeconds()
             );
             const currentTime = calculateSecondsSinceMidnight(
               latest.getHours(),
@@ -93,23 +93,23 @@ function minMaxTimePlugin(config: Config = {}): Plugin {
               );
             }
           } else {
-            if (compareDates(latest, fp.config.maxTime as Date, false) > 0) {
+            if (compareDates(latest, fp.config.maxTime, false) > 0) {
               fp.setDate(
                 new Date(latest.getTime()).setHours(
-                  (fp.config.maxTime as Date).getHours(),
-                  (fp.config.maxTime as Date).getMinutes(),
-                  (fp.config.maxTime as Date).getSeconds(),
-                  (fp.config.maxTime as Date).getMilliseconds()
+                  (fp.config.maxTime).getHours(),
+                  (fp.config.maxTime).getMinutes(),
+                  (fp.config.maxTime).getSeconds(),
+                  (fp.config.maxTime).getMilliseconds()
                 ),
                 false
               );
-            } else if (compareDates(latest, fp.config.minTime as Date, false) < 0) {
+            } else if (compareDates(latest, fp.config.minTime, false) < 0) {
               fp.setDate(
                 new Date(latest.getTime()).setHours(
-                  (fp.config.minTime as Date).getHours(),
-                  (fp.config.minTime as Date).getMinutes(),
-                  (fp.config.minTime as Date).getSeconds(),
-                  (fp.config.minTime as Date).getMilliseconds()
+                  (fp.config.minTime).getHours(),
+                  (fp.config.minTime).getMinutes(),
+                  (fp.config.minTime).getSeconds(),
+                  (fp.config.minTime).getMilliseconds()
                 ),
                 false
               );

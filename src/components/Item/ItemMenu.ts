@@ -69,7 +69,7 @@ export function useItemMenu({
               const newNoteTemplatePath = stateManager.getSetting('new-note-template');
 
               const folderPath = stateManager.app.vault.getAbstractFileByPath(
-                newNoteFolder as string
+                newNoteFolder
               );
               const targetFolder =
                 newNoteFolder && folderPath instanceof TFolder
@@ -90,7 +90,7 @@ export function useItemMenu({
 
               stateManager.app.workspace.setActiveLeaf(newLeaf, { focus: true });
 
-              await applyTemplate(stateManager, newNoteTemplatePath as string | undefined);
+              await applyTemplate(stateManager, newNoteTemplatePath);
 
               const newTitleRaw = item.data.titleRaw.replace(
                 prevTitle,
@@ -222,7 +222,7 @@ export function useItemMenu({
                 ? '(?:\\[[^\\]]+\\]\\([^\\)]+\\)|\\[\\[[^\\]]+\\]\\])'
                 : '{[^}]+}';
               const dateRegEx = new RegExp(
-                `(^|\\s)${escapeRegExpStr(dateTrigger as string)}${contentMatch}`
+                `(^|\\s)${escapeRegExpStr(dateTrigger)}${contentMatch}`
               );
 
               const titleRaw = item.data.titleRaw.replace(dateRegEx, '').trim();
@@ -258,7 +258,7 @@ export function useItemMenu({
               .onClick(() => {
                 const timeTrigger = stateManager.getSetting('time-trigger');
                 const timeRegEx = new RegExp(
-                  `(^|\\s)${escapeRegExpStr(timeTrigger as string)}{([^}]+)}`
+                  `(^|\\s)${escapeRegExpStr(timeTrigger)}{([^}]+)}`
                 );
 
                 const titleRaw = item.data.titleRaw.replace(timeRegEx, '').trim();

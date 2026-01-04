@@ -1,6 +1,6 @@
 import classcat from 'classcat';
 import { Menu } from 'obsidian';
-import { MouseEventHandler, memo, useCallback, useContext, useState } from 'preact/compat';
+import { memo, useCallback, useContext, useState } from 'preact/compat';
 import isEqual from 'react-fast-compare';
 import { ExplicitPathContext } from 'src/dnd/components/context';
 import { moveEntity } from 'src/dnd/util/data';
@@ -63,12 +63,13 @@ export const ItemCell = memo(
       path,
     });
 
-    const onContextMenu: MouseEventHandler<HTMLDivElement> = useCallback(
+    const onContextMenu: (e: MouseEvent) => void = useCallback(
       (e) => {
         if (isEditing(editState)) return;
+        const target = e.target as HTMLElement;
         if (
-          e.targetNode.instanceOf(HTMLAnchorElement) &&
-          (e.targetNode.hasClass('internal-link') || e.targetNode.hasClass('external-link'))
+          target instanceof HTMLAnchorElement &&
+          (target.classList.contains('internal-link') || target.classList.contains('external-link'))
         ) {
           return;
         }
@@ -78,7 +79,7 @@ export const ItemCell = memo(
       [showItemMenu, editState]
     );
 
-    const onDoubleClick: MouseEventHandler<HTMLDivElement> = useCallback((e) => {
+    const onDoubleClick: (e: MouseEvent) => void = useCallback((e) => {
       setEditState({ x: e.clientX, y: e.clientY });
     }, []);
 

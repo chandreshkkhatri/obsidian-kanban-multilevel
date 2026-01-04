@@ -3,7 +3,7 @@ import { Plugin } from '../types/options';
 import { getEventTarget } from '../utils/dom';
 
 function delta(e: WheelEvent) {
-  return Math.max(-1, Math.min(1, (e as any).wheelDelta || -e.deltaY));
+  return Math.max(-1, Math.min(1, (e as unknown).wheelDelta || -e.deltaY));
 }
 
 const scroll = (e: WheelEvent) => {
@@ -11,7 +11,7 @@ const scroll = (e: WheelEvent) => {
   const ev = new CustomEvent('increment', {
     bubbles: true,
   });
-  (ev as any).delta = delta(e);
+  (ev as unknown).delta = delta(e);
   (getEventTarget(e) as HTMLInputElement).dispatchEvent(ev);
 };
 

@@ -34,7 +34,7 @@ export function findParent(node: Element, condition: (n: Element) => boolean): E
 export function createNumberInput(
   doc: Document,
   inputClassName: string,
-  opts?: Record<string, any>
+  opts?: Record<string, unknown>
 ) {
   const wrapper = createElement<HTMLDivElement>(doc, 'div', 'numInputWrapper'),
     numInput = createElement<HTMLInputElement>(doc, 'input', 'numInput ' + inputClassName),

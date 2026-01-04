@@ -113,7 +113,7 @@ export function constructMenuDatePickerOnChange({
   const contentMatch = shouldLinkDates
     ? '(?:\\[[^\\]]+\\]\\([^)]+\\)|\\[\\[[^\\]]+\\]\\])'
     : '{[^}]+}';
-  const dateRegEx = new RegExp(`(^|\\s)${escapeRegExpStr(dateTrigger as string)}${contentMatch}`);
+  const dateRegEx = new RegExp(`(^|\\s)${escapeRegExpStr(dateTrigger)}${contentMatch}`);
 
   return (dates: Date[]) => {
     const date = dates[0];
@@ -266,7 +266,7 @@ export function constructMenuTimePickerOnChange({
   path,
 }: ConstructMenuTimePickerOnChangeParams) {
   const timeTrigger = stateManager.getSetting('time-trigger');
-  const timeRegEx = new RegExp(`(^|\\s)${escapeRegExpStr(timeTrigger as string)}{([^}]+)}`);
+  const timeRegEx = new RegExp(`(^|\\s)${escapeRegExpStr(timeTrigger)}{([^}]+)}`);
 
   return (time: string) => {
     let titleRaw = item.data.titleRaw;
@@ -519,10 +519,10 @@ function handleFiles(stateManager: StateManager, files: FileWithPath[], isPaste?
             resolve(linkTo(stateManager, newFile, stateManager.file.path));
           } catch (e) {
             console.error(e);
-            reject(e);
+            reject(e instanceof Error ? e : new Error(String(e)));
           }
         };
-        reader.readAsArrayBuffer(file as FileWithPath);
+        reader.readAsArrayBuffer(file);
       });
     })
   );
@@ -559,8 +559,8 @@ async function handleNullDraggable(
     const files: File[] = [];
     const items = (e as ClipboardEvent).clipboardData.items;
 
-    for (const index in items) {
-      const item = items[index];
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
       if (item.kind === 'file') {
         files.push(item.getAsFile());
       }

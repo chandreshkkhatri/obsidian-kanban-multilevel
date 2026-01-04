@@ -12,14 +12,11 @@ export function tagExtension(): Extension {
   function tokenize(effects: Effects, ok: State, nok: State) {
     let data = false;
     let startMarkerCursor = 0;
-    const self = this;
 
-    return start;
-
-    function start(code: number) {
+    const start = (code: number) => {
       if (
         code !== hashCharCode ||
-        (self.previous !== null && !/\s/.test(String.fromCharCode(self.previous)))
+        (this.previous !== null && !/\s/.test(String.fromCharCode(this.previous)))
       ) {
         return nok(code);
       }
@@ -28,9 +25,9 @@ export function tagExtension(): Extension {
       effects.enter(`${name}Marker` as any);
 
       return consumeStart(code);
-    }
+    };
 
-    function consumeStart(code: number) {
+    const consumeStart = (code: number): State => {
       if (startMarkerCursor === 1) {
         effects.exit(`${name}Marker` as any);
         return consumeData(code);
@@ -44,15 +41,15 @@ export function tagExtension(): Extension {
       startMarkerCursor++;
 
       return consumeStart;
-    }
+    };
 
-    function consumeData(code: number) {
+    const consumeData = (code: number) => {
       effects.enter(`${name}Data` as any);
       effects.enter(`${name}Target` as any);
       return consumeTarget(code);
-    }
+    };
 
-    function consumeTarget(code: number) {
+    const consumeTarget = (code: number): State => {
       if (
         code === null ||
         markdownLineEndingOrSpace(code) ||
@@ -72,7 +69,9 @@ export function tagExtension(): Extension {
       effects.consume(code);
 
       return consumeTarget;
-    }
+    };
+
+    return start;
   }
 
   const call = { tokenize: tokenize };

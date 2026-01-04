@@ -41,10 +41,7 @@ function getEditorAppProxy(view: KanbanView) {
             if (prop === 'config') {
               // Internal Obsidian vault config
               return new Proxy(
-                ((view.app.vault as unknown as { config: Record<string, unknown> }).config as Record<
-                  string,
-                  unknown
-                >) || {},
+                ((view.app.vault as unknown as { config: Record<string, unknown> }).config) || {},
                 {
                   get(target, prop, reveiver) {
                     if (['showLineNumber', 'foldHeading', 'foldIndent'].includes(prop as string)) {
