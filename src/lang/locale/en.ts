@@ -5,13 +5,13 @@ const en = {
   'Open as kanban board': 'Open as kanban board',
   'Create new board': 'Create new board',
   'Archive completed cards in active board': 'Archive completed cards in active board',
-  'Error: current file is not a Kanban board': 'Error: current file is not a Kanban board',
-  'Convert empty note to Kanban': 'Convert empty note to Kanban',
-  'Error: cannot create Kanban, the current note is not empty':
-    'Error: cannot create Kanban, the current note is not empty',
+  'Error: current file is not a kanban board': 'Error: current file is not a kanban board',
+  'Convert empty note to kanban': 'Convert empty note to kanban',
+  'Error: cannot create kanban, the current note is not empty':
+    'Error: cannot create kanban, the current note is not empty',
   'New kanban board': 'New kanban board',
-  'Untitled Kanban': 'Untitled Kanban',
-  'Toggle between Kanban and markdown mode': 'Toggle between Kanban and markdown mode',
+  'Untitled kanban': 'Untitled kanban',
+  'Toggle between kanban and markdown mode': 'Toggle between kanban and markdown mode',
 
   'View as board': 'View as board',
   'View as list': 'View as list',
@@ -37,9 +37,9 @@ const en = {
   Untitled: 'Untitled', // auto-created column
 
   // settingHelpers.ts
-  'Note: No template plugins are currently enabled.':
-    'Note: No template plugins are currently enabled.',
-  default: 'default',
+  'Note: no template plugins are currently enabled.':
+    'Note: no template plugins are currently enabled.',
+  Default: 'Default',
   'Search...': 'Search...',
 
   // Settings.ts
@@ -54,17 +54,17 @@ const en = {
   Prepend: 'Prepend',
   'Prepend (compact)': 'Prepend (compact)',
   Append: 'Append',
-  'These settings will take precedence over the default Kanban board settings.':
-    'These settings will take precedence over the default Kanban board settings.',
-  'Set the default Kanban board settings. Settings can be overridden on a board-by-board basis.':
-    'Set the default Kanban board settings. Settings can be overridden on a board-by-board basis.',
+  'These settings will take precedence over the default kanban board settings.':
+    'These settings will take precedence over the default kanban board settings.',
+  'Set the default kanban board settings. Settings can be overridden on a board-by-board basis.':
+    'Set the default kanban board settings. Settings can be overridden on a board-by-board basis.',
   'Note template': 'Note template',
-  'This template will be used when creating new notes from Kanban cards.':
-    'This template will be used when creating new notes from Kanban cards.',
+  'This template will be used when creating new notes from kanban cards.':
+    'This template will be used when creating new notes from kanban cards.',
   'No template': 'No template',
   'Note folder': 'Note folder',
-  'Notes created from Kanban cards will be placed in this folder. If blank, they will be placed in the default location for this vault.':
-    'Notes created from Kanban cards will be placed in this folder. If blank, they will be placed in the default location for this vault.',
+  'Notes created from kanban cards will be placed in this folder. If blank, they will be placed in the default location for this vault.':
+    'Notes created from kanban cards will be placed in this folder. If blank, they will be placed in the default location for this vault.',
   'Default folder': 'Default folder',
   'List width': 'List width',
   'Expand lists to full width in list view': 'Expand lists to full width in list view',
@@ -77,7 +77,7 @@ const en = {
   'When toggled, a checkbox will be displayed with each card':
     'When toggled, a checkbox will be displayed with each card',
   'Reset to default': 'Reset to default',
-  'Date & Time': 'Date & Time',
+  'Date & time': 'Date & time',
   'Date trigger': 'Date trigger',
   'When this is typed, it will trigger the date selector':
     'When this is typed, it will trigger the date selector',
@@ -88,15 +88,15 @@ const en = {
   'This format will be used when saving dates in markdown.':
     'This format will be used when saving dates in markdown.',
   'For more syntax, refer to': 'For more syntax, refer to',
-  'format reference': 'format reference',
+  'Format reference': 'Format reference',
   'Your current syntax looks like this': 'Your current syntax looks like this',
   'Time format': 'Time format',
   'Date display format': 'Date display format',
-  'This format will be used when displaying dates in Kanban cards.':
-    'This format will be used when displaying dates in Kanban cards.',
+  'This format will be used when displaying dates in kanban cards.':
+    'This format will be used when displaying dates in kanban cards.',
   'Show relative date': 'Show relative date',
-  "When toggled, cards will display the distance between today and the card's date. eg. 'In 3 days', 'A month ago'. Relative dates will not be shown for dates from the Tasks and Dataview plugins.":
-    "When toggled, cards will display the distance between today and the card's date. eg. 'In 3 days', 'A month ago'. Relative dates will not be shown for dates from the Tasks and Dataview plugins.",
+  "When toggled, cards will display the distance between today and the card's date. Eg. 'In 3 days', 'A month ago'. Relative dates will not be shown for dates from the tasks and dataview plugins.":
+    "When toggled, cards will display the distance between today and the card's date. Eg. 'In 3 days', 'A month ago'. Relative dates will not be shown for dates from the tasks and dataview plugins.",
 
   'Move dates to card footer': 'Move dates to card footer',
   "When toggled, dates will be displayed in the card's footer instead of the card's body.":
@@ -132,10 +132,10 @@ const en = {
   'Archive date/time format': 'Archive date/time format',
   'Kanban Plugin': 'Kanban plugin',
   'Tag click action': 'Tag click action',
-  'Search Kanban Board': 'Search Kanban board',
-  'Search Obsidian Vault': 'Search Obsidian vault',
-  'This setting controls whether clicking the tags displayed below the card title opens the Obsidian search or the Kanban board search.':
-    'This setting controls whether clicking the tags displayed below the card title opens the Obsidian search or the Kanban board search.',
+  'Search Kanban Board': 'Search kanban board',
+  'Search Obsidian Vault': 'Search obsidian vault',
+  'This setting controls whether clicking the tags displayed below the card title opens the obsidian search or the kanban board search.':
+    'This setting controls whether clicking the tags displayed below the card title opens the obsidian search or the kanban board search.',
   'Tag colors': 'Tag colors',
   'Set colors for tags displayed in cards.': 'Set colors for tags displayed in cards.',
   'Linked page metadata': 'Linked page metadata',
@@ -205,9 +205,9 @@ const en = {
   Save: 'Save',
 
   // components/Item/ItemContent.tsx
-  today: 'today',
-  yesterday: 'yesterday',
-  tomorrow: 'tomorrow',
+  today: 'Today',
+  yesterday: 'Yesterday',
+  tomorrow: 'Tomorrow',
   'Change date': 'Change date',
   'Change time': 'Change time',
 

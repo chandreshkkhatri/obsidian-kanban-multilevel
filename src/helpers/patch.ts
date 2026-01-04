@@ -1,5 +1,5 @@
 import { isPlainObject } from 'is-plain-object';
-import { moment } from 'obsidian';
+import { TFile, moment } from 'obsidian';
 import { getAPI } from 'obsidian-dataview';
 
 type Key = string | number;
@@ -40,7 +40,20 @@ export function diff(
   obj1: Diffable,
   obj2: Diffable,
   skip: SkipFn = () => false,
-  toString: ToStringFn = (val) => String(val)
+  toString: ToStringFn = (val) => {
+    if (typeof val === 'string') return val;
+    if (val === null) return 'null';
+    if (val === undefined) return 'undefined';
+    if (moment.isMoment(val)) return val.toISOString();
+    if (val instanceof Date) return val.toISOString();
+    if (val instanceof TFile) return val.path;
+    const dv = getAPI();
+    if (isPlainObject(val) || Array.isArray(val)) return JSON.stringify(val);
+    if (dv && dv.value.isObject(val)) return dv.value.toString(val);
+    return typeof val === 'object'
+      ? JSON.stringify(val)
+      : String(val as string | number | boolean | symbol | bigint);
+  }
 ): Op[] {
   if (!isDiffable(obj1) || !isDiffable(obj2)) {
     throw new Error('both arguments must be objects or arrays');
@@ -80,7 +93,7 @@ function getDiff(
 
   let path: OpPath;
 
-  if (trimFromRight(obj1, obj2)) {
+  if (trimFromRight(obj1, obj2, toString)) {
     for (const k of obj1Keys) {
       const key = Array.isArray(obj1) ? Number(k) : k;
       if (!(key in obj2)) {
@@ -190,7 +203,8 @@ function differentTypes(a: unknown, b: unknown) {
 
 function trimFromRight(
   obj1: Record<string, unknown> | unknown[],
-  obj2: Record<string, unknown> | unknown[]
+  obj2: Record<string, unknown> | unknown[],
+  toString: ToStringFn
 ) {
   const len1 = (obj1 as unknown[]).length || 0;
   const len2 = (obj2 as unknown[]).length || 0;
@@ -200,7 +214,7 @@ function trimFromRight(
     let leftMatches = 0;
     let rightMatches = 0;
     for (let i = 0; i < len2; i++) {
-      if (String(obj1[i]) === String(obj2[i])) {
+      if (toString(obj1[i]) === toString(obj2[i])) {
         leftMatches++;
       } else {
         break;
@@ -208,7 +222,7 @@ function trimFromRight(
     }
 
     for (let j = len2; j > 0; j--) {
-      if (String(obj1[j + lengthDelta]) === String(obj2[j])) {
+      if (toString(obj1[j + lengthDelta]) === toString(obj2[j])) {
         rightMatches++;
       } else {
         break;

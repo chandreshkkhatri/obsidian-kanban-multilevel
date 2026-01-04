@@ -58,11 +58,13 @@ export class ListFormat implements BaseFormat {
           return generatedKeys.includes(path.last());
         },
         (val: unknown) => {
-          if (!val) return String(val);
+          if (!val) return String(val as string | number | boolean | null | undefined);
           if (val instanceof TFile) return val.path;
-          if (isPlainObject(val) || Array.isArray(val)) return String(val);
+          if (isPlainObject(val) || Array.isArray(val)) return JSON.stringify(val);
           if (dv && !dv.value.isObject(val)) return dv.value.toString(val);
-          return String(val);
+          return typeof val === 'object'
+            ? JSON.stringify(val)
+            : String(val as string | number | boolean | symbol | bigint);
         }
       );
 

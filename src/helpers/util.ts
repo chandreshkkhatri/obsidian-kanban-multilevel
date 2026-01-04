@@ -23,7 +23,15 @@ export class PromiseCapability<T = void> {
 
       this.reject = (reason) => {
         this.settled = true;
-        reject(reason instanceof Error ? reason : new Error(String(reason)));
+        reject(
+          reason instanceof Error
+            ? reason
+            : new Error(
+                typeof reason === 'object'
+                  ? JSON.stringify(reason)
+                  : String(reason as string | number | boolean | symbol | bigint)
+              )
+        );
       };
     });
   }

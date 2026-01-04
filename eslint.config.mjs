@@ -81,7 +81,7 @@ export default tseslint.config(
             '@typescript-eslint/no-unsafe-argument': 'off',
             '@typescript-eslint/no-unsafe-function-type': 'off',
             '@typescript-eslint/restrict-template-expressions': 'error',
-            '@typescript-eslint/no-base-to-string': 'off',
+            '@typescript-eslint/no-base-to-string': 'error',
             '@typescript-eslint/unbound-method': 'error',
             '@typescript-eslint/no-deprecated': 'error',
             '@typescript-eslint/no-require-imports': 'error',
