@@ -95,8 +95,8 @@ const en = {
   'This format will be used when displaying dates in kanban cards.':
     'This format will be used when displaying dates in kanban cards.',
   'Show relative date': 'Show relative date',
-  "When toggled, cards will display the distance between today and the card's date. eg. 'In 3 days', 'A month ago'. Relative dates will not be shown for dates from the Tasks and Dataview plugins.":
-    "When toggled, cards will display the distance between today and the card's date. eg. 'In 3 days', 'A month ago'. Relative dates will not be shown for dates from the Tasks and Dataview plugins.",
+  "When toggled, cards will display the distance between today and the card's date. Eg. 'In 3 days', 'A month ago'. Relative dates will not be shown for dates from the tasks and dataview plugins.":
+    "When toggled, cards will display the distance between today and the card's date. Eg. 'In 3 days', 'A month ago'. Relative dates will not be shown for dates from the tasks and dataview plugins.",
 
   'Move dates to card footer': 'Move dates to card footer',
   "When toggled, dates will be displayed in the card's footer instead of the card's body.":
@@ -105,11 +105,11 @@ const en = {
   "When toggled, tags will be displayed in the card's footer instead of the card's body.":
     "When toggled, tags will be displayed in the card's footer instead of the card's body.",
   'Move task data to card footer': 'Move task data to card footer',
-  "When toggled, task data (from the Tasks plugin) will be displayed in the card's footer instead of the card's body.":
-    "When toggled, task data (from the Tasks plugin) will be displayed in the card's footer instead of the card's body.",
+  "When toggled, task data (from the tasks plugin) will be displayed in the card's footer instead of the card's body.":
+    "When toggled, task data (from the tasks plugin) will be displayed in the card's footer instead of the card's body.",
   'Inline metadata position': 'Inline metadata position',
-  'Controls where the inline metadata (from the Dataview plugin) will be displayed.':
-    'Controls where the inline metadata (from the Dataview plugin) will be displayed.',
+  'Controls where the inline metadata (from the dataview plugin) will be displayed.':
+    'Controls where the inline metadata (from the dataview plugin) will be displayed.',
   'Card body': 'Card body',
   'Card footer': 'Card footer',
   'Merge with linked page metadata': 'Merge with linked page metadata',
@@ -121,8 +121,8 @@ const en = {
   'When toggled, dates will link to daily notes. Eg. [[2021-04-26]]':
     'When toggled, dates will link to daily notes. Eg. [[2021-04-26]]',
   'Add date and time to archived cards': 'Add date and time to archived cards',
-  'When toggled, the current date and time will be added to the card title when it is archived. eg. - [ ] 2021-05-14 10:00am My card title':
-    'When toggled, the current date and time will be added to the card title when it is archived. eg. - [ ] 2021-05-14 10:00am My card title',
+  'When toggled, the current date and time will be added to the card title when it is archived. Eg. - [ ] 2021-05-14 10:00am My card title':
+    'When toggled, the current date and time will be added to the card title when it is archived. Eg. - [ ] 2021-05-14 10:00am My card title',
   'Add archive date/time after card title': 'Add archive date/time after card title',
   'When toggled, the archived date/time will be added after the card title, e.g.- [ ] My card title 2021-05-14 10:00am. By default, it is inserted before the title.':
     'When toggled, the archived date/time will be added after the card title, e.g.- [ ] My card title 2021-05-14 10:00am. By default, it is inserted before the title.',
